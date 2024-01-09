@@ -10,7 +10,9 @@ export const AppStrings = {
   reset_statement: "Enter a new password below & we’ll log you in asap!",
   reset_title: "Set New Password ",
   Enter_OTP: "Enter OTP",
+  otp_statement: "An 4 digit code has been sent to",
   send_OTP: "Send OTP",
+  resend_otp: "Resend OTP",
 
   // Input Label
   email: "Email",
