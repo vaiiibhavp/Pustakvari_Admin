@@ -1,10 +1,12 @@
 import React from 'react'
+import AuthImageView from '../Component/AuthImageView'
 
 
 const MainContent = () => {
     return (
         <div>
-            HelLo
+            <AuthImageView />
+            <div>hello</div>
         </div>
     )
 }

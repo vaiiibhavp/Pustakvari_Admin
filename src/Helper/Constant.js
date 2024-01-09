@@ -10,15 +10,18 @@ export const AppStrings = {
   reset_statement: "Enter a new password below & we’ll log you in asap!",
   reset_title: "Set New Password ",
   Enter_OTP: "Enter OTP",
+  send_OTP: "Send OTP",
 
   // Input Label
   email: "Email",
+  email_Id: "Email Id",
   password: "Password",
   FullName: "Name",
   FirstName: "FirstName",
   LastName: "LastName",
   address: "Address",
   contact_number: "Contact Number",
+  reset_password: "Reset Password",
 
   //  Input Placholders
   email_placeholder: "Enter your email address",
@@ -146,7 +149,7 @@ export const AppStrings = {
   added_quize_message: "Quiz has been added successfully!",
 };
 
-const colorCodes = {
+export const colorCodes = {
   PRIMARY_COLOR: "#FE6B01",
   PRIMARY_COLOR_100: "#FFF0E6",
   PRIMARY_COLOR_200: "#FFE9D9",
