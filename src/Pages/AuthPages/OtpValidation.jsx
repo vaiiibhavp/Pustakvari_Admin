@@ -1,18 +1,8 @@
 import React, { useState } from 'react';
-// import { makeStyles } from '@mui/material/styles';
 import { Box, Button, Container, CssBaseline, Grid, TextField, Typography } from "@mui/material"
 import { AppStrings, colorCodes } from '../../Helper/Constant';
 
-// const useStyles = makeStyles((theme) => ({
-//     otpInput: {
-//         display: 'flex',
-//         justifyContent: 'space-between',
-//         width: '200px', // Adjust the width as needed
-//     },
-//     input: {
-//         textAlign: 'center',
-//     },
-// }));
+
 
 const OtpValidation = () => {
 

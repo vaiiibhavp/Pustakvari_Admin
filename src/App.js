@@ -8,6 +8,7 @@ import ResetPasswordForm from "./Pages/AuthPages/ConfirmPassword";
 import OtpValidation from "./Pages/AuthPages/OtpValidation";
 import ShowsMessageModal from "./Component/ShowMessageModal";
 import DeleteModal from "./Component/DeleteModal";
+import Dashboard from "./Pages/Dashboard/Dashboard";
 
 const App = () => {
   return (
@@ -21,7 +22,7 @@ const App = () => {
           <Route path="/modal" element={<DeleteModal />} />
         </Route>
         <Route element={<MainContent />}>
-          <Route path="/" element={"hello"} />
+          <Route path="/" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>
