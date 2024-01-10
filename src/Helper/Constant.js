@@ -1,3 +1,20 @@
+import glassmessage from "../Assets/Images/glassMessage.svg";
+import userGlass from "../Assets/Images/glass_users.svg";
+import rupees from "../Assets/Images/rupee.svg";
+import bookframe from "../Assets/Images/booksFrame.svg";
+
+// menusIcons
+// import dashboardIcon from "../Assets/Images/price-list (1) 1 1.svg"
+
+import dashboardIcon from "../Assets/Images/graphIcon.svg";
+import usericon from "../Assets/Images/userIcon.svg";
+import instituteIcon from "../Assets/Images/institute.svg";
+
+import ebookicon from "../Assets/Images/bookIcon.svg";
+
+import planIcon from "../Assets/Images/planIcon.svg";
+import lightIcon from "../Assets/Images/lightIcon.svg";
+
 export const AppStrings = {
   welcome_message: "Hi, Welcome back",
   // Auth Pages
@@ -202,41 +219,68 @@ const adminMenus = [
   },
 ];
 
-const superAdminMenus = [
+export const superAdminMenus = [
   {
     id: 1,
-    icon: "",
-    name: "Dashboard",
-    path: "/Dashboard",
+    icon: dashboardIcon,
+    title: "Dashboard",
+    path: "/",
   },
   {
     id: 2,
-    icon: "",
-    name: "User",
+    icon: usericon,
+    title: "User",
     path: "/User",
   },
   {
     id: 3,
-    icon: "",
-    name: "Institute",
+    icon: instituteIcon,
+    title: "Institute",
     path: "/Institute",
   },
   {
     id: 4,
-    icon: "",
-    name: "E-Books",
+    icon: ebookicon,
+    title: "E-Books",
     path: "/E-books",
   },
   {
     id: 5,
-    icon: "",
-    name: "Subscription",
+    icon: planIcon,
+    title: "Subscription",
     path: "/Subscription",
   },
   {
     id: 6,
-    icon: "",
-    name: "Quiz",
+    icon: lightIcon,
+    title: "Quiz",
     path: "/Quiz",
+  },
+];
+
+export const dashboardWidgetData = [
+  {
+    id: 1,
+    title: AppStrings.monthly_subscription,
+    total: 714,
+    img: rupees,
+  },
+  {
+    id: 2,
+    title: AppStrings.total_user,
+    total: 111,
+    img: userGlass,
+  },
+  {
+    id: 3,
+    title: AppStrings.newly_e_books,
+    total: 121,
+    img: bookframe,
+  },
+  {
+    id: 4,
+    title: AppStrings.total_institutes,
+    total: 11,
+    img: glassmessage,
   },
 ];

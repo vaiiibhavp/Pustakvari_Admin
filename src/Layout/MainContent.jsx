@@ -1,9 +1,8 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Sidebar from './Sidebar'
 import { Box } from '@mui/material'
 import Header from './Header/Header'
-import { colorCodes } from '../Helper/Constant'
+import Sidebar from './Sidebar/Sidebar'
 
 
 const MainContent = () => {

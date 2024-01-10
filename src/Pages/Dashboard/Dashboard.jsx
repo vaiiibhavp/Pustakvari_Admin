@@ -1,25 +1,34 @@
 import { Container, Grid, Typography } from '@mui/material'
 import React from 'react'
 import AppWidgetSummary from '../../Component/app/AppWidgetSummary'
+import { AppStrings, dashboardWidgetData } from '../../Helper/Constant'
+import AppWebsiteVisits from '../../Component/app/AppWebSiteVisitor'
 
 
 
 const Dashboard = () => {
+
+
     return (
         <Container maxWidth="xl">
             <Typography variant="h4" sx={{ mb: 3 }}>
-                Hi, Welcome Back
+                {AppStrings?.welcome_message}
             </Typography>
 
             <Grid container spacing={3}>
-                <Grid item xs={12} sm={6} md={3}>
-                    <AppWidgetSummary
-                        title="Total Users"
-                        total={300}
-                    // icon={<PiUsersThreeBold style={{ fontSize: '24px' }} />}
-                    />
-                </Grid>
+                {dashboardWidgetData && dashboardWidgetData.map((menuItemDashboard) => {
+                    return (
+                        <Grid key={menuItemDashboard.id} item xs={12} sm={6} md={3}>
+                            <AppWidgetSummary item={menuItemDashboard}
+                                title="Total Users"
+                                total={300}
 
+                            />
+                        </Grid>
+                    )
+                })}
+
+                {/* 
                 <Grid item xs={12} sm={6} md={3}>
                     <AppWidgetSummary
                         title="Total Experts"
@@ -45,12 +54,13 @@ const Dashboard = () => {
                         color="success"
                     // icon={<PiStudentBold style={{ fontSize: '24px' }} />}
                     />
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={12} md={8} lg={8}>
-                    {/* <AppWebsiteVisits
+                    <AppWebsiteVisits
                         title="Community Expansion Report"
                         subheader=""
+                        type="line"
                         chartLabels={Array.from({ length: 12 }, (_, i) => `0${i + 1}/01/2023`)}
                         chartData={[
                             {
@@ -61,8 +71,10 @@ const Dashboard = () => {
                                 data: [12, 12, 14, 65, 74, 32, 45, 23, 23, 89, 87],
                             },
                         ]}
-                    /> */}
+                    />
                 </Grid>
+
+
 
 
             </Grid>

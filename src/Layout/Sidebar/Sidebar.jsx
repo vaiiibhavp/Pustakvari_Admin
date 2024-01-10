@@ -7,6 +7,9 @@ import { useLocation } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
+import { superAdminMenus } from '../../Helper/Constant';
+import NavSection from './SidebarNav';
+import logoImage from "../../Assets/Images/logo.svg"
 // mock
 
 // hooks
@@ -47,35 +50,18 @@ export default function Sidebar() {
                 '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
             }}
         >
-            <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-                {/* <Logo /> */}
+            <Box sx={{ px: 2.5, py: 3, mb: 2, display: 'inline-flex', justifyContent: "center", alignItems: "center", width: "100%" }}>
+                <img src={logoImage} alt="logo image" />
             </Box>
 
-            <Box sx={{ mb: 5, mx: 2.5 }}>
-                <Link underline="none">
-                    <StyledAccount>
-                        {/* <Avatar src={account.photoURL} alt="photoURL" /> */}
 
-                        <Box sx={{ ml: 2 }}>
-                            <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                                {/* {user?.first_name} */}
-                            </Typography>
-
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                {/* {user?.email} */}
-                            </Typography>
-                        </Box>
-                    </StyledAccount>
-                </Link>
-            </Box>
-
-            {/* <NavSection data={navConfig} /> */}
+            <NavSection data={superAdminMenus} />
 
             <Box sx={{ flexGrow: 1 }} />
 
             <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
                 <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
-                    here is subscription detail buton
+                    {/* here is subscription detail buton */}
                 </Stack>
             </Box>
         </Box>
@@ -87,6 +73,7 @@ export default function Sidebar() {
             sx={{
                 flexShrink: { lg: 0 },
                 width: { lg: NAV_WIDTH },
+                background: "#ffffff"
             }}
         >
 
@@ -96,7 +83,7 @@ export default function Sidebar() {
                 PaperProps={{
                     sx: {
                         width: NAV_WIDTH,
-                        bgcolor: 'background.default',
+                        bgcolor: '#fffff',
                         borderRightStyle: 'dashed',
                     },
                 }}
