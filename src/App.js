@@ -6,6 +6,8 @@ import LoginForm from "./Pages/AuthPages/Login";
 import ForgotPasswordForm from "./Pages/AuthPages/ForgotPassword";
 import ResetPasswordForm from "./Pages/AuthPages/ConfirmPassword";
 import OtpValidation from "./Pages/AuthPages/OtpValidation";
+import ShowsMessageModal from "./Component/ShowMessageModal";
+import DeleteModal from "./Component/DeleteModal";
 
 const App = () => {
   return (
@@ -16,6 +18,7 @@ const App = () => {
           <Route path="/forgot" element={<ForgotPasswordForm />} />
           <Route path="/otpValidation" element={<OtpValidation />} />
           <Route path="/reset" element={<ResetPasswordForm />} />
+          <Route path="/modal" element={<DeleteModal />} />
         </Route>
         <Route element={<MainContent />}>
           <Route path="/" element={"hello"} />
