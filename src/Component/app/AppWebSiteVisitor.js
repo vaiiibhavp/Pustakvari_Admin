@@ -12,14 +12,18 @@ export default function AppWebsiteVisits({
   subheader,
   chartLabels,
   chartData,
+  Colors,
+  widthlarge,
   ...other
 }) {
   console.log(chartData, "chartData");
+
   const chartOptions = useChart({
     plotOptions: { bar: { columnWidth: "16%" } },
-    fill: { type: chartData.map((i) => i?.fill) },
+    // fill: { type: chartData.map((i) => i?.fill) },
+    chart: { stacked: true },
     labels: chartLabels,
-    xaxis: { type: "datetime" },
+    xaxis: { type: type !== "pie" ? "datetime" : "" },
     tooltip: {
       shared: true,
       intersect: false,
@@ -32,7 +36,7 @@ export default function AppWebsiteVisits({
         },
       },
     },
-    colors: ["red"],
+    colors: Colors,
   });
 
   return (

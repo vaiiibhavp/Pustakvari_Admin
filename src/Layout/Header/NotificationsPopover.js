@@ -16,6 +16,9 @@ import {
   ListItemAvatar,
   ListItemButton,
 } from "@mui/material";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import { AppStrings, colorCodes } from "../../Helper/Constant";
+import { Navigate, useNavigate } from "react-router";
 // utils
 // components
 // import Iconify from "../../../components/iconify";
@@ -45,7 +48,8 @@ const NOTIFICATIONS = [
 ];
 
 export default function NotificationsPopover() {
-  const [notifications, setNotifications] = useState();
+  const [notifications, setNotifications] = useState(NOTIFICATIONS);
+  const navigate = useNavigate();
 
   const totalUnRead = notifications?.filter(
     (item) => item.isUnRead === true
@@ -78,7 +82,7 @@ export default function NotificationsPopover() {
         sx={{ width: 40, height: 40, margin: "0 5px" }}
       >
         <Badge badgeContent={totalUnRead} color="error">
-          {/* <Iconify icon="eva:bell-fill" /> */}N
+          <NotificationsNoneOutlinedIcon />
         </Badge>
       </IconButton>
 
@@ -98,9 +102,8 @@ export default function NotificationsPopover() {
       >
         <Box sx={{ display: "flex", alignItems: "center", py: 2, px: 2.5 }}>
           <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="subtitle1">Notifications</Typography>
-            <Typography variant="body2" sx={{ color: "text.secondary" }}>
-              You have {totalUnRead} unread messages
+            <Typography variant="subtitle1">
+              {AppStrings.notification}
             </Typography>
           </Box>
 
@@ -134,31 +137,20 @@ export default function NotificationsPopover() {
               />
             ))}
           </List>
-
-          <List
-            disablePadding
-            subheader={
-              <ListSubheader
-                disableSticky
-                sx={{ py: 1, px: 2.5, typography: "overline" }}
-              >
-                Before that
-              </ListSubheader>
-            }
-          >
-            {notifications?.slice(2, 5).map((notification) => (
-              <NotificationItem
-                key={notification.id}
-                notification={notification}
-              />
-            ))}
-          </List>
         </Box>
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
         <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple>
+          <Button
+            fullWidth
+            disableRipple
+            sx={{
+              background: colorCodes?.PRIMARY_COLOR_200,
+              color: colorCodes?.PRIMARY_COLOR,
+            }}
+            onClick={() => navigate("/notifications")}
+          >
             View All
           </Button>
         </Box>
@@ -178,9 +170,10 @@ function NotificationItem({ notification }) {
         py: 1.5,
         px: 2.5,
         mt: "1px",
-        ...(notification.isUnRead && {
-          bgcolor: "action.selected",
-        }),
+        ...(notification.isUnRead &&
+          {
+            // bgcolor: "action.",
+          }),
       }}
     >
       <ListItemAvatar>

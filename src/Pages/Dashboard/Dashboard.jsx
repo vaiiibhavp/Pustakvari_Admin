@@ -1,7 +1,7 @@
 import { Container, Grid, Typography } from '@mui/material'
 import React from 'react'
 import AppWidgetSummary from '../../Component/app/AppWidgetSummary'
-import { AppStrings, dashboardWidgetData } from '../../Helper/Constant'
+import { AppStrings, colorCodes, dashboardWidgetData } from '../../Helper/Constant'
 import AppWebsiteVisits from '../../Component/app/AppWebSiteVisitor'
 
 
@@ -28,51 +28,76 @@ const Dashboard = () => {
                     )
                 })}
 
-                {/* 
-                <Grid item xs={12} sm={6} md={3}>
-                    <AppWidgetSummary
-                        title="Total Experts"
-                        total={200}
-                        color="info"
-                    // icon={<FaChalkboardTeacher style={{ fontSize: '24px' }} />}
-                    />
-                </Grid>
 
-                <Grid item xs={12} sm={6} md={3}>
-                    <AppWidgetSummary
-                        title="Total Parents"
-                        total={100}
-                        color="warning"
-                    // icon={<RiParentLine style={{ fontSize: '24px' }} />}
-                    />
-                </Grid>
-
-                <Grid item xs={12} sm={6} md={3}>
-                    <AppWidgetSummary
-                        title="Total Students"
-                        total={200}
-                        color="success"
-                    // icon={<PiStudentBold style={{ fontSize: '24px' }} />}
-                    />
-                </Grid> */}
 
                 <Grid item xs={12} md={8} lg={8}>
                     <AppWebsiteVisits
                         title="Community Expansion Report"
                         subheader=""
-                        type="line"
-                        chartLabels={Array.from({ length: 12 }, (_, i) => `0${i + 1}/01/2023`)}
+                        type="bar"
+                        widthlarge="true"
+                        Colors={[colorCodes?.SECONDARY_COLOR_300, colorCodes?.SECONDARY_COLOR_500, colorCodes?.SECONDARY_COLOR_100]}
+                        chartLabels={Array.from({ length: 8 }, (_, i) => `0${i + 1}/01/2023`)}
                         chartData={[
                             {
-                                name: 'Users Added',
-                                type: 'line',
-                                fill: 'solid',
-                                color: '#3B7D10',
-                                data: [12, 12, 14, 65, 74, 32, 45, 23, 23, 89, 87],
+                                name: "PRODUCT A",
+                                data: [44, 55, 41, 67, 22, 43, 21, 49],
+                            },
+
+                        ]}
+                    />
+                </Grid>
+
+                <Grid item xs={12} md={4} lg={4}>
+                    <AppWebsiteVisits
+                        title="Community Expansion Report"
+                        subheader=""
+                        type="pie"
+                        Colors={["#52cc91", "#ff5630", "#ffab00", "#1877f2", "#00b8d9"]}
+                        chartLabels={['Team A', 'Team B', 'Team C', 'Team D', 'Team E']}
+                        chartData={[44, 55, 13, 43, 22]}
+                    />
+                </Grid>
+
+                <Grid item xs={12} md={4} lg={4}>
+                    <AppWebsiteVisits
+                        title="Community Expansion Report"
+                        subheader=""
+                        type="donut"
+                        Colors={["#a3c9fa", "#4692f5"]}
+
+                        chartLabels={Array.from({ length: 2 }, (_, i) => `0${i + 1}/01/2023`)}
+                        chartData={[222, 767]}
+                    />
+                </Grid>
+
+                <Grid item xs={12} md={8} lg={8}>
+                    <AppWebsiteVisits
+                        title="Community Expansion Report"
+                        subheader=""
+                        type="bar"
+                        Colors={[colorCodes?.SECONDARY_COLOR_300, colorCodes?.SECONDARY_COLOR_500, colorCodes?.SECONDARY_COLOR_100]}
+                        chartLabels={Array.from({ length: 8 }, (_, i) => `0${i + 1}/01/2023`)}
+                        chartData={[
+                            {
+                                name: "PRODUCT A",
+                                data: [44, 55, 41, 67, 22, 43, 21, 49],
+                            },
+                            {
+                                name: "PRODUCT B",
+                                data: [13, 23, 20, 8, 13, 27, 33, 12],
+                            },
+                            {
+                                name: "PRODUCT C",
+                                data: [11, 17, 15, 15, 21, 14, 15, 13],
                             },
                         ]}
                     />
                 </Grid>
+
+
+
+
 
 
 

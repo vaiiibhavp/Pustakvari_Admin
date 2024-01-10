@@ -12,6 +12,7 @@ import Quiz from "./Pages/Quiz/Quiz";
 import EBooks from "./Pages/Ebook/EBooks";
 import Users from "./Pages/User/Users";
 import Institutes from "./Pages/Institutes/Institutes";
+import Notifications from "./Pages/Notification/Notifications";
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/e-books" element={<EBooks />} />
           <Route path="/Quiz" element={<Quiz />} />
           <Route path="/Subscription" element={<Subscription />} />
+          <Route path="/notifications" element={<Notifications />} />
         </Route>
       </Routes>
     </BrowserRouter>

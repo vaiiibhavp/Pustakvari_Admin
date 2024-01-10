@@ -26,17 +26,17 @@ export default function useChart(options) {
 
     const baseOptions = {
         // Colors
-        colors: [
-            theme.palette.primary.main,
-            theme.palette.warning.main,
-            theme.palette.info.main,
-            theme.palette.error.main,
-            theme.palette.success.main,
-            theme.palette.warning.dark,
-            theme.palette.success.darker,
-            theme.palette.info.dark,
-            theme.palette.info.darker,
-        ],
+        // colors: [
+        //     theme.palette.primary.main,
+        //     theme.palette.warning.main,
+        //     theme.palette.info.main,
+        //     theme.palette.error.main,
+        //     theme.palette.success.main,
+        //     theme.palette.warning.dark,
+        //     theme.palette.success.darker,
+        //     theme.palette.info.dark,
+        //     theme.palette.info.darker,
+        // ],
 
         // Chart
         chart: {
@@ -135,8 +135,8 @@ export default function useChart(options) {
         plotOptions: {
             // Bar
             bar: {
-                borderRadius: 4,
-                columnWidth: '28%',
+                borderRadius: 2,
+                columnWidth: '35%',
                 borderRadiusApplication: 'end',
                 borderRadiusWhenStacked: 'last',
             },
