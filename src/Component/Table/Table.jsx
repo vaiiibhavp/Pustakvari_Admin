@@ -16,6 +16,7 @@ import {
     Button,
     useTheme,
 } from "@mui/material";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import DeleteIcon from "@mui/icons-material/Delete";
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import { colorCodes } from "../../Helper/Constant";
@@ -60,26 +61,26 @@ const CommonTable = ({
         setPage(0);
     };
 
-    console.log(theme.palette?.secondary);
 
     const emptyRows =
         rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     const renderText = (item, whichCoulumn) => {
+        console.log(item);
         if (whichCoulumn?.icon) {
             if (whichCoulumn?.deleteIcon && whichCoulumn?.editIcon) {
                 return (
                     <Box>
                         <Button sx={{
-                            padding: "0 5px",
-                            background: theme.palette?.secondary?.lighter,
-                            color: theme.palette?.secondary.main,
+                            margin: "0 10px",
+                            background: theme.palette?.primary?.lighter,
+                            color: theme.palette?.primary.main,
                             '&.active': {
                                 color: 'text.primary',
                                 bgcolor: 'action.selected',
                                 fontWeight: 'fontWeightBold',
                             },
-                        }} onClick={() => editRecord(2)} ><BorderColorOutlinedIcon /></Button>
+                        }} onClick={() => editRecord(2)} ><BorderColorOutlinedIcon size="medium" /></Button>
                         <Button sx={{
                             background: theme.palette?.secondary?.lighter,
                             color: theme.palette?.secondary.main,
@@ -88,7 +89,7 @@ const CommonTable = ({
                                 bgcolor: 'action.selected',
                                 fontWeight: 'fontWeightBold',
                             },
-                        }} ><DeleteIcon /></Button>
+                        }} ><DeleteOutlineOutlinedIcon size="medium" /></Button>
                     </Box>
                 );
             } else if (whichCoulumn?.editIcon && whichCoulumn?.subScrIcon) {
@@ -106,7 +107,7 @@ const CommonTable = ({
                                 bgcolor: 'action.selected',
                                 fontWeight: 'fontWeightBold',
                             },
-                        }} onClick={() => editRecord(2)} ><BorderColorOutlinedIcon /></Button>
+                        }} onClick={() => editRecord(2)} ><BorderColorOutlinedIcon size="medium" /></Button>
                         <Button sx={{
                             background: theme.palette?.secondary?.lighter,
                             color: theme.palette?.secondary.main,
@@ -115,7 +116,7 @@ const CommonTable = ({
                                 bgcolor: 'action.selected',
                                 fontWeight: 'fontWeightBold',
                             },
-                        }} onClick={() => showSubscription()} ><InfoOutlinedIcon /></Button>
+                        }} onClick={() => showSubscription()} ><InfoOutlinedIcon size="medium" /></Button>
                     </Box>
                 );
             } else if (whichCoulumn?.deleteIcon) {
@@ -127,7 +128,7 @@ const CommonTable = ({
                         bgcolor: 'action.selected',
                         fontWeight: 'fontWeightBold',
                     },
-                }} ><DeleteIcon /></Button>;
+                }} ><DeleteOutlineOutlinedIcon size="medium" /></Button>;
             } else if (whichCoulumn?.editIcon) {
                 return <Button sx={{
                     background: theme.palette?.secondary?.lighter,
@@ -137,12 +138,23 @@ const CommonTable = ({
                         bgcolor: 'action.selected',
                         fontWeight: 'fontWeightBold',
                     },
-                }} onClick={() => editRecord(2)} ><BorderColorOutlinedIcon /></Button>;
+                }} onClick={() => editRecord(2)} ><BorderColorOutlinedIcon size="medium" /></Button>;
             }
         }
 
         if (whichCoulumn?.statusbtn) {
-            return <button className="bg-priamry">item</button>;
+            return <Button sx={{
+                background: theme.palette?.grey[300],
+                color: theme.palette?.grey[600],
+                textDecoration: "none",
+                borderRadius: "20px",
+                padding: "0 16px",
+                '&.active': {
+                    color: 'text.primary',
+                    bgcolor: 'action.selected',
+                    fontWeight: 'fontWeightBold',
+                },
+            }} >Active</Button>;
         }
         if (whichCoulumn?.switchbtn) {
             return <Switch {...label} defaultChecked color="secondary" />;
@@ -170,12 +182,12 @@ const CommonTable = ({
     };
 
     return (
-        <Paper>
+        <Paper style={{ overflowX: "auto" }}>
             <Table>
                 <TableHead>
                     <TableRow sx={{ background: "#e6e6e6" }}>
                         {columns.map((column, index) => (
-                            <TableCell key={index}>{column.field}</TableCell>
+                            <TableCell key={index} sx={{ width: "300px" }}>{column.field}</TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
@@ -186,7 +198,7 @@ const CommonTable = ({
                     ).map((row, rowIndex) => (
                         <TableRow key={rowIndex} >
                             {columns.map((column, colIndex) => (
-                                <TableCell key={colIndex}>
+                                <TableCell key={colIndex} sx={{ width: "300px" }}>
                                     {renderText(row[column.field], column)}
                                 </TableCell>
                             ))}
