@@ -1,10 +1,13 @@
 import { Box, Button, Container, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import CommonTable from '../../Component/Table/Table'
 import { AppStrings, colorCodes } from '../../Helper/Constant';
 import { usersSuperAdminTablesColumn } from '../Utils/constant';
+import UserModal from './UserModal';
 
 const Users = () => {
+    const [isUserModalOpen, setIsUserModalOpen] = useState(false)
+    const [isEditable, setIsEditable] = useState({})
 
 
     const data = [
@@ -18,10 +21,17 @@ const Users = () => {
 
                 <Typography variant='h5'>Users</Typography>
                 <Box>
-                    <Button sx={{ background: colorCodes?.PRIMARY_COLOR, color: colorCodes?.GRAY_SHAD_500 }}>{AppStrings?.Add_user}</Button>
+                    <Button onClick={() => {
+                        setIsEditable({});
+                        setIsUserModalOpen(true)
+                    }} sx={{ background: colorCodes?.PRIMARY_COLOR, color: colorCodes?.GRAY_SHAD_500 }}>{AppStrings?.Add_user}</Button>
                 </Box>
             </Box>
-            <CommonTable columns={usersSuperAdminTablesColumn} data={data} rowSelect={() => console.log("row selected")} editRecord={(e) => console.log("e", e)} showSubscription={() => console.log("show subscription")} />
+            <CommonTable columns={usersSuperAdminTablesColumn} data={data} rowSelect={() => console.log("row selected")} editRecord={(e) => {
+                setIsUserModalOpen(true);
+                setIsEditable({ id: 1, name: "title" })
+            }} showSubscription={() => console.log("show subscription")} />
+            <UserModal isUserModalOpen={isUserModalOpen} setUserModalOpen={setIsUserModalOpen} isEditableRecord={isEditable} />
         </Container>
     )
 }

@@ -31,14 +31,14 @@ const style = {
     p: 2,
 };
 
-const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
+const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEditableRecord }) => {
 
     let isEditable = isEditableRecord?.id ? true : false
 
 
-    const handleClose = () => setUserModalOpen(false);
+    const handleClose = () => setIsInstituteModalOpen(false);
     const initialValues = {
-        fullName: '',
+        instituteName: '',
         email: '',
         contactNumber: '',
         password: '',
@@ -46,7 +46,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
     };
 
     const validationSchema = Yup.object().shape({
-        fullName: Yup.string().required('Full name is required'),
+        instituteName: Yup.string().required('Full name is required'),
         email: Yup.string().email('Invalid email address').required('Email is required'),
         contactNumber: Yup.string().required('Contact number is required'),
         password: Yup.string().required('Password is required'),
@@ -81,7 +81,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
 
     return (
         <Modal
-            open={isUserModalOpen}
+            open={isInstituteModalOpen}
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
@@ -107,22 +107,22 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                 <form onSubmit={formik.handleSubmit} style={{ padding: "10px 0" }}>
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>Full Name:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>Institute Name:</Typography>
                         <TextField
                             fullWidth
-                            id="fullName"
+                            id="instituteName"
                             sx={{ marginTop: "0px" }}
-                            name="fullName"
+                            name="instituteName"
                             // label="Full Name"
                             size='small'
-                            placeholder='Full Name'
+                            placeholder='instituteName'
                             variant="outlined"
                             margin="normal"
-                            value={formik.values.fullName}
+                            value={formik.values.instituteName}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            error={formik.touched.fullName && Boolean(formik.errors.fullName)}
-                            helperText={formik.touched.fullName && formik.errors.fullName}
+                            error={formik.touched.instituteName && Boolean(formik.errors.instituteName)}
+                            helperText={formik.touched.instituteName && formik.errors.instituteName}
                         />
                     </Box>
 
@@ -245,4 +245,4 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
     )
 }
 
-export default UserModal
+export default InstituteModal
