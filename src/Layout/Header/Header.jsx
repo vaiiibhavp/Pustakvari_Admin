@@ -6,6 +6,7 @@ import { Box, Stack, AppBar, Toolbar } from '@mui/material';
 import { bgBlur } from '../../Theme/utils/cssStyles';
 
 //
+import SearchIcon from '@mui/icons-material/Search';
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';
 
@@ -43,7 +44,8 @@ export default function Header() {
             <StyledToolbar shadow={1}>
 
 
-                {/* <Searchbar /> */}
+                {/* <SearchIcon /> */}
+                serch
                 <Box sx={{ flexGrow: 1, }} />
 
                 <Stack

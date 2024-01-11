@@ -1,23 +1,15 @@
 // @mui
 import { alpha, styled, createTheme } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import { colorCodes } from '../../Helper/Constant';
 
 // ----------------------------------------------------------------------
 
-const StyledIcon = styled('div')(({ theme }) => ({
-    margin: 'auto',
-    display: 'flex',
-    borderRadius: '50%',
-    alignItems: 'center',
-    width: theme.spacing(8),
-    height: theme.spacing(8),
-    justifyContent: 'center',
-    marginBottom: theme.spacing(3),
-}));
 
 
 
-export default function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other }) {
+export default function AppWidgetSummary({ item, total, icon, color = 'primary', sx, ...other }) {
     // Create a Material-UI theme
     const theme = createTheme();
 
@@ -26,33 +18,27 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
     return (
         <Card
             sx={{
-                py: 5,
-                boxShadow: 0,
+                p: 3,
+                boxShadow: (theme) => theme.customShadows.z1,
                 textAlign: 'center',
-                color: (theme) => theme.palette[color].darker,
-                bgcolor: (theme) => theme.palette[color].lighter,
+                display: "flex",
+                alignItems: "center",
+                // color: (theme) => theme.palette[color].darker,
+                // bgcolor: (theme) => theme.palette[color].lighter,
                 ...sx,
             }}
             {...other}
         >
-            <StyledIcon
-                sx={{
-                    color: (theme) => theme.palette[color].dark,
-                    backgroundImage: (theme) =>
-                        `linear-gradient(135deg, ${alpha(theme.palette[color].dark, 0)} 0%, ${alpha(
-                            theme.palette[color].dark,
-                            0.24
-                        )} 100%)`,
-                }}
-            >
-                {icon}
-            </StyledIcon>
+            <img src={item.img} alt="" style={{ width: "50px", height: "50px" }} />
+            <Box sx={{ display: "flex", flexDirection: "column", paddingLeft: "15px" }}>
 
-            <Typography variant="h3">{total}</Typography>
+                <Typography variant="h3" textAlign={"start"}>{item?.total}</Typography>
+                <Typography color={colorCodes?.GRAY_SHAD_100} fontWeight={400} variant="subtitle2" sx={{ opacity: 0.72 }}>
+                    {item?.title}
+                </Typography>
 
-            <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
-                {title}
-            </Typography>
+            </Box>
+
         </Card>
     );
 }
