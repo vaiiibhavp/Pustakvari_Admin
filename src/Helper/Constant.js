@@ -42,6 +42,7 @@ export const AppStrings = {
   address: "Address",
   contact_number: "Contact Number",
   reset_password: "Reset Password",
+  message: "Message",
 
   //  Input Placholders
   email_placeholder: "Enter your email address",
@@ -72,6 +73,9 @@ export const AppStrings = {
   back: "Back",
   active: "Active",
   notification: "Notification",
+  notification_title: "Notification Title",
+  notification_Type: "Notification Type",
+  user_type: "User Type",
 
   // Dahbaord
   monthly_subscription: "Monthly Subscription",
