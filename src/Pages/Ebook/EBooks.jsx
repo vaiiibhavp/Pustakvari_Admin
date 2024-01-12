@@ -4,11 +4,28 @@ import { ebooksTablesColumn } from '../Utils/constant'
 import CommonTable from '../../Component/Table/Table'
 import { AppStrings, colorCodes } from '../../Helper/Constant'
 import EbookModal from './EbookModal'
+import CategoryPopover from './CategoryPopover'
+import CategoryModal from './CategoryModal'
 
 const EBooks = () => {
 
     const [isOpenEbookModal, setIsOpenEbookModal] = useState(false);
+    const [isCatgoryModalOpen, setIsCategoryModalOpen] = useState(false)
+    const [isCategoryEditRecord, setIscatgoryEditRecord] = useState({})
     const [isEditable, setIsEditable] = useState({});
+
+    const [isPopOver, setIsPopOver] = useState(null);
+
+    const handleOpenCategory = (event) => {
+        setIsPopOver(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setIsPopOver(null);
+    };
+
+    const open = Boolean(isPopOver);
+    const id = open ? 'simple-popover' : undefined;
 
 
     return (
@@ -19,7 +36,7 @@ const EBooks = () => {
                 <Box display={"flex"} sx={{ justifyContent: "space-between" }}>
                     <Box>
                         <Button sx={{ background: colorCodes.SECONDARY_COLOR, color: "#fff", marginRight: "10px" }}>{AppStrings?.all_notification}</Button>
-                        <Button sx={{ background: "#fffffff", border: `1px solid ${colorCodes?.GRAY_SHAD_400}`, color: colorCodes?.GRAY_SHAD_400 }}>{AppStrings?.created_notification}</Button>
+                        <Button aria-describedby={id} onClick={handleOpenCategory} sx={{ background: "#fffffff", border: `1px solid ${colorCodes?.GRAY_SHAD_400}`, color: colorCodes?.GRAY_SHAD_400 }}>{AppStrings?.created_notification}</Button>
                     </Box>
                     <Box>
                         <Button onClick={() => {
@@ -38,6 +55,21 @@ const EBooks = () => {
             <EbookModal isOpenEbookModal={isOpenEbookModal}
                 setIsOpenEbookModal={setIsOpenEbookModal}
                 isEditableRecord={isEditable} />
+
+            <CategoryPopover id={id} open={open} isPopOver={isPopOver} handleClose={handleClose}
+                onEditHandler={() => {
+                    console.log("hello edit handler");
+                    setIscatgoryEditRecord({ id: 2 })
+                    setIsCategoryModalOpen(true);
+                    setIsPopOver(null)
+                }} handleOpenCategoryModal={() => {
+                    setIscatgoryEditRecord({})
+                    setIsCategoryModalOpen(true);
+                    setIsPopOver(null)
+                }} />
+            <CategoryModal isOpenCategoryModal={isCatgoryModalOpen}
+                setIsOpenCategoryModal={setIsCategoryModalOpen}
+                isEditableRecord={isCategoryEditRecord} />
         </Container>
     )
 }

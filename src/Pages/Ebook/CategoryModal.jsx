@@ -109,7 +109,7 @@ const CategoryModal = ({
                 </Typography>
 
                 <Box>
-                    <form onSubmit={formik.handleSubmit}>
+                    <form onSubmit={formik.handleSubmit} style={{ padding: '10px 0' }}>
                         <Box
                             sx={{
                                 display: "flex",
