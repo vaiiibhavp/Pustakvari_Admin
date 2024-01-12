@@ -182,12 +182,12 @@ const CommonTable = ({
     };
 
     return (
-        <Paper style={{ overflowX: "auto" }}>
-            <Table>
+        <Paper style={{ overflowX: 'auto', width: "100%" }}>
+            <Table sx={{ minWidth: 800, overflowX: 'auto', width: "100%" }}>
                 <TableHead>
                     <TableRow sx={{ background: "#e6e6e6" }}>
                         {columns.map((column, index) => (
-                            <TableCell key={index} sx={{ width: "300px" }}>{column.field}</TableCell>
+                            <TableCell key={index} sx={{ width: `${column.width}px` }}>{column.field}</TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
@@ -198,15 +198,16 @@ const CommonTable = ({
                     ).map((row, rowIndex) => (
                         <TableRow key={rowIndex} >
                             {columns.map((column, colIndex) => (
-                                <TableCell key={colIndex} sx={{ width: "300px" }}>
+                                <TableCell key={colIndex} sx={{ width: `${column.width}px` }}>
+                                    {console.log(column?.width, "yes we getting")}
                                     {renderText(row[column.field], column)}
                                 </TableCell>
                             ))}
                         </TableRow>
                     ))}
                     {emptyRows > 0 && (
-                        <TableRow style={{ height: 53 * emptyRows }}>
-                            <TableCell colSpan={columns.length} />
+                        <TableRow style={{ height: 53 * emptyRows }} >
+                            <TableCell colSpan={columns.length} sx={{ width: "500px" }} />
                         </TableRow>
                     )}
                 </TableBody>
