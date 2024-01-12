@@ -4,11 +4,19 @@ import { InstitutesTablesColumn } from '../Utils/constant'
 import CommonTable from '../../Component/Table/Table'
 import { AppStrings, colorCodes } from '../../Helper/Constant'
 import InstituteModal from './InstituteModal'
+import { useNavigate } from 'react-router-dom'
 
 const Institutes = () => {
 
     const [isInstituteModalOpen, setIsInstituteModalOpen] = useState(false)
     const [isEditable, setIsEditable] = useState({})
+    const navigate = useNavigate();
+
+    const data = [
+        { Institute_Name: 'John Doe', Contact: "9834291623", Email: "lakhan@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
+        { Institute_Name: 'lakhan dev', Contact: "9834291623", Email: "lakhan@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
+        // Add more rows as needed
+    ];
     return (
         <Container maxWidth="xl">
             <Box pb={2} mx={1} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -21,7 +29,10 @@ const Institutes = () => {
                     }} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+{AppStrings?.add_intitutes}</Button>
                 </Box>
             </Box>
-            <CommonTable columns={InstitutesTablesColumn} data={[]} rowSelect={() => console.log("row selected")} editRecord={(e) => {
+            <CommonTable onSeeDetail={() => {
+                navigate(`/institute/${1}`)
+            }
+            } columns={InstitutesTablesColumn} data={data || []} rowSelect={() => console.log("row selected")} editRecord={(e) => {
                 setIsInstituteModalOpen(true);
                 setIsEditable({ id: 1, name: "title" })
             }} showSubscription={() => console.log("show subscription")} />

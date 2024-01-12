@@ -13,6 +13,7 @@ import EBooks from "./Pages/Ebook/EBooks";
 import Users from "./Pages/User/Users";
 import Institutes from "./Pages/Institutes/Institutes";
 import Notifications from "./Pages/Notification/Notifications";
+import InstitutesDetail from "./Pages/Institutes/InstitutesDetail";
 
 const App = () => {
   return (
@@ -29,6 +30,8 @@ const App = () => {
           <Route path="/" element={<Dashboard />} />
           <Route path="/User" element={<Users />} />
           <Route path="/Institute" element={<Institutes />} />
+          <Route path="/institute/:id" element={<InstitutesDetail />} />
+
           <Route path="/e-books" element={<EBooks />} />
           <Route path="/Quiz" element={<Quiz />} />
           <Route path="/Subscription" element={<Subscription />} />
