@@ -16,6 +16,7 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import CloseIcon from "@mui/icons-material/Close";
+import { AppStrings } from '../../Helper/Constant';
 
 
 const style = {
@@ -98,7 +99,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                         alignItems: "center",
                     }}
                 >
-                    {isEditable ? "Edit" : "Create New User"}
+                    {isEditable ? "Edit" : AppStrings?.Add_new_user}
 
                     <span onClick={handleClose}>
                         <CloseIcon />
@@ -107,7 +108,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                 <form onSubmit={formik.handleSubmit} style={{ padding: "10px 0" }}>
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>Full Name:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.FullName}:</Typography>
                         <TextField
                             fullWidth
                             id="fullName"
@@ -115,7 +116,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                             name="fullName"
                             // label="Full Name"
                             size='small'
-                            placeholder='Full Name'
+                            placeholder={AppStrings?.FullName}
                             variant="outlined"
                             margin="normal"
                             value={formik.values.fullName}
@@ -128,7 +129,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>Email:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.email}:</Typography>
 
                         <TextField
                             fullWidth
@@ -137,6 +138,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                             // label="Email"
                             sx={{ marginTop: "0px" }}
                             size='small'
+                            placeholder={AppStrings?.email}
                             variant="outlined"
                             margin="normal"
                             type="email"
@@ -150,7 +152,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>Contact:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.contact_number}:</Typography>
 
                         <TextField
                             fullWidth
@@ -159,6 +161,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                             size='small'
                             sx={{ marginTop: "0px" }}
                             // label="Contact Number"
+                            placeholder={AppStrings?.contact_number}
                             variant="outlined"
                             margin="normal"
                             value={formik.values.contactNumber}
@@ -171,7 +174,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>Password:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.password}:</Typography>
 
                         <FormControl fullWidth variant="outlined" margin="normal" sx={{ marginTop: "0px" }}>
                             <OutlinedInput
@@ -181,6 +184,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                                 value={formik.values.password}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                placeholder={AppStrings?.password}
                                 error={formik.touched.password && Boolean(formik.errors.password)}
                                 endAdornment={
                                     <InputAdornment position="end">
@@ -203,7 +207,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>Confirm Password:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.confirmPassword}:</Typography>
 
                         <FormControl fullWidth variant="outlined" margin="normal" sx={{ marginTop: "0px" }}>
 
@@ -215,6 +219,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                                 value={formik.values.confirmPassword}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                placeholder={AppStrings?.confirmPassword}
                                 error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                                 endAdornment={
                                     <InputAdornment position="end">
