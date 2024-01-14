@@ -1,5 +1,11 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import MainContent from "./Layout/MainContent";
 import AuthLayout from "./Layout/AuthLayout";
 import LoginForm from "./Pages/AuthPages/Login";
@@ -14,6 +20,7 @@ import Users from "./Pages/User/Users";
 import Institutes from "./Pages/Institutes/Institutes";
 import Notifications from "./Pages/Notification/Notifications";
 import InstitutesDetail from "./Pages/Institutes/InstitutesDetail";
+import CreateQuiz from "./Pages/Quiz/CreateQuiz";
 
 const App = () => {
   return (
@@ -27,13 +34,14 @@ const App = () => {
           {/* <Route path="/modal" element={<DeleteModal />} /> */}
         </Route>
         <Route element={<MainContent />}>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Navigate to="/User" />} />
           <Route path="/User" element={<Users />} />
           <Route path="/Institute" element={<Institutes />} />
           <Route path="/institute/:id" element={<InstitutesDetail />} />
-
+          CreateQuiz
           <Route path="/e-books" element={<EBooks />} />
           <Route path="/Quiz" element={<Quiz />} />
+          <Route path="/createquize" element={<CreateQuiz />} />
           <Route path="/Subscription" element={<Subscription />} />
           <Route path="/notifications" element={<Notifications />} />
         </Route>

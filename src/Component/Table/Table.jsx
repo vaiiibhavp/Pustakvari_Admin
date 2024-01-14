@@ -183,11 +183,11 @@ const CommonTable = ({
 
     return (
         <Paper style={{ overflowX: 'auto', width: "100%" }}>
-            <Table sx={{ minWidth: 800, overflowX: 'auto', width: "100%" }}>
+            <Table sx={{ overflowX: 'auto', width: "100%" }}>
                 <TableHead>
                     <TableRow sx={{ background: "#e6e6e6" }}>
                         {columns.map((column, index) => (
-                            <TableCell key={index} sx={{ width: `${column.width}px` }}>{column.field}</TableCell>
+                            <TableCell key={index} sx={{ minWidth: `${column.width}px` }}>{column.field}</TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
@@ -198,7 +198,7 @@ const CommonTable = ({
                     ).map((row, rowIndex) => (
                         <TableRow key={rowIndex} >
                             {columns.map((column, colIndex) => (
-                                <TableCell key={colIndex} sx={{ width: `${column.width}px` }}>
+                                <TableCell key={colIndex} sx={{ minWidth: `${column.width}px` }}>
                                     {console.log(column?.width, "yes we getting")}
                                     {renderText(row[column.field], column)}
                                 </TableCell>
