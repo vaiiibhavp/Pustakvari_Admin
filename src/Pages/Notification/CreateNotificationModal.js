@@ -8,6 +8,7 @@ import {
   Select,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -29,6 +30,7 @@ const style = {
 };
 
 const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
+  const theme = useTheme();
   // Define Yup validation schema
   const validationSchema = Yup.object().shape({
     notification_title: Yup.string().required("Notification title is required"),
@@ -154,17 +156,28 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
                     <MenuItem value="user2">User 2</MenuItem>
                     {/* Add more options as needed */}
                   </Field>
-                  <ErrorMessage name="user_type" component="div" />
+                  <ErrorMessage
+                    name="user_type"
+                    style={{
+                      color: theme?.palette.error,
+                    }}
+                    component="div"
+                  />
                 </FormControl>
 
                 <Box mt={2} sx={{ width: "100%" }} textAlign={"center"}>
                   <Button
-                    sx={{ background: colorCodes?.PRIMARY_COLOR }}
+                    // borderRadius={8}
+                    sx={{
+                      background: colorCodes?.PRIMARY_COLOR,
+                      borderRadius: "16px",
+                      padding: "5px 15px",
+                    }}
                     type="submit"
                     variant="contained"
                     color="primary"
                   >
-                    {true ? "Update" : "Submit"}
+                    Submit
                   </Button>
                 </Box>
               </Box>

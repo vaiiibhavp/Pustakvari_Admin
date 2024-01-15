@@ -14,7 +14,7 @@ export const usersSuperAdminTablesColumn = [
   },
   {
     label: "User Name",
-    field: "User Name",
+    field: "User_Name",
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -109,7 +109,7 @@ export const usersSuperAdminTablesColumn = [
     image: false,
     switchbtn: false,
     statusbtn: false,
-    subScrIcon: true,
+    subScrIcon: false,
     width: 150,
   },
 ];
@@ -272,7 +272,73 @@ export const InstitutesTablesColumn = [
     image: false,
     switchbtn: false,
     statusbtn: false,
-    subScrIcon: true,
+    subScrIcon: false,
+  },
+];
+
+export const InstitutesTablesUsers = [
+  {
+    label: "S.No",
+    field: "S",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    image: false,
+    switchbtn: false,
+    statusbtn: false,
+  },
+  {
+    label: "User Name",
+    field: "User_Name",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    onseeSecondPageInstitiue: true,
+    image: false,
+    switchbtn: false,
+    statusbtn: false,
+  },
+  {
+    label: "Contact",
+    field: "Contact",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    image: false,
+    switchbtn: false,
+    statusbtn: false,
+  },
+
+  {
+    label: "Email",
+    field: "Email",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    image: false,
+    switchbtn: false,
+    statusbtn: false,
+  },
+  {
+    label: "Account created on",
+    field: "Account created on",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    image: false,
+    switchbtn: false,
+    statusbtn: false,
+  },
+
+  {
+    label: "Subscription",
+    field: "Subscription",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    image: false,
+    switchbtn: false,
+    statusbtn: true,
   },
 ];
 

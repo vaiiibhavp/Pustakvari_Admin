@@ -1,7 +1,7 @@
 import { Box, Button, Card, Container, Grid, Typography, useTheme, IconButton } from '@mui/material';
 import React from 'react'
 import CommonTable from '../../Component/Table/Table';
-import { InstitutesTablesColumn, usersSuperAdminTablesColumn } from '../Utils/constant';
+import { InstitutesTablesColumn, InstitutesTablesUsers, usersSuperAdminTablesColumn } from '../Utils/constant';
 import { useNavigate } from "react-router-dom";
 import { AppStrings, colorCodes } from '../../Helper/Constant';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
@@ -12,8 +12,8 @@ const InstitutesDetail = () => {
     const navigate = useNavigate();
     const theme = useTheme()
     const data = [
-        { User_Name: 'John Doe', Age: 25, Institute_user: false, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false },
-        { Name: 'lakhan dev', Age: 25, Institute_user: true, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false },
+        { S: 1, User_Name: 'John Doe', Age: 25, Institute_user: false, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false, subscribe: true },
+        { S: 2, User_Name: 'lakhan dev', Age: 25, Institute_user: true, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false, subscribe: false },
         // Add more rows as needed
     ];
     return (
@@ -83,7 +83,7 @@ const InstitutesDetail = () => {
                     <CommonTable onSeeDetail={() => {
                         console.log("hello");
                     }
-                    } columns={usersSuperAdminTablesColumn} data={data || []} rowSelect={() => console.log("row selected")} editRecord={(e) => {
+                    } columns={InstitutesTablesUsers} data={data || []} rowSelect={() => console.log("row selected")} editRecord={(e) => {
 
                     }} showSubscription={() => console.log("show subscription")} />
                 </Grid>

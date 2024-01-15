@@ -27,12 +27,13 @@ const LoginForm = () => {
             password: '',
         },
         validationSchema: Yup.object({
-            email: Yup.string().email('Invalid email address').required('Required'),
-            password: Yup.string().required('Required'),
+            // email: Yup.string().email('Invalid email address').required('Required'),
+            // password: Yup.string().required('Required'),
         }),
         onSubmit: (values) => {
             // You can handle form submission here
             console.log('Form values:', values);
+            navigate("/Dashboard")
         },
     });
 

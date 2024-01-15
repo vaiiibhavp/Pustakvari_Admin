@@ -96,7 +96,7 @@ const CommonTable = ({
                     </Box>
                 );
             } else if (whichCoulumn?.editIcon && whichCoulumn?.subScrIcon) {
-                console.log(whichCoulumn?.subScrIcon);
+
                 return (
                     <Box>
 
@@ -134,8 +134,8 @@ const CommonTable = ({
                 }} ><DeleteOutlineOutlinedIcon size="medium" /></Button>;
             } else if (whichCoulumn?.editIcon) {
                 return <Button sx={{
-                    background: theme.palette?.secondary?.lighter,
-                    color: theme.palette?.secondary.main,
+                    background: theme.palette?.primary?.lighter,
+                    color: theme.palette?.primary.main,
                     '&.active': {
                         color: 'text.primary',
                         bgcolor: 'action.selected',

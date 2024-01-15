@@ -33,11 +33,28 @@ function NavItem({ item }) {
           color: colorCodes.PRIMARY_COLOR,
           bgcolor: "action.selected",
           fontWeight: "fontWeightBold",
+          "& $icon": {
+            fill: colorCodes.PRIMARY_COLOR, // Set the fill color for the icon
+          },
         },
       }}
     >
       <StyledNavItemIcon>
-        {icon && <img src={icon} alt="icons" />}
+        {icon && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            className="icon"
+            style={{
+              fill: "red", // Set the default fill color
+            }}
+          >
+            {/* Your SVG path here */}
+            {icon}
+          </svg>
+        )}
       </StyledNavItemIcon>
 
       <ListItemText disableTypography primary={title} />
