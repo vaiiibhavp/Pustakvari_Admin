@@ -6,6 +6,7 @@ import { AppStrings, colorCodes } from '../../Helper/Constant'
 import EbookModal from './EbookModal'
 import CategoryPopover from './CategoryPopover'
 import CategoryModal from './CategoryModal'
+import Searchbar from '../../Component/Searchbar'
 
 const EBooks = () => {
 
@@ -35,10 +36,11 @@ const EBooks = () => {
                 <Typography variant='h5' pb={1}>{AppStrings?.e_books}</Typography>
                 <Box display={"flex"} sx={{ justifyContent: "space-between" }}>
                     <Box>
-                        <Button sx={{ background: colorCodes.SECONDARY_COLOR, color: "#fff", marginRight: "10px" }}>{AppStrings?.all_notification}</Button>
-                        <Button aria-describedby={id} onClick={handleOpenCategory} sx={{ background: "#fffffff", border: `1px solid ${colorCodes?.GRAY_SHAD_400}`, color: colorCodes?.GRAY_SHAD_400 }}>{AppStrings?.created_notification}</Button>
+                        <Button sx={{ background: colorCodes.SECONDARY_COLOR, color: "#fff", marginRight: "10px" }}>{AppStrings?.all_e_books}</Button>
+                        <Button aria-describedby={id} onClick={handleOpenCategory} sx={{ background: "#fffffff", border: `1px solid ${colorCodes?.GRAY_SHAD_400}`, color: colorCodes?.GRAY_SHAD_400 }}>{AppStrings?.all_categories}</Button>
                     </Box>
-                    <Box>
+                    <Box sx={{ display: "flex", gap: 1 }}>
+                        <Searchbar onSearch={(e) => console.log("hello", e)} />
                         <Button onClick={() => {
                             setIsEditable({});
                             setIsOpenEbookModal(true);

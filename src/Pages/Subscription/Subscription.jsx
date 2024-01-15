@@ -4,6 +4,7 @@ import CommonTable from '../../Component/Table/Table'
 import { SubscriptionTablesColumn, usersSuperAdminTablesColumn } from '../Utils/constant';
 import { AppStrings, colorCodes } from '../../Helper/Constant';
 import SubscriptionModal from './SubscriptionModal';
+import Searchbar from '../../Component/Searchbar';
 
 const Subscription = () => {
     const [isOpenSunscriptionPlanModal, setIsOpenSubscriptionPlanModal] = useState(false)
@@ -18,7 +19,8 @@ const Subscription = () => {
             <Box pb={2} mx={1} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
                 <Typography variant='h5'>{AppStrings?.subscription}</Typography>
-                <Box>
+                <Box sx={{ display: "flex", gap: 1 }}>
+                    <Searchbar onSearch={(e) => console.log("hello", e)} />
                     <Button onClick={() => {
                         setIsEditRecord({})
                         setIsOpenSubscriptionPlanModal(true)

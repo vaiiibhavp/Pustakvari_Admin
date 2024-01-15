@@ -2,8 +2,8 @@
 // super Admin
 export const usersSuperAdminTablesColumn = [
   {
-    label: "SNo",
-    field: "S.No",
+    label: "S No",
+    field: "S",
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -13,7 +13,7 @@ export const usersSuperAdminTablesColumn = [
     width: 100,
   },
   {
-    label: "User_Name",
+    label: "User Name",
     field: "User Name",
     icon: false,
     deleteIcon: false,
@@ -35,7 +35,7 @@ export const usersSuperAdminTablesColumn = [
     width: 200,
   },
   {
-    label: "Institute_user",
+    label: "Institute user",
     field: "Institute user",
     icon: false,
     deleteIcon: false,
@@ -57,7 +57,7 @@ export const usersSuperAdminTablesColumn = [
     width: 300,
   },
   {
-    label: "Account_created_on",
+    label: "Account created on",
     field: "Account created on",
     icon: false,
     deleteIcon: false,
@@ -68,7 +68,7 @@ export const usersSuperAdminTablesColumn = [
     width: 200,
   },
   {
-    label: "Last_Login",
+    label: "Last Login",
     field: "Last Login",
     icon: false,
     deleteIcon: false,
@@ -101,7 +101,7 @@ export const usersSuperAdminTablesColumn = [
     width: 200,
   },
   {
-    label: "Take_Actions",
+    label: "Take Actions",
     field: "Take Actions",
     icon: true,
     deleteIcon: false,
@@ -126,7 +126,7 @@ export const ebooksTablesColumn = [
     statusbtn: false,
   },
   {
-    label: "E_book_Name",
+    label: "E Book Name",
     field: "E_book_Name",
     icon: false,
     deleteIcon: false,
@@ -167,7 +167,7 @@ export const ebooksTablesColumn = [
   },
 
   {
-    label: "Take_Actions",
+    label: "Take Actions",
     field: "Take Actions",
     icon: true,
     deleteIcon: true,
@@ -181,8 +181,8 @@ export const ebooksTablesColumn = [
 
 export const InstitutesTablesColumn = [
   {
-    label: "SNo",
-    field: "S.No",
+    label: "S.No",
+    field: "S",
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -191,12 +191,12 @@ export const InstitutesTablesColumn = [
     statusbtn: false,
   },
   {
-    label: "Institute_Name",
-    field: "Institute Name",
+    label: "Institute Name",
+    field: "Institute_Name",
     icon: false,
     deleteIcon: false,
     editIcon: false,
-    image: true,
+    image: false,
     switchbtn: false,
     statusbtn: false,
   },
@@ -354,7 +354,7 @@ export const QuizTablesColumn = [
     statusbtn: false,
   },
   {
-    label: "Quiz_Name",
+    label: "Quiz Name",
     field: "Quiz_Name",
     icon: false,
     deleteIcon: false,
@@ -374,7 +374,7 @@ export const QuizTablesColumn = [
     statusbtn: false,
   },
   {
-    label: "Solved_by_No_of_users",
+    label: "Solved by No of users",
     field: "Solved_by_No_of_users",
     icon: false,
     deleteIcon: false,
@@ -385,7 +385,7 @@ export const QuizTablesColumn = [
   },
 
   {
-    label: "Take_Actions",
+    label: "Take Actions",
     field: "Take Actions",
     icon: true,
     deleteIcon: true,

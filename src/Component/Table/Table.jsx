@@ -165,7 +165,7 @@ const CommonTable = ({
 
         if (whichCoulumn.image) {
             return (
-                <Box sx={{ display: "flex" }} onClick={onSeeDetail} sx={{ cursor: "pointer" }}>
+                <Box sx={{ display: "flex", cursor: "pointer" }} onClick={onSeeDetail} >
                     <img
                         src="https://media.licdn.com/dms/image/C4D03AQHH159tOQPesQ/profile-displayphoto-shrink_200_200/0/1661018767590?e=2147483647&v=beta&t=oEoaEhpSN2dsjwcAi5kHgmJRiXOIs5x1p-wIUsrVZls"
                         alt=""
@@ -185,12 +185,12 @@ const CommonTable = ({
     };
 
     return (
-        <Paper style={{ overflowX: 'auto', width: "100%" }}>
-            <Table sx={{ overflowX: 'auto', width: "100%" }}>
+        <Paper style={{ overflowX: 'auto' }}>
+            <Table>
                 <TableHead>
                     <TableRow sx={{ background: "#e6e6e6" }}>
                         {columns.map((column, index) => (
-                            <TableCell key={index} sx={{ minWidth: `${column.width}px` }}>{column.field}</TableCell>
+                            <TableCell key={index} sx={{ minWidth: `${column.width}px` }}>{column.label}</TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
@@ -224,7 +224,7 @@ const CommonTable = ({
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
-        </Paper>
+        </Paper >
     );
 };
 

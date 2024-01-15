@@ -18,10 +18,9 @@ const MainContent = () => {
     return (
         <Box sx={{ display: "flex" }}>
             <Sidebar />
-            <Box className="main_content" sx={{ width: "100%" }}>
+            <Box className="main_content" sx={{ width: "100%", position: "relative", overflow: "hidden" }}>
                 <Header />
                 <Box sx={{ width: "100%", paddingTop: "110px", background: "#F9FAFB" }}>
-
                     <Outlet />
                 </Box>
             </Box>

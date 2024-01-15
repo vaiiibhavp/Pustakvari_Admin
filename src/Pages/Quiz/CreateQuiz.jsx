@@ -1,11 +1,12 @@
 
 
 import React, { useState } from 'react'
-import { useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { AppStrings, colorCodes } from '../../Helper/Constant'
 import { Box, Button, Card, MenuItem, Container, FormControl, FormControlLabel, Grid, InputLabel, Radio, RadioGroup, Select, TextField, Typography, IconButton, Divider, useTheme } from '@mui/material'
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 const CreateQuiz = () => {
@@ -55,7 +56,7 @@ const CreateQuiz = () => {
     };
     return (
         <Container maxWidth="xl" sx={{ position: "relative" }}>
-            <Button shadow={2} sx={{ background: "#fff", color: "black", borderRadius: "15px", padding: "5px 20px 5px 2px" }} onClick={()=>navigate(-1)}> <IconButton><KeyboardBackspaceIcon size="small" /></IconButton>Back</Button>
+            <Button shadow={2} sx={{ background: "#fff", color: "black", borderRadius: "15px", padding: "5px 20px 5px 2px" }} onClick={() => navigate(-1)}> <IconButton><KeyboardBackspaceIcon size="small" /></IconButton>Back</Button>
             <Box pb={2} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
                 <Typography variant='h5'>{'Create new quiz'}</Typography>
@@ -205,10 +206,10 @@ const CreateQuiz = () => {
                                                                 {option.value}
                                                                 <Box sx={{ position: "absolute", right: 0 }}>
 
-                                                                    <IconButton onClick={() => handleEditOption(index)}>
+                                                                    <IconButton type="button" onClick={() => handleEditOption(index)}>
                                                                         <BorderColorOutlinedIcon fontSize="small" />
                                                                     </IconButton>
-                                                                    <IconButton onClick={() => handleDeleteOption(index)}>
+                                                                    <IconButton type="button" onClick={() => handleDeleteOption(index)}>
                                                                         <DeleteOutlineOutlinedIcon fontSize="small" />
                                                                     </IconButton>
                                                                 </Box>
@@ -227,7 +228,7 @@ const CreateQuiz = () => {
                                             </div>
                                         ))}
                                     </RadioGroup>
-                                    <Button variant="outlined" onClick={handleAddOption} style={{ marginTop: '10px' }}>
+                                    <Button type="button" variant="outlined" onClick={handleAddOption} style={{ marginTop: '10px' }}>
                                         + Add Option
                                     </Button>
                                 </div>

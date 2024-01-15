@@ -4,6 +4,7 @@ import { QuizTablesColumn } from '../Utils/constant'
 import CommonTable from '../../Component/Table/Table'
 import { AppStrings, colorCodes } from '../../Helper/Constant'
 import { useNavigate } from 'react-router-dom'
+import Searchbar from '../../Component/Searchbar'
 
 
 const Quiz = () => {
@@ -22,7 +23,8 @@ const Quiz = () => {
             <Box pb={2} mx={1} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
                 <Typography variant='h5'>{AppStrings?.Quiz}</Typography>
-                <Box>
+                <Box sx={{ display: "flex", gap: 1 }}>
+                    <Searchbar onSearch={(e) => console.log("hello", e)} />
                     <Button onClick={() => navigate("/createquize")} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+{AppStrings?.add_quize}</Button>
                 </Box>
             </Box>

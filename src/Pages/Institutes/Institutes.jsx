@@ -5,6 +5,7 @@ import CommonTable from '../../Component/Table/Table'
 import { AppStrings, colorCodes } from '../../Helper/Constant'
 import InstituteModal from './InstituteModal'
 import { useNavigate } from 'react-router-dom'
+import Searchbar from '../../Component/Searchbar'
 
 const Institutes = () => {
 
@@ -13,8 +14,8 @@ const Institutes = () => {
     const navigate = useNavigate();
 
     const data = [
-        { Institute_Name: 'John Doe', Contact: "9834291623", Email: "lakhan@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
-        { Institute_Name: 'lakhan dev', Contact: "9834291623", Email: "lakhan@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
+        { S: 1, Institute_Name: 'Savitribai phule instituts', Contact: "9834291623", Email: "Savitribai@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
+        { S: 2, Institute_Name: 'Moze Instituts', Contact: "9834291623", Email: "gmoze@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
         // Add more rows as needed
     ];
     return (
@@ -22,7 +23,8 @@ const Institutes = () => {
             <Box pb={2} mx={1} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
                 <Typography variant='h5'>{AppStrings?.Institutes}</Typography>
-                <Box>
+                <Box sx={{ display: "flex", gap: 1 }}>
+                    <Searchbar onSearch={(e) => console.log("hello", e)} />
                     <Button onClick={() => {
                         setIsEditable({});
                         setIsInstituteModalOpen(true)
