@@ -12,19 +12,35 @@ export default function AppWebsiteVisits({
   subheader,
   chartLabels,
   chartData,
+  garphLable,
   subtext,
   Colors,
   widthlarge,
+  legendPosition,
   ...other
 }) {
-  console.log(chartData, "chartData");
   const theme = useTheme();
 
   const chartOptions = useChart({
-    plotOptions: { bar: { columnWidth: "16%" } },
+    plotOptions: { bar: { columnWidth: title !== "Users" ? "10%" : "42%" } },
     // fill: { type: chartData.map((i) => i?.fill) },
+    title: { title },
     chart: { stacked: true },
     labels: chartLabels,
+    manualLable: garphLable,
+    legend: {
+      show: true,
+      position: legendPosition ? "top" : "bottom",
+      horizontalAlign: legendPosition ? "right" : "center",
+      markers: {
+        radius: 12,
+      },
+      fontWeight: 500,
+      itemMargin: { horizontal: 12 },
+      labels: {
+        colors: theme.palette.text.primary,
+      },
+    },
     xaxis: { type: type !== "pie" ? "datetime" : "" },
     tooltip: {
       shared: true,
@@ -50,7 +66,7 @@ export default function AppWebsiteVisits({
         {subtext}
       </Typography>
 
-      <Box sx={{ p: 2, pb: 1 }} dir="ltr">
+      <Box sx={{ p: 2, pb: 2 }} dir="ltr">
         <ReactApexChart
           type={type}
           series={chartData}
