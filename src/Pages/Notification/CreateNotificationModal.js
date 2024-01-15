@@ -25,7 +25,7 @@ const style = {
   bgcolor: "background.paper",
   // border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  p: 2,
 };
 
 const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
@@ -70,7 +70,7 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
             alignItems: "center",
           }}
         >
-          Create Notification
+          {AppStrings?.create_notification}
           <span onClick={handleClose}>
             <CloseIcon />
           </span>
@@ -83,11 +83,13 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
           >
             <Form>
               <Box mt={2}>
+                <Typography>{AppStrings?.notification_title} </Typography>
                 <Field
                   name="notification_title"
                   as={TextField}
                   //   label="Notification Title"
-                  placeholder={AppStrings?.notification_type}
+                  style={{ marginTop: "0px" }}
+                  placeholder={AppStrings?.notification_title}
                   fullWidth
                   size="small"
                   variant="outlined"
@@ -95,10 +97,13 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
                 />
                 <ErrorMessage name="notification_title" component="div" />
 
+                <Typography>{AppStrings?.message}</Typography>
                 <Field
                   name="message"
                   as={TextField}
                   //   label="Message"
+                  style={{ marginTop: "0px" }}
+                  placeholder={AppStrings?.message}
                   fullWidth
                   size="small"
                   multiline
@@ -107,15 +112,19 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
                   margin="normal"
                 />
                 <ErrorMessage name="message" component="div" />
-
-                <FormControl fullWidth variant="outlined" margin="normal">
-                  {/* <InputLabel id="notification-type-label">
-                    Notification Type
-                  </InputLabel> */}
+                <Typography>{AppStrings?.notification_Type}</Typography>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+                  sx={{ marginTop: "0px" }}
+                >
                   <Field
                     name="notification_type"
                     as={Select}
                     size="small"
+                    style={{ marginTop: "0px" }}
+                    placeholder={AppStrings?.notification_Type}
                     labelId="notification-type-label"
                     // label="Notification Type"
                   >
@@ -125,14 +134,20 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
                   </Field>
                   <ErrorMessage name="notification_type" component="div" />
                 </FormControl>
-
-                <FormControl fullWidth variant="outlined" margin="normal">
+                <Typography>{AppStrings?.user_type}</Typography>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+                  sx={{ marginTop: "0px" }}
+                >
                   {/* <InputLabel id="user-type-label">User Type</InputLabel> */}
                   <Field
                     name="user_type"
                     as={Select}
                     size="small"
                     labelId="user-type-label"
+                    placeholder={AppStrings?.user_type}
                     // label="User Type"
                   >
                     <MenuItem value="user1">User 1</MenuItem>
@@ -149,7 +164,7 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
                     variant="contained"
                     color="primary"
                   >
-                    Submit
+                    {true ? "Update" : "Submit"}
                   </Button>
                 </Box>
               </Box>

@@ -3,6 +3,7 @@ import React from 'react'
 import { AppStrings, colorCodes } from '../../Helper/Constant'
 import PaginationComponent from '../../Component/Pagination/Paginations'
 import CreateNotificationModal from './CreateNotificationModal'
+import Searchbar from '../../Component/Searchbar'
 
 const Notifications = () => {
     const [page, setPage] = React.useState(2);
@@ -17,7 +18,10 @@ const Notifications = () => {
                     <Button sx={{ background: colorCodes.SECONDARY_COLOR, color: "#fff", marginRight: "10px" }}>{AppStrings?.all_notification}</Button>
                     <Button sx={{ background: "#fffffff", border: `1px solid ${colorCodes?.GRAY_SHAD_400}`, color: colorCodes?.GRAY_SHAD_400 }}>{AppStrings?.created_notification}</Button>
                 </Box>
-                <Button sx={{ background: colorCodes.PRIMARY_COLOR, color: "#fff", me: "10px" }} onClick={() => { setIsOpenNotifiactionModal(true) }}> + {AppStrings?.create_notification}</Button>
+                <Box sx={{ display: "flex", gap: 1 }}>
+                    <Searchbar onSearch={(e) => console.log("hello", e)} />
+                    <Button sx={{ background: colorCodes.PRIMARY_COLOR, color: "#fff", me: "10px" }} onClick={() => { setIsOpenNotifiactionModal(true) }}> + {AppStrings?.create_notification}</Button>
+                </Box>
             </Box>
 
             <Box pb={3} pt={2}>

@@ -18,20 +18,20 @@ const GREY = {
 };
 
 const PRIMARY = {
-  lighter: "#D1E9FC",
-  light: "#76B0F1",
-  main: "#2065D1",
-  dark: "#103996",
-  darker: "#061B64",
+  lighter: "#ffd3b3",
+  light: "#fe974d",
+  main: "#fe6b01",
+  dark: "#cb5601",
+  darker: "#331500",
   contrastText: "#fff",
 };
 
 const SECONDARY = {
-  lighter: "#D6E4FF",
-  light: "#84A9FF",
-  main: "#3366FF",
-  dark: "#1939B7",
-  darker: "#091A7A",
+  lighter: "#c8b6e1",
+  light: "#7f56b9",
+  main: "#480d9b",
+  dark: "#3a0a7c",
+  darker: "#16042e",
   contrastText: "#fff",
 };
 
@@ -95,7 +95,7 @@ const palette = {
   action: {
     active: GREY[600],
     hover: alpha(GREY[500], 0.08),
-    selected: alpha(colorCodes.PRIMARY_COLOR, 0.16),
+    selected: alpha(GREY[500], 0.16),
     disabled: alpha(GREY[500], 0.8),
     disabledBackground: alpha(GREY[500], 0.24),
     focus: alpha(GREY[500], 0.24),

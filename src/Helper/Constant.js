@@ -35,12 +35,14 @@ export const AppStrings = {
   email: "Email",
   email_Id: "Email Id",
   password: "Password",
-  FullName: "Name",
+  FullName: "Full Name",
   FirstName: "FirstName",
+  confirmPassword: "Confirm Password",
   LastName: "LastName",
   address: "Address",
   contact_number: "Contact Number",
   reset_password: "Reset Password",
+  message: "Message",
 
   //  Input Placholders
   email_placeholder: "Enter your email address",
@@ -71,6 +73,9 @@ export const AppStrings = {
   back: "Back",
   active: "Active",
   notification: "Notification",
+  notification_title: "Notification Title",
+  notification_Type: "Notification Type",
+  user_type: "User Type",
 
   // Dahbaord
   monthly_subscription: "Monthly Subscription",
@@ -83,8 +88,8 @@ export const AppStrings = {
   overviewLable_1: "Total Active Users",
   overviewLable_2: "Total Inactive Users",
   subscriptionLabel_1: "Monthly",
-  subscriptionLabel_2: "Monthly",
-  subscriptionLabel_3: "Monthly",
+  subscriptionLabel_2: "Quaterly",
+  subscriptionLabel_3: "Yearly",
   topCategoriesOverviewLabel_1: "Investment",
   topCategoriesOverviewLabel_2: "Comedy",
   topCategoriesOverviewLabel_3: "Travel",
@@ -111,6 +116,7 @@ export const AppStrings = {
 
   // institutes page
   add_institute: "Add Institute",
+  Institutes: "Institutes",
   add_new_institute: "Add new institute",
   Account_created_on: "Account Created on",
   institute_users: "Institute users",

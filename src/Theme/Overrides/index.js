@@ -1,8 +1,9 @@
 //
 
 import Card from "./Card";
+import Button from "./Button";
 // import Paper from './Paper';
-// import Input from './Input';
+import Input from "./Input";
 // import Table from './Table';
 // import Tooltip from './Tooltip';
 // import Backdrop from './Backdrop';
@@ -13,11 +14,11 @@ import Card from "./Card";
 
 export default function ComponentsOverrides(theme) {
   return Object.assign(
-    Card(theme)
+    Button(theme),
+    Card(theme),
     // Table(theme),
-    // Input(theme),
+    Input(theme)
     // Paper(theme),
-    // Button(theme)
     // Tooltip(theme),
     // Backdrop(theme),
     // Typography(theme),

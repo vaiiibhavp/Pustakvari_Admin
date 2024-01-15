@@ -7,6 +7,7 @@ export default function Button(theme) {
     MuiButton: {
       styleOverrides: {
         root: {
+          minWidth: "40px !important",
           "&:hover": {
             boxShadow: "none",
           },

@@ -1,6 +1,6 @@
 import ReactApexChart from "react-apexcharts";
 // @mui
-import { Card, CardHeader, Box } from "@mui/material";
+import { Card, CardHeader, Box, Typography, useTheme } from "@mui/material";
 // components
 import { useChart } from "../Chart/index";
 
@@ -12,11 +12,13 @@ export default function AppWebsiteVisits({
   subheader,
   chartLabels,
   chartData,
+  subtext,
   Colors,
   widthlarge,
   ...other
 }) {
   console.log(chartData, "chartData");
+  const theme = useTheme();
 
   const chartOptions = useChart({
     plotOptions: { bar: { columnWidth: "16%" } },
@@ -42,6 +44,11 @@ export default function AppWebsiteVisits({
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
+      <Typography
+        sx={{ margin: "0 0 0 26px", color: theme?.palette.grey[400] }}
+      >
+        {subtext}
+      </Typography>
 
       <Box sx={{ p: 2, pb: 1 }} dir="ltr">
         <ReactApexChart
