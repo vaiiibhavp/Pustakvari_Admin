@@ -163,7 +163,7 @@ const CommonTable = ({
             return <Switch {...label} defaultChecked color="secondary" />;
         }
 
-        if (whichCoulumn.image) {
+        if (whichCoulumn?.onseeSecondPageInstitiue) {
             return (
                 <Box sx={{ display: "flex", cursor: "pointer" }} onClick={onSeeDetail} >
                     <img
@@ -176,7 +176,25 @@ const CommonTable = ({
                             marginRight: "5px",
                         }}
                     />
-                    <Typography>Lakhan Nemane</Typography>
+                    <Typography>{item}</Typography>
+                </Box>
+            );
+        }
+
+        if (whichCoulumn.image) {
+            return (
+                <Box sx={{ display: "flex", cursor: "pointer" }}  >
+                    <img
+                        src="https://media.licdn.com/dms/image/C4D03AQHH159tOQPesQ/profile-displayphoto-shrink_200_200/0/1661018767590?e=2147483647&v=beta&t=oEoaEhpSN2dsjwcAi5kHgmJRiXOIs5x1p-wIUsrVZls"
+                        alt=""
+                        style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                            marginRight: "5px",
+                        }}
+                    />
+                    <Typography>{item}</Typography>
                 </Box>
             );
         }

@@ -62,7 +62,7 @@ export default function AccountPopover() {
   return (
     <>
       <IconButton
-        onClick={handleOpen}
+        // onClick={handleOpen}
         sx={{
           p: 0,
           ...(open && {

@@ -196,6 +196,7 @@ export const InstitutesTablesColumn = [
     icon: false,
     deleteIcon: false,
     editIcon: false,
+    onseeSecondPageInstitiue: true,
     image: false,
     switchbtn: false,
     statusbtn: false,
@@ -244,13 +245,13 @@ export const InstitutesTablesColumn = [
   },
   {
     label: "Total users",
-    field: "Total users",
+    field: "Total_users",
     icon: false,
     deleteIcon: false,
     editIcon: false,
     image: false,
     switchbtn: false,
-    statusbtn: true,
+    statusbtn: false,
   },
   {
     label: "Deactivate",
@@ -279,7 +280,7 @@ export const InstitutesTablesColumn = [
 export const SubscriptionTablesColumn = [
   {
     label: "SNo",
-    field: "S.No",
+    field: "S",
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -345,7 +346,7 @@ export const SubscriptionTablesColumn = [
 export const QuizTablesColumn = [
   {
     label: "SNo",
-    field: "S.No",
+    field: "S",
     icon: false,
     deleteIcon: false,
     editIcon: false,
