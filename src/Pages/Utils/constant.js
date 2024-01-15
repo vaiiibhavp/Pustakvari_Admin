@@ -10,7 +10,7 @@ export const usersSuperAdminTablesColumn = [
     image: false,
     switchbtn: false,
     statusbtn: false,
-    width: 200,
+    width: 100,
   },
   {
     label: "User_Name",
@@ -21,7 +21,7 @@ export const usersSuperAdminTablesColumn = [
     image: true,
     switchbtn: false,
     statusbtn: false,
-    width: 900,
+    width: 300,
   },
   {
     label: "Contact",
@@ -32,7 +32,7 @@ export const usersSuperAdminTablesColumn = [
     image: false,
     switchbtn: false,
     statusbtn: false,
-    width: 400,
+    width: 200,
   },
   {
     label: "Institute_user",
@@ -43,7 +43,7 @@ export const usersSuperAdminTablesColumn = [
     image: false,
     switchbtn: false,
     statusbtn: false,
-    width: 400,
+    width: 300,
   },
   {
     label: "Email",
@@ -54,7 +54,7 @@ export const usersSuperAdminTablesColumn = [
     image: false,
     switchbtn: false,
     statusbtn: false,
-    width: 400,
+    width: 300,
   },
   {
     label: "Account_created_on",
@@ -65,7 +65,7 @@ export const usersSuperAdminTablesColumn = [
     image: false,
     switchbtn: false,
     statusbtn: false,
-    width: 400,
+    width: 200,
   },
   {
     label: "Last_Login",
@@ -76,7 +76,7 @@ export const usersSuperAdminTablesColumn = [
     image: false,
     switchbtn: false,
     statusbtn: false,
-    width: 400,
+    width: 200,
   },
   {
     label: "Status",
@@ -87,7 +87,7 @@ export const usersSuperAdminTablesColumn = [
     image: false,
     switchbtn: false,
     statusbtn: true,
-    width: 600,
+    width: 200,
   },
   {
     label: "Deactivate",
@@ -98,7 +98,7 @@ export const usersSuperAdminTablesColumn = [
     image: false,
     switchbtn: true,
     statusbtn: false,
-    width: 800,
+    width: 200,
   },
   {
     label: "Take_Actions",
@@ -110,7 +110,7 @@ export const usersSuperAdminTablesColumn = [
     switchbtn: false,
     statusbtn: false,
     subScrIcon: true,
-    width: 900,
+    width: 150,
   },
 ];
 

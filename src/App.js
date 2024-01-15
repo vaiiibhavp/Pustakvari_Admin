@@ -34,7 +34,7 @@ const App = () => {
           {/* <Route path="/modal" element={<DeleteModal />} /> */}
         </Route>
         <Route element={<MainContent />}>
-          <Route path="/" element={<Navigate to="/User" />} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/User" element={<Users />} />
           <Route path="/Institute" element={<Institutes />} />
           <Route path="/institute/:id" element={<InstitutesDetail />} />

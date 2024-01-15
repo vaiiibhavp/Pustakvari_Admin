@@ -26,7 +26,7 @@ const Institutes = () => {
                     <Button onClick={() => {
                         setIsEditable({});
                         setIsInstituteModalOpen(true)
-                    }} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+{AppStrings?.add_intitutes}</Button>
+                    }} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+{AppStrings?.add_institute}</Button>
                 </Box>
             </Box>
             <CommonTable onSeeDetail={() => {

@@ -116,6 +116,7 @@ export const AppStrings = {
 
   // institutes page
   add_institute: "Add Institute",
+  Institutes: "Institutes",
   add_new_institute: "Add new institute",
   Account_created_on: "Account Created on",
   institute_users: "Institute users",

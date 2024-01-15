@@ -46,15 +46,18 @@ const CommonTable = ({
     defaultRowsPerPage = 5,
     rowSelect,
     editRecord,
-    showSubscription
+    showSubscription,
+    onSeeDetail
 }) => {
     const theme = useTheme();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
 
     const handleChangePage = (event, newPage) => {
+        console.log("hello")
         setPage(newPage);
     };
+
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
@@ -162,7 +165,7 @@ const CommonTable = ({
 
         if (whichCoulumn.image) {
             return (
-                <Box sx={{ display: "flex" }}>
+                <Box sx={{ display: "flex" }} onClick={onSeeDetail} sx={{ cursor: "pointer" }}>
                     <img
                         src="https://media.licdn.com/dms/image/C4D03AQHH159tOQPesQ/profile-displayphoto-shrink_200_200/0/1661018767590?e=2147483647&v=beta&t=oEoaEhpSN2dsjwcAi5kHgmJRiXOIs5x1p-wIUsrVZls"
                         alt=""

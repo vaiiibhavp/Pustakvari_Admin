@@ -1,27 +1,27 @@
-import { Box, Button, Card, Container, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Button, Card, Container, Grid, Typography, useTheme, IconButton } from '@mui/material';
 import React from 'react'
 import CommonTable from '../../Component/Table/Table';
-import { InstitutesTablesColumn } from '../Utils/constant';
+import { InstitutesTablesColumn, usersSuperAdminTablesColumn } from '../Utils/constant';
+import { useNavigate } from "react-router-dom";
 import { AppStrings, colorCodes } from '../../Helper/Constant';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 const InstitutesDetail = () => {
+    const navigate = useNavigate();
     const theme = useTheme()
     const data = [
-        { Institute_Name: 'John Doe', Contact: "9834291623", Email: "lakhan@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
-        { Institute_Name: 'lakhan dev', Contact: "9834291623", Email: "lakhan@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
+        { User_Name: 'John Doe', Age: 25, Institute_user: false, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false },
+        { Name: 'lakhan dev', Age: 25, Institute_user: true, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false },
         // Add more rows as needed
     ];
     return (
-        <Container maxWidth="xl">
-            <Box pb={2} mx={1} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-
-                <Button onClick={() => {
-
-                }} >+{AppStrings?.add_intitutes}</Button>
-
+        <Container maxWidth="xl" >
+            <Box mb={3}>
+                <Button shadow={2} sx={{ background: "#fff", color: "black", borderRadius: "15px", padding: "5px 20px 5px 2px" }} onClick={() => navigate(-1)}> <IconButton><KeyboardBackspaceIcon size="small" /></IconButton>Back</Button>
             </Box>
+
             <Grid container spacing={3}>
                 <Grid item xs={12} md={3} lg={3}>
                     <Box pb={3}>
@@ -79,11 +79,11 @@ const InstitutesDetail = () => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={9} lg={9}>
-                    <Box p={1} mb={2} fontWeight={600} sx={{ background: "#fff" }}>Institute users</Box>
+                    <Box p={1} mb={2} fontWeight={600} sx={{ background: "#fff" }}>{AppStrings?.institute_users}</Box>
                     <CommonTable onSeeDetail={() => {
                         console.log("hello");
                     }
-                    } columns={InstitutesTablesColumn} data={data || []} rowSelect={() => console.log("row selected")} editRecord={(e) => {
+                    } columns={usersSuperAdminTablesColumn} data={data || []} rowSelect={() => console.log("row selected")} editRecord={(e) => {
 
                     }} showSubscription={() => console.log("show subscription")} />
                 </Grid>

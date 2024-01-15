@@ -1,16 +1,25 @@
 
 
 import React, { useState } from 'react'
+import { useNavigate} from "react-router-dom"
 import { AppStrings, colorCodes } from '../../Helper/Constant'
-import { Box, Button, Card, MenuItem, Container, FormControl, FormControlLabel, Grid, InputLabel, Radio, RadioGroup, Select, TextField, Typography, IconButton, Divider } from '@mui/material'
+import { Box, Button, Card, MenuItem, Container, FormControl, FormControlLabel, Grid, InputLabel, Radio, RadioGroup, Select, TextField, Typography, IconButton, Divider, useTheme } from '@mui/material'
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 const CreateQuiz = () => {
     const [questionName, setQuestionName] = useState('');
-    const [questionType, setQuestionType] = useState('');
+    const [questionType, setQuestionType] = useState('radio');
     const [options, setOptions] = useState([{ id: 1, value: 'Option 1' }]);
+    const theme = useTheme()
+
+    const navigate = useNavigate();
+
+    const [isAnswerkey, setIsAsnwerKey] = useState(false)
 
     const handleAddOption = () => {
-        const newOptions = [...options, { id: options.length + 1, value: '' }];
+        const newOptions = [...options, { id: options.length + 1, value: `Option ${options.length + 1}` }];
         setOptions(newOptions);
     };
 
@@ -46,12 +55,11 @@ const CreateQuiz = () => {
     };
     return (
         <Container maxWidth="xl" sx={{ position: "relative" }}>
-            <Box pb={2} mx={1} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Button shadow={2} sx={{ background: "#fff", color: "black", borderRadius: "15px", padding: "5px 20px 5px 2px" }} onClick={()=>navigate(-1)}> <IconButton><KeyboardBackspaceIcon size="small" /></IconButton>Back</Button>
+            <Box pb={2} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
                 <Typography variant='h5'>{'Create new quiz'}</Typography>
-                <Box>
-                    <Button sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+{AppStrings?.add_quize}</Button>
-                </Box>
+
 
 
             </Box>
@@ -198,10 +206,10 @@ const CreateQuiz = () => {
                                                                 <Box sx={{ position: "absolute", right: 0 }}>
 
                                                                     <IconButton onClick={() => handleEditOption(index)}>
-                                                                        {/* <EditIcon fontSize="small" /> */}e
+                                                                        <BorderColorOutlinedIcon fontSize="small" />
                                                                     </IconButton>
                                                                     <IconButton onClick={() => handleDeleteOption(index)}>
-                                                                        {/* <DeleteIcon fontSize="small" /> */}d
+                                                                        <DeleteOutlineOutlinedIcon fontSize="small" />
                                                                     </IconButton>
                                                                 </Box>
                                                             </Box>
@@ -210,9 +218,11 @@ const CreateQuiz = () => {
                                                     style={{ marginRight: '20px' }}
                                                 />
                                                 {option.editing && (
-                                                    <IconButton onClick={() => handleSaveOption(index)}>
-                                                        {/* <SaveIcon fontSize="small" /> */}s
-                                                    </IconButton>
+                                                    <Box sx={{ marginRight: "20px" }}>
+                                                        <IconButton onClick={() => handleSaveOption(index)}>
+                                                            <SaveOutlinedIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </Box>
                                                 )}
                                             </div>
                                         ))}
@@ -227,8 +237,8 @@ const CreateQuiz = () => {
                         </form>
                         <Divider />
                         <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%", padding: "5px 20px" }}>
-                            <div>Answer key</div>
-                            <div>Delete</div>
+                            <Button color='secondary' onClick={() => setIsAsnwerKey(true)}>Answer key</Button>
+                            <Button variant='primary'>Delete</Button>
 
 
                         </Box>
@@ -241,12 +251,10 @@ const CreateQuiz = () => {
 
                     </Card>
                     <Box sx={{ display: "flex", justifyContent: "end", width: "100%" }}>
-
-                        <Button type="submit" variant="contained" color="primary" style={{ marginTop: '10px' }}>
+                        <Button type="submit" variant="contained" style={{ marginTop: '10px', background: theme.palette.grey[300], color: theme.palette.grey[600] }}>
                             + Add Question
                         </Button>
                     </Box>
-
                 </Grid>
             </Grid>
             <Button sx={{ position: "fixed", bottom: 4, left: "60%" }} type="submit" variant="contained" color="primary" style={{ marginTop: '10px' }}>
