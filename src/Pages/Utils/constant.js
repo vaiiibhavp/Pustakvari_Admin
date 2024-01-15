@@ -222,7 +222,7 @@ export const InstitutesTablesColumn = [
     statusbtn: false,
   },
   {
-    label: "Account_created_on",
+    label: "Account created on",
     field: "Account created on",
     icon: false,
     deleteIcon: false,
@@ -243,7 +243,7 @@ export const InstitutesTablesColumn = [
     statusbtn: true,
   },
   {
-    label: "Total_users",
+    label: "Total users",
     field: "Total users",
     icon: false,
     deleteIcon: false,
@@ -263,7 +263,7 @@ export const InstitutesTablesColumn = [
     statusbtn: false,
   },
   {
-    label: "Take_Actions",
+    label: "Take Actions",
     field: "Take Actions",
     icon: true,
     deleteIcon: false,
