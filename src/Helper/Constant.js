@@ -204,23 +204,23 @@ export const colorCodes = {
   GRAY_SHAD_500: "#000000",
 };
 
-const adminMenus = [
+export const adminMenus = [
   {
     id: 1,
     icon: "",
-    name: "Dashboard",
+    title: "Dashboard",
     path: "/Dashboard",
   },
   {
     id: 2,
     icon: "",
-    name: "User",
+    title: "User",
     path: "/User",
   },
   {
     id: 3,
     icon: "",
-    name: "Payment Tracking",
+    title: "Payment Tracking",
     path: "/Payments",
   },
 ];

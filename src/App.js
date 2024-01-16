@@ -21,6 +21,7 @@ import Institutes from "./Pages/Institutes/Institutes";
 import Notifications from "./Pages/Notification/Notifications";
 import InstitutesDetail from "./Pages/Institutes/InstitutesDetail";
 import CreateQuiz from "./Pages/Quiz/CreateQuiz";
+import PaymentTracking from "./Pages/InstituteAdmin/PaymentTrackings";
 
 const App = () => {
   return (
@@ -34,6 +35,8 @@ const App = () => {
           {/* <Route path="/modal" element={<DeleteModal />} /> */}
         </Route>
         <Route element={<MainContent />}>
+          {/* above three for use for admin and superadmin both */}
+          <Route path="/Payments" element={<PaymentTracking />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/User" element={<Users />} />
           <Route path="/Institute" element={<Institutes />} />

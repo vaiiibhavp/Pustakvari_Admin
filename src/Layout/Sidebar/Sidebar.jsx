@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
-import { superAdminMenus } from '../../Helper/Constant';
+import { adminMenus, superAdminMenus } from '../../Helper/Constant';
 import NavSection from './SidebarNav';
 import logoImage from "../../Assets/Images/logo.svg"
 // mock
@@ -38,6 +38,9 @@ const StyledAccount = styled('div')(({ theme }) => ({
 export default function Sidebar() {
     const { pathname } = useLocation();
 
+
+    const isAdmin = true
+
     // const isDesktop = useResponsive('up', 'lg');
 
 
@@ -55,7 +58,7 @@ export default function Sidebar() {
             </Box>
 
 
-            <NavSection data={superAdminMenus} />
+            <NavSection data={isAdmin ? superAdminMenus : adminMenus} />
 
             <Box sx={{ flexGrow: 1 }} />
 
