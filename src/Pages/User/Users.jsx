@@ -23,10 +23,13 @@ const Users = () => {
                 <Typography variant='h5'>Users</Typography>
                 <Box sx={{ display: "flex", gap: 1 }}>
                     <Searchbar onSearch={(e) => console.log("hello", e)} />
-                    <Button onClick={() => {
-                        setIsEditable({});
-                        setIsUserModalOpen(true)
-                    }} sx={{ background: colorCodes?.PRIMARY_COLOR, color: colorCodes?.GRAY_SHAD_500 }}>{AppStrings?.Add_user}</Button>
+                    <Button
+                        variant='contained'
+
+                        onClick={() => {
+                            setIsEditable({});
+                            setIsUserModalOpen(true)
+                        }} > + {AppStrings?.Add_user}</Button>
                 </Box>
             </Box>
             <CommonTable columns={usersSuperAdminTablesColumn} data={data} rowSelect={() => console.log("row selected")} editRecord={(e) => {

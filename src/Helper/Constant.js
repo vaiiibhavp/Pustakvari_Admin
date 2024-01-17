@@ -41,6 +41,7 @@ export const AppStrings = {
   LastName: "LastName",
   address: "Address",
   contact_number: "Contact Number",
+  contact_no: "Contact No",
   reset_password: "Reset Password",
   message: "Message",
 
@@ -76,6 +77,7 @@ export const AppStrings = {
   notification_title: "Notification Title",
   notification_Type: "Notification Type",
   user_type: "User Type",
+  message_notifiaction: "Please enter message here....",
 
   // Dahbaord
   monthly_subscription: "Monthly Subscription",
@@ -152,6 +154,7 @@ export const AppStrings = {
   subscription: "Subscription",
   Add_new_subscription_plan: "Add new subscription plan",
   Subscription_Name: "Subscription Name",
+  Edit_Subscription_title: "Edit subscription plan",
   Duration: "Duration",
   rate: "Rate",
   features: "Features",

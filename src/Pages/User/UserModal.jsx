@@ -12,11 +12,13 @@ import {
     Modal,
     Box,
     Typography,
+    useTheme,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import CloseIcon from "@mui/icons-material/Close";
 import { AppStrings } from '../../Helper/Constant';
+import { ModalCSSStyle } from '../../Helper/utils/ModalCss';
 
 
 const style = {
@@ -30,11 +32,29 @@ const style = {
     // border: '2px solid #000',
     boxShadow: 24,
     p: 2,
+    minHeight: 500,
+    overflowY: "auto",
+    '&::-webkit-scrollbar': {
+        width: '0px',
+        padding: "10px 0"
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: '#888',
+        borderRadius: '6px',
+    },
+    '&::-webkit-scrollbar-track': {
+        backgroundColor: '#f1f1f1',
+        borderRadius: '10px',
+    },
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#888 #f1f1f1', // For Firefox
 };
 
 const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
 
     let isEditable = isEditableRecord?.id ? true : false
+
+    const theme = useTheme()
 
 
     const handleClose = () => setUserModalOpen(false);
@@ -87,7 +107,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style} textAlign={"center"}>
+            <Box sx={ModalCSSStyle} textAlign={"center"}>
                 <Typography
                     id="modal-modal-title"
                     variant="h6"
@@ -102,7 +122,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                     {isEditable ? "Edit" : AppStrings?.Add_new_user}
 
                     <span onClick={handleClose}>
-                        <CloseIcon />
+                        <CloseIcon sx={{ color: theme.palette.grey[400] }} />
                     </span>
                 </Typography>
                 <form onSubmit={formik.handleSubmit} style={{ padding: "10px 0" }}>
@@ -138,7 +158,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                             // label="Email"
                             sx={{ marginTop: "0px" }}
                             size='small'
-                            placeholder={AppStrings?.email}
+                            placeholder={AppStrings?.email_Id}
                             variant="outlined"
                             margin="normal"
                             type="email"
@@ -152,7 +172,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.contact_number}:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.contact_no}:</Typography>
 
                         <TextField
                             fullWidth
@@ -161,7 +181,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                             size='small'
                             sx={{ marginTop: "0px" }}
                             // label="Contact Number"
-                            placeholder={AppStrings?.contact_number}
+                            placeholder={AppStrings?.contact_no}
                             variant="outlined"
                             margin="normal"
                             value={formik.values.contactNumber}
@@ -239,10 +259,12 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                     </Box>
 
 
+                    <Box px={3}>
 
-                    <Button type="submit" variant="contained" color="primary" mt={2} sx={{ marginTop: "15px" }}>
-                        {isEditable ? "Update" : "Submit"}
-                    </Button>
+                        <Button fullWidth type="submit" variant="contained" color="primary" mt={2} sx={{ marginTop: "15px", borderRadius: "18px" }}>
+                            {isEditable ? "Update" : "Submit"}
+                        </Button>
+                    </Box>
                 </form>
             </Box>
 

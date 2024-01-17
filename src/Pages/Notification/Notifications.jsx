@@ -75,7 +75,6 @@ const Notifications = () => {
                             me: "10px",
                         }}
                         onClick={() => {
-
                             setIsOpenNotifiactionModal(true);
                         }}
                     >
@@ -86,6 +85,7 @@ const Notifications = () => {
             </Box>
             <Box pb={3} pt={2}>
                 <List>
+                    {/* This is ui created notifiaction */}
                     <ListItem
                         sx={{
                             background: "#ffffff",
@@ -124,7 +124,7 @@ const Notifications = () => {
                                 />
                                 <Box>
                                     <Typography variant="h6" color={theme?.palette.grey[700]}>
-                                        Title
+                                        Title NAme
                                     </Typography>
                                     <Typography variant="body1" color={theme?.palette.grey[500]}>
                                         BPHE society institute made an account
@@ -139,7 +139,65 @@ const Notifications = () => {
                                     </Typography>
                                 </Box>
                             </Box>
-                            <Typography color={colorCodes?.GRAY_SHAD_200}>
+                            <Typography color={colorCodes?.GRAY_SHAD_200} sx={{ background: theme?.palette.grey[200], p: 1, borderRadius: 1 }}>
+                                25, sept 2023
+                            </Typography>
+                        </Box>
+                    </ListItem>
+                    {/* This is ui all notifiaction */}
+                    <ListItem
+                        sx={{
+                            background: "#ffffff",
+                            borderLeft: `4px solid ${colorCodes.SECONDARY_COLOR_300}`,
+                            borderRadius: "15px",
+                            boxShadow: (theme) => theme.customShadows.z1,
+                            marginBottom: "5px",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                width: "100%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    padding: "12px",
+                                    marginRight: "12px",
+                                }}
+                            >
+                                <img
+                                    src=""
+                                    alt=""
+                                    style={{
+                                        width: "50px",
+                                        height: "50px",
+                                        background: "gray",
+                                        borderRadius: "50%",
+                                        marginRight: "20px",
+                                    }}
+                                />
+                                <Box>
+                                    <Typography variant="h6" color={theme?.palette.grey[700]}>
+                                        Title NAme
+                                    </Typography>
+                                    <Typography variant="body1" color={theme?.palette.grey[500]}>
+                                        BPHE society institute made an account
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                        sx={{ display: "flex", flexDirection: "column" }}
+                                    >
+                                        2 min ago
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Typography color={colorCodes?.GRAY_SHAD_200} sx={{ background: theme?.palette.grey[200], p: 1, borderRadius: 1 }}>
                                 25, sept 2023
                             </Typography>
                         </Box>

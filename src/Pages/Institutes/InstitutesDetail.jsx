@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { AppStrings, colorCodes } from '../../Helper/Constant';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+// import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const InstitutesDetail = () => {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ const InstitutesDetail = () => {
     return (
         <Container maxWidth="xl" >
             <Box mb={3}>
-                <Button shadow={2} sx={{ background: "#fff", color: "black", borderRadius: "15px", padding: "5px 20px 5px 2px" }} onClick={() => navigate(-1)}> <IconButton><KeyboardBackspaceIcon size="small" /></IconButton>Back</Button>
+                <Button boxShadow={2} sx={{ background: "#fff", color: "black", borderRadius: "15px", padding: "5px 20px 5px 12px" }} onClick={() => navigate(-1)}> <IconButton sx={{ margin: "0px" }}><ArrowBackIosIcon size="small" color={theme?.palette?.grey[800]} sx={{ fontSize: "14px", color: theme?.palette?.grey[800] }} /></IconButton>{AppStrings?.back}</Button>
             </Box>
 
             <Grid container spacing={3}>

@@ -15,6 +15,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { AppStrings, colorCodes } from "../../Helper/Constant";
 import CloseIcon from "@mui/icons-material/Close";
+import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 
 const style = {
   position: "absolute",
@@ -27,6 +28,21 @@ const style = {
   // border: '2px solid #000',
   boxShadow: 24,
   p: 2,
+  height: 500,
+  "&::-webkit-scrollbar": {
+    width: "0px",
+    padding: "10px 0",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "#888",
+    borderRadius: "6px",
+  },
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: "#f1f1f1",
+    borderRadius: "10px",
+  },
+  scrollbarWidth: "thin",
+  scrollbarColor: "#888 #f1f1f1", // For Firefox
 };
 
 const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
@@ -60,7 +76,7 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      <Box sx={ModalCSSStyle}>
         <Typography
           id="modal-modal-title"
           variant="h6"
@@ -105,7 +121,7 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
                   as={TextField}
                   //   label="Message"
                   style={{ marginTop: "0px" }}
-                  placeholder={AppStrings?.message}
+                  placeholder={AppStrings?.message_notifiaction}
                   fullWidth
                   size="small"
                   multiline
@@ -165,11 +181,11 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
                   />
                 </FormControl>
 
-                <Box mt={2} sx={{ width: "100%" }} textAlign={"center"}>
+                <Box mt={2} px={3} sx={{ width: "100%" }} textAlign={"center"}>
                   <Button
                     // borderRadius={8}
+                    fullWidth
                     sx={{
-                      background: colorCodes?.PRIMARY_COLOR,
                       borderRadius: "16px",
                       padding: "5px 15px",
                     }}

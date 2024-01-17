@@ -16,6 +16,7 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import CloseIcon from "@mui/icons-material/Close";
+import { ModalCSSStyle } from '../../Helper/utils/ModalCss';
 
 
 const style = {
@@ -24,11 +25,27 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 360,
+    minHeight: 500,
+    overflowY: "auto",
     borderRadius: "20px",
     bgcolor: 'background.paper',
     // border: '2px solid #000',
     boxShadow: 24,
     p: 2,
+    '&::-webkit-scrollbar': {
+        width: '0px',
+        padding: "10px 0"
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: '#888',
+        borderRadius: '6px',
+    },
+    '&::-webkit-scrollbar-track': {
+        backgroundColor: '#f1f1f1',
+        borderRadius: '10px',
+    },
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#888 #f1f1f1', // For Firefox
 };
 
 const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEditableRecord }) => {
@@ -86,7 +103,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style} textAlign={"center"}>
+            <Box sx={ModalCSSStyle} textAlign={"center"}>
                 <Typography
                     id="modal-modal-title"
                     variant="h6"

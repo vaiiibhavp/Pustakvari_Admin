@@ -7,8 +7,9 @@ import { Box, Button, Card, MenuItem, Container, FormControl, FormControlLabel, 
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+
 const CreateQuiz = () => {
     const [questionName, setQuestionName] = useState('');
     const [questionType, setQuestionType] = useState('radio');
@@ -56,7 +57,7 @@ const CreateQuiz = () => {
     };
     return (
         <Container maxWidth="xl" sx={{ position: "relative" }}>
-            <Button shadow={2} sx={{ background: "#fff", color: "black", borderRadius: "15px", padding: "5px 20px 5px 2px" }} onClick={() => navigate(-1)}> <IconButton><KeyboardBackspaceIcon size="small" /></IconButton>Back</Button>
+            <Button boxShadow={2} sx={{ background: "#fff", color: "black", borderRadius: "15px", padding: "5px 20px 5px 12px" }} onClick={() => navigate(-1)}> <IconButton sx={{ margin: "0px" }}><ArrowBackIosIcon size="small" color={theme?.palette?.grey[800]} sx={{ fontSize: "14px", color: theme?.palette?.grey[800] }} /></IconButton>{AppStrings?.back}</Button>
             <Box pb={2} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
                 <Typography variant='h5'>{'Create new quiz'}</Typography>

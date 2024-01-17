@@ -24,7 +24,7 @@ const Subscription = () => {
                     <Button onClick={() => {
                         setIsEditRecord({})
                         setIsOpenSubscriptionPlanModal(true)
-                    }} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+{AppStrings?.add_plans}</Button>
+                    }} variant='contained'>+ {AppStrings?.add_plans}</Button>
                 </Box>
             </Box>
             <CommonTable columns={SubscriptionTablesColumn} data={data} rowSelect={() => console.log("row selected")} editRecord={(e) => {

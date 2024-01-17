@@ -44,7 +44,7 @@ const EBooks = () => {
                         <Button onClick={() => {
                             setIsEditable({});
                             setIsOpenEbookModal(true);
-                        }} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+{AppStrings?.add_e_book}</Button>
+                        }} variant="contained">+{AppStrings?.add_e_book}</Button>
                     </Box>
                 </Box>
             </Box>

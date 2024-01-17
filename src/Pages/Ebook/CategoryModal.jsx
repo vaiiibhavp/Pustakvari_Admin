@@ -20,6 +20,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
+import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 
 const style = {
     position: "absolute",
@@ -32,6 +33,21 @@ const style = {
     // border: '2px solid #000',
     boxShadow: 24,
     p: 2,
+    maxHeight: 500,
+    '&::-webkit-scrollbar': {
+        width: '0px',
+        padding: "10px 0"
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: '#888',
+        borderRadius: '6px',
+    },
+    '&::-webkit-scrollbar-track': {
+        backgroundColor: '#f1f1f1',
+        borderRadius: '10px',
+    },
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#888 #f1f1f1', // For Firefox
 };
 
 let categories = ["Category1", "Category2", "Category3"];
@@ -89,7 +105,7 @@ const CategoryModal = ({
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style} textAlign={"center"}>
+            <Box sx={ModalCSSStyle} textAlign={"center"}>
                 <Typography
                     id="modal-modal-title"
                     variant="h6"
@@ -101,7 +117,7 @@ const CategoryModal = ({
                         alignItems: "center",
                     }}
                 >
-                    {isEditable ? "Edit" : "Create New User"}
+                    {isEditable ? "Edit" : "Create new category"}
 
                     <span onClick={handleClose}>
                         <CloseIcon />
@@ -179,9 +195,13 @@ const CategoryModal = ({
                             />
                         </Box>
 
-                        <Button type="submit" variant="contained" color="primary">
-                            Add
-                        </Button>
+                        <Box px={3} mt={2}>
+
+                            <Button sx={{ borderRadius: "18px" }} fullWidth type="submit" variant="contained" color="primary">
+                                Submit
+                            </Button>
+                        </Box>
+
                     </form>
                 </Box>
             </Box>
