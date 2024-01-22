@@ -11,6 +11,7 @@ const Searchbar = ({ onSearch }) => {
             label="Search here ..."
             variant="outlined"
             size='small'
+            sx={{ border: "1px solid white" }}
             onChange={handleChange}
         />
     )

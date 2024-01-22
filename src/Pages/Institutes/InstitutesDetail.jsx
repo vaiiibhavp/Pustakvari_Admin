@@ -1,25 +1,26 @@
 import { Box, Button, Card, Container, Grid, Typography, useTheme, IconButton } from '@mui/material';
 import React from 'react'
 import CommonTable from '../../Component/Table/Table';
-import { InstitutesTablesColumn, usersSuperAdminTablesColumn } from '../Utils/constant';
+import { InstitutesTablesColumn, InstitutesTablesUsers, usersSuperAdminTablesColumn } from '../Utils/constant';
 import { useNavigate } from "react-router-dom";
 import { AppStrings, colorCodes } from '../../Helper/Constant';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+// import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const InstitutesDetail = () => {
     const navigate = useNavigate();
     const theme = useTheme()
     const data = [
-        { User_Name: 'John Doe', Age: 25, Institute_user: false, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false },
-        { Name: 'lakhan dev', Age: 25, Institute_user: true, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false },
+        { S: 1, User_Name: 'John Doe', Age: 25, Institute_user: false, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false, subscribe: true },
+        { S: 2, User_Name: 'lakhan dev', Age: 25, Institute_user: true, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false, subscribe: false },
         // Add more rows as needed
     ];
     return (
         <Container maxWidth="xl" >
             <Box mb={3}>
-                <Button shadow={2} sx={{ background: "#fff", color: "black", borderRadius: "15px", padding: "5px 20px 5px 2px" }} onClick={() => navigate(-1)}> <IconButton><KeyboardBackspaceIcon size="small" /></IconButton>Back</Button>
+                <Button boxShadow={2} sx={{ background: "#fff", color: "black", borderRadius: "15px", padding: "5px 20px 5px 12px" }} onClick={() => navigate(-1)}> <IconButton sx={{ margin: "0px" }}><ArrowBackIosIcon size="small" color={theme?.palette?.grey[800]} sx={{ fontSize: "14px", color: theme?.palette?.grey[800] }} /></IconButton>{AppStrings?.back}</Button>
             </Box>
 
             <Grid container spacing={3}>
@@ -83,7 +84,7 @@ const InstitutesDetail = () => {
                     <CommonTable onSeeDetail={() => {
                         console.log("hello");
                     }
-                    } columns={usersSuperAdminTablesColumn} data={data || []} rowSelect={() => console.log("row selected")} editRecord={(e) => {
+                    } columns={InstitutesTablesUsers} data={data || []} rowSelect={() => console.log("row selected")} editRecord={(e) => {
 
                     }} showSubscription={() => console.log("show subscription")} />
                 </Grid>

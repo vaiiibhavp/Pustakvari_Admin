@@ -21,20 +21,23 @@ import Institutes from "./Pages/Institutes/Institutes";
 import Notifications from "./Pages/Notification/Notifications";
 import InstitutesDetail from "./Pages/Institutes/InstitutesDetail";
 import CreateQuiz from "./Pages/Quiz/CreateQuiz";
+import PaymentTracking from "./Pages/InstituteAdmin/PaymentTrackings";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route path="/login" element={<LoginForm />} />
+          <Route path="/" element={<LoginForm />} />
           <Route path="/forgot" element={<ForgotPasswordForm />} />
           <Route path="/otpValidation" element={<OtpValidation />} />
           <Route path="/reset" element={<ResetPasswordForm />} />
           {/* <Route path="/modal" element={<DeleteModal />} /> */}
         </Route>
         <Route element={<MainContent />}>
-          <Route path="/" element={<Dashboard />} />
+          {/* above three for use for admin and superadmin both */}
+          <Route path="/Payments" element={<PaymentTracking />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/User" element={<Users />} />
           <Route path="/Institute" element={<Institutes />} />
           <Route path="/institute/:id" element={<InstitutesDetail />} />

@@ -14,7 +14,7 @@ export const usersSuperAdminTablesColumn = [
   },
   {
     label: "User Name",
-    field: "User Name",
+    field: "User_Name",
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -109,7 +109,7 @@ export const usersSuperAdminTablesColumn = [
     image: false,
     switchbtn: false,
     statusbtn: false,
-    subScrIcon: true,
+    subScrIcon: false,
     width: 150,
   },
 ];
@@ -117,7 +117,7 @@ export const usersSuperAdminTablesColumn = [
 export const ebooksTablesColumn = [
   {
     label: "SNo",
-    field: "S.No",
+    field: "S",
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -168,7 +168,7 @@ export const ebooksTablesColumn = [
 
   {
     label: "Take Actions",
-    field: "Take Actions",
+    field: "Take_Actions",
     icon: true,
     deleteIcon: true,
     editIcon: true,
@@ -196,6 +196,7 @@ export const InstitutesTablesColumn = [
     icon: false,
     deleteIcon: false,
     editIcon: false,
+    onseeSecondPageInstitiue: true,
     image: false,
     switchbtn: false,
     statusbtn: false,
@@ -222,7 +223,7 @@ export const InstitutesTablesColumn = [
     statusbtn: false,
   },
   {
-    label: "Account_created_on",
+    label: "Account created on",
     field: "Account created on",
     icon: false,
     deleteIcon: false,
@@ -243,14 +244,14 @@ export const InstitutesTablesColumn = [
     statusbtn: true,
   },
   {
-    label: "Total_users",
-    field: "Total users",
+    label: "Total users",
+    field: "Total_users",
     icon: false,
     deleteIcon: false,
     editIcon: false,
     image: false,
     switchbtn: false,
-    statusbtn: true,
+    statusbtn: false,
   },
   {
     label: "Deactivate",
@@ -263,7 +264,7 @@ export const InstitutesTablesColumn = [
     statusbtn: false,
   },
   {
-    label: "Take_Actions",
+    label: "Take Actions",
     field: "Take Actions",
     icon: true,
     deleteIcon: false,
@@ -271,7 +272,73 @@ export const InstitutesTablesColumn = [
     image: false,
     switchbtn: false,
     statusbtn: false,
-    subScrIcon: true,
+    subScrIcon: false,
+  },
+];
+
+export const InstitutesTablesUsers = [
+  {
+    label: "S.No",
+    field: "S",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    image: false,
+    switchbtn: false,
+    statusbtn: false,
+  },
+  {
+    label: "User Name",
+    field: "User_Name",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    onseeSecondPageInstitiue: true,
+    image: false,
+    switchbtn: false,
+    statusbtn: false,
+  },
+  {
+    label: "Contact",
+    field: "Contact",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    image: false,
+    switchbtn: false,
+    statusbtn: false,
+  },
+
+  {
+    label: "Email",
+    field: "Email",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    image: false,
+    switchbtn: false,
+    statusbtn: false,
+  },
+  {
+    label: "Account created on",
+    field: "Account created on",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    image: false,
+    switchbtn: false,
+    statusbtn: false,
+  },
+
+  {
+    label: "Subscription",
+    field: "Subscription",
+    icon: false,
+    deleteIcon: false,
+    editIcon: false,
+    image: false,
+    switchbtn: false,
+    statusbtn: true,
   },
 ];
 
@@ -279,7 +346,7 @@ export const InstitutesTablesColumn = [
 export const SubscriptionTablesColumn = [
   {
     label: "SNo",
-    field: "S.No",
+    field: "S",
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -345,7 +412,7 @@ export const SubscriptionTablesColumn = [
 export const QuizTablesColumn = [
   {
     label: "SNo",
-    field: "S.No",
+    field: "S",
     icon: false,
     deleteIcon: false,
     editIcon: false,

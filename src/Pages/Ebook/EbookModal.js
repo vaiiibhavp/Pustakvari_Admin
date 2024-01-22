@@ -20,6 +20,8 @@ import AddIcon from "@mui/icons-material/Add";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
+import { AppStrings } from "../../Helper/Constant";
+import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 
 const style = {
   position: "absolute",
@@ -32,6 +34,22 @@ const style = {
   // border: '2px solid #000',
   boxShadow: 24,
   p: 2,
+  maxHeight: 500,
+  overflowY: "auto",
+  "&::-webkit-scrollbar": {
+    width: "0px",
+    padding: "10px 0",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "#888",
+    borderRadius: "6px",
+  },
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: "#f1f1f1",
+    borderRadius: "10px",
+  },
+  scrollbarWidth: "thin",
+  scrollbarColor: "#888 #f1f1f1", // For Firefox
 };
 
 let categories = ["Category1", "Category2", "Category3"];
@@ -99,7 +117,7 @@ const EbookModal = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style} textAlign={"center"}>
+      <Box sx={ModalCSSStyle} textAlign={"center"}>
         <Typography
           id="modal-modal-title"
           variant="h6"
@@ -111,39 +129,89 @@ const EbookModal = ({
             alignItems: "center",
           }}
         >
-          {isEditable ? "Edit" : "Create New User"}
+          {isEditable ? "Edit E-book" : AppStrings?.Add_new_e_book}
 
           <span onClick={handleClose}>
-            <CloseIcon />
+            <CloseIcon sx={{ color: theme?.palette.grey[400] }} />
           </span>
         </Typography>
 
         <Box>
           <form onSubmit={formik.handleSubmit} style={{ padding: "10px 0" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "start",
-                marginBottom: "16px",
-              }}
-            >
-              <Typography style={{ padding: "0 0 5px 0" }}>
-                Book Image:
-              </Typography>
+            <Box sx={{ display: "flex", gap: 3, width: "100%" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                  marginBottom: "16px",
+                }}
+              >
+                <Typography style={{ padding: "0 0 5px 0" }}>
+                  Book Image:
+                </Typography>
 
-              <Box sx={{ display: "flex", alignItems: "start" }}>
+                <Box sx={{ display: "flex", alignItems: "start", gap: 4 }}>
+                  <label htmlFor="categoryImage">
+                    <IconButton
+                      component="span"
+                      sx={{
+                        width: 80,
+                        height: 120,
+                        borderRadius: "20px",
+                        background: theme?.palette?.grey[200],
+                      }}
+                    >
+                      <AddIcon
+                        sx={{
+                          width: 40,
+                          height: 40,
+                          color: theme.palette.grey[400],
+                        }}
+                      />
+                    </IconButton>
+                  </label>
+                  <input
+                    type="file"
+                    id="categoryImage"
+                    name="categoryImage"
+                    accept="image/*"
+                    style={{ display: "none" }}
+                    onChange={handleImageChange}
+                  />
+                </Box>
+              </Box>
+              <Box
+                fullWidth
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                }}
+              >
+                <Typography style={{ padding: "0 0 5px 0" }}>
+                  Book Pdf:
+                </Typography>
                 <label htmlFor="categoryImage">
                   <IconButton
                     component="span"
                     sx={{
-                      width: 80,
+                      width: 210,
                       height: 120,
                       borderRadius: "20px",
-                      background: theme?.palette?.grey[300],
+                      background: theme?.palette?.grey[200],
+                      border: `1px dotted ${theme?.palette?.grey[800]}`,
                     }}
                   >
-                    <AddIcon sx={{ width: 40, height: 40 }} />
+                    {/* <AddIcon sx={{ width: 40, height: 40 }} /> */}
+                    <Typography
+                      sx={{
+                        fontSize: "14px",
+                        color: theme?.palette?.grey[400],
+                      }}
+                    >
+                      upload pdf
+                    </Typography>
                   </IconButton>
                 </label>
                 <input
@@ -156,6 +224,7 @@ const EbookModal = ({
                 />
               </Box>
             </Box>
+
             <Box
               sx={{
                 display: "flex",
@@ -164,7 +233,7 @@ const EbookModal = ({
               }}
             >
               <Typography style={{ padding: "0 0 5px 0" }}>
-                Category Name:
+                Book Name:
               </Typography>
 
               <TextField
@@ -317,9 +386,17 @@ const EbookModal = ({
               />
             </Box>
 
-            <Button type="submit" variant="contained" color="primary">
-              Add
-            </Button>
+            <Box px={3} mt={2}>
+              <Button
+                fullWidth
+                type="submit"
+                sx={{ borderRadius: "18px" }}
+                variant="contained"
+                color="primary"
+              >
+                Submit
+              </Button>
+            </Box>
           </form>
         </Box>
       </Box>

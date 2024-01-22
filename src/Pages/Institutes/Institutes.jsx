@@ -14,8 +14,8 @@ const Institutes = () => {
     const navigate = useNavigate();
 
     const data = [
-        { S: 1, Institute_Name: 'Savitribai phule instituts', Contact: "9834291623", Email: "Savitribai@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
-        { S: 2, Institute_Name: 'Moze Instituts', Contact: "9834291623", Email: "gmoze@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
+        { S: 1, Institute_Name: 'Savitribai phule instituts', Contact: "9834291623", Email: "Savitribai@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Total_users: 23, Duration: "Monthly" },
+        { S: 2, Institute_Name: 'Moze Instituts', Contact: "9834291623", Email: "gmoze@gmail.com", Account_created_on: "25/12/2023", Status: "yes", No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Total_users: 21, Duration: "Monthly" },
         // Add more rows as needed
     ];
     return (

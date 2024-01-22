@@ -47,35 +47,7 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
                     />
                 </Box>
                 <List>
-                    <ListItem>
-                        <ListItemText primary="Category 1" />
-                        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                            <Button sx={{
-                                borderRadius: "50%",
-                                width: "30px",
-                                height: "30px",
-                                background: theme.palette?.primary?.lighter,
-                                color: theme.palette?.primary.main,
-                                '&.active': {
-                                    color: 'text.primary',
-                                    bgcolor: 'action.selected',
-                                    fontWeight: 'fontWeightBold',
-                                },
-                            }}  ><BorderColorOutlinedIcon sx={{ fontSize: "16px" }} /></Button>
-                            <Button sx={{
-                                borderRadius: "50%",
-                                width: "30px",
-                                height: "30px",
-                                background: theme.palette?.secondary?.lighter,
-                                color: theme.palette?.secondary.main,
-                                '&.active': {
-                                    color: 'text.primary',
-                                    bgcolor: 'action.selected',
-                                    fontWeight: 'fontWeightBold',
-                                },
-                            }} ><DeleteOutlineOutlinedIcon sx={{ fontSize: "16px" }} /></Button>
-                        </Box>
-                    </ListItem>
+
 
                     <ListItem>
                         <ListItemText primary="Category 1" />

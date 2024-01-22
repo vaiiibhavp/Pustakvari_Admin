@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 import successImage from "../Assets/Images/successImage.svg"
+import { ModalCSSStyle } from '../Helper/utils/ModalCss';
 
 const style = {
     position: 'absolute',
@@ -17,6 +18,20 @@ const style = {
     // border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    '&::-webkit-scrollbar': {
+        width: '0px',
+        padding: "10px 0"
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: '#888',
+        borderRadius: '6px',
+    },
+    '&::-webkit-scrollbar-track': {
+        backgroundColor: '#f1f1f1',
+        borderRadius: '10px',
+    },
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#888 #f1f1f1', // For Firefox
 };
 
 export default function ShowsMessageModal({ message }) {
@@ -33,7 +48,7 @@ export default function ShowsMessageModal({ message }) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style} textAlign={"center"}>
+                <Box sx={ModalCSSStyle} textAlign={"center"}>
                     {/* <Typography id="modal-modal-title" variant="h6" component="h2">
                         Text in a modal
                     </Typography> */}

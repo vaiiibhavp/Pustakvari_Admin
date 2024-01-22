@@ -12,10 +12,12 @@ import {
   Modal,
   Box,
   Typography,
+  useTheme,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { AppStrings } from "../../Helper/Constant";
+import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 
 const style = {
   position: "absolute",
@@ -28,10 +30,27 @@ const style = {
   // border: '2px solid #000',
   boxShadow: 24,
   p: 2,
+  height: 500,
+  "&::-webkit-scrollbar": {
+    width: "0px",
+    padding: "10px 0",
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "#888",
+    borderRadius: "6px",
+  },
+  "&::-webkit-scrollbar-track": {
+    backgroundColor: "#f1f1f1",
+    borderRadius: "10px",
+  },
+  scrollbarWidth: "thin",
+  scrollbarColor: "#888 #f1f1f1", // For Firefox
 };
 
 const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
   let isEditable = isEditRecord?.id ? true : false;
+  console.log(isEditRecord, "isedit", isEditable);
+  const theme = useTheme();
 
   const initialValues = {
     subscriptionName: "",
@@ -73,7 +92,7 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style} textAlign={"center"}>
+      <Box sx={ModalCSSStyle} textAlign={"center"}>
         <Typography
           id="modal-modal-title"
           variant="h6"
@@ -85,10 +104,12 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
             alignItems: "center",
           }}
         >
-          {isEditable ? "Edit" : AppStrings?.Add_new_user}
+          {isEditable
+            ? AppStrings?.Edit_Subscription_title
+            : AppStrings?.Add_new_subscription_plan}
 
           <span onClick={handleClose}>
-            <CloseIcon />
+            <CloseIcon sx={{ color: theme.palette.grey[400] }} />
           </span>
         </Typography>
 
@@ -166,7 +187,15 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
               </Select>
             </FormControl>
             {formik.touched.duration && formik.errors.duration && (
-              <div style={{ color: "red" }}>{formik.errors.duration}</div>
+              <div
+                style={{
+                  color: "red",
+                  fontSize: "0.75rem",
+                  padding: "0 0 0 10px",
+                }}
+              >
+                {formik.errors.duration}
+              </div>
             )}
           </Box>
           <Box
@@ -197,6 +226,7 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
               display: "flex",
               flexDirection: "column",
               alignItems: "start",
+              mb: 3,
             }}
           >
             <Typography>Features</Typography>
@@ -209,16 +239,31 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.features}
-              style={{ width: "100%", marginBottom: "16px" }}
+              style={{ width: "100%", marginBottom: "5px" }}
             />
             {formik.touched.features && formik.errors.features && (
-              <div style={{ color: "red" }}>{formik.errors.features}</div>
+              <div
+                style={{
+                  color: "red",
+                  fontSize: "0.75rem",
+                  padding: "0 0 0 10px",
+                }}
+              >
+                {formik.errors.features}
+              </div>
             )}
           </Box>
-
-          <Button type="submit" variant="contained" color="primary">
-            {isEditRecord ? "Update" : "Submit"}
-          </Button>
+          <Box px={3}>
+            <Button
+              fullWidth
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ borderRadius: "18px" }}
+            >
+              Submit
+            </Button>
+          </Box>
         </form>
       </Box>
     </Modal>

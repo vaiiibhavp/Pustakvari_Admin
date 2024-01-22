@@ -7,11 +7,16 @@ export default function Input(theme) {
     MuiInputBase: {
       styleOverrides: {
         root: {
+          backgroundColor: "#ede7f54a",
+          border: "",
           "&.Mui-disabled": {
-            "& svg": { color: theme.palette.text.disabled },
+            "& svg": {
+              color: theme.palette.text.disabled,
+            },
           },
         },
         input: {
+          border: "1px solid #ede7f54a",
           "&::placeholder": {
             opacity: 1,
             color: theme.palette.text.disabled,
@@ -25,6 +30,9 @@ export default function Input(theme) {
           "&:before": {
             borderBottomColor: alpha(theme.palette.grey[500], 0.56),
           },
+        },
+        input: {
+          border: "none", // Add this line to remove the border
         },
       },
     },

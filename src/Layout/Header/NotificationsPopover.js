@@ -29,20 +29,12 @@ import { Navigate, useNavigate } from "react-router";
 const NOTIFICATIONS = [
   {
     id: 1,
-    title: "Your order is placed",
+    title: "BPHE society institute made an account",
     description: "waiting for shipping",
     avatar: null,
+    time: "2 min ago",
     type: "order_placed",
     // createdAt: set(new Date(), { hours: 10, minutes: 30 }),
-    isUnRead: true,
-  },
-  {
-    id: 2,
-    title: "laxman Nemane",
-    description: "answered to your comment on the Minimal",
-    avatar: "/assets/images/avatars/avatar_2.jpg",
-    type: "friend_interactive",
-    // createdAt: sub(new Date(), { hours: 3, minutes: 30 }),
     isUnRead: true,
   },
 ];
@@ -119,21 +111,12 @@ export default function NotificationsPopover() {
         <Divider sx={{ borderStyle: "dashed" }} />
 
         <Box sx={{ height: { xs: 340, sm: "auto" } }}>
-          <List
-            disablePadding
-            subheader={
-              <ListSubheader
-                disableSticky
-                sx={{ py: 1, px: 2.5, typography: "overline" }}
-              >
-                New
-              </ListSubheader>
-            }
-          >
+          <List disablePadding>
             {notifications?.slice(0, 2).map((notification) => (
               <NotificationItem
                 key={notification.id}
                 notification={notification}
+                time={notification.time}
               />
             ))}
           </List>
@@ -161,7 +144,7 @@ export default function NotificationsPopover() {
 
 // ----------------------------------------------------------------------
 
-function NotificationItem({ notification }) {
+function NotificationItem({ notification, time }) {
   const { avatar, title } = renderContent(notification);
 
   return (
@@ -181,6 +164,14 @@ function NotificationItem({ notification }) {
       </ListItemAvatar>
       <ListItemText
         primary={title}
+        sx={{
+          mt: 0.5,
+          fontSize: "14px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          color: "text.disabled",
+        }}
         secondary={
           <Typography
             variant="caption"
@@ -191,7 +182,7 @@ function NotificationItem({ notification }) {
               color: "text.disabled",
             }}
           >
-            nothing
+            {time}
           </Typography>
         }
       />
@@ -210,7 +201,7 @@ function renderContent(notification) {
         variant="body2"
         sx={{ color: "text.secondary" }}
       >
-        {/* &nbsp; {noCase(notification.description)} */}
+        {/* {notification.time} */}
       </Typography>
     </Typography>
   );

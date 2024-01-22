@@ -5,11 +5,12 @@ import { useTheme, alpha } from '@mui/material/styles';
 // ----------------------------------------------------------------------
 
 export default function useChart(options) {
+
     const theme = useTheme();
 
     const LABEL_TOTAL = {
         show: true,
-        label: 'Total',
+        label: options?.manualLable === false ? "" : 'Total Users',
         color: theme.palette.text.secondary,
         fontSize: theme.typography.subtitle2.fontSize,
         fontWeight: theme.typography.subtitle2.fontWeight,
@@ -112,31 +113,21 @@ export default function useChart(options) {
         tooltip: {
             x: {
                 show: false,
+
             },
+
         },
 
         // Legend
         legend: {
-            show: true,
             fontSize: String(13),
-            position: 'top',
-            horizontalAlign: 'right',
-            markers: {
-                radius: 12,
-            },
-            fontWeight: 500,
-            itemMargin: { horizontal: 12 },
-            labels: {
-                colors: theme.palette.text.primary,
-            },
         },
-
         // plotOptions
         plotOptions: {
             // Bar
             bar: {
                 borderRadius: 2,
-                columnWidth: '35%',
+                columnWidth: options?.title !== "Users" ? "10%" : "35%",
                 borderRadiusApplication: 'end',
                 borderRadiusWhenStacked: 'last',
             },
@@ -159,6 +150,7 @@ export default function useChart(options) {
                     background: alpha(theme.palette.grey[500], 0.16),
                 },
                 dataLabels: {
+                    show: true,
                     value: LABEL_VALUE,
                     total: LABEL_TOTAL,
                 },

@@ -12,10 +12,12 @@ import {
     Modal,
     Box,
     Typography,
+    useTheme,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import CloseIcon from "@mui/icons-material/Close";
+import { ModalCSSStyle } from '../../Helper/utils/ModalCss';
 
 
 const style = {
@@ -24,15 +26,32 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 360,
+    minHeight: 500,
+    overflowY: "auto",
     borderRadius: "20px",
     bgcolor: 'background.paper',
     // border: '2px solid #000',
     boxShadow: 24,
     p: 2,
+    '&::-webkit-scrollbar': {
+        width: '0px',
+        padding: "10px 0"
+    },
+    '&::-webkit-scrollbar-thumb': {
+        backgroundColor: '#888',
+        borderRadius: '6px',
+    },
+    '&::-webkit-scrollbar-track': {
+        backgroundColor: '#f1f1f1',
+        borderRadius: '10px',
+    },
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#888 #f1f1f1', // For Firefox
 };
 
 const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEditableRecord }) => {
 
+    const theme = useTheme();
     let isEditable = isEditableRecord?.id ? true : false
 
 
@@ -86,7 +105,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style} textAlign={"center"}>
+            <Box sx={ModalCSSStyle} textAlign={"center"}>
                 <Typography
                     id="modal-modal-title"
                     variant="h6"
@@ -98,10 +117,10 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
                         alignItems: "center",
                     }}
                 >
-                    {isEditable ? "Edit" : "Create New User"}
+                    {isEditable ? "Edit institute" : "Create New Institute"}
 
                     <span onClick={handleClose}>
-                        <CloseIcon />
+                        <CloseIcon sx={{ color: theme.palette.grey[400] }} />
                     </span>
                 </Typography>
                 <form onSubmit={formik.handleSubmit} style={{ padding: "10px 0" }}>
@@ -233,11 +252,13 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
                         </FormControl>
                     </Box>
 
+                    <Box px={3}>
 
 
-                    <Button type="submit" variant="contained" color="primary" mt={2} sx={{ marginTop: "15px" }}>
-                        {isEditable ? "Update" : "Submit"}
-                    </Button>
+                        <Button fullWidth type="submit" variant="contained" color="primary" mt={2} sx={{ marginTop: "15px", borderRadius: "18px" }}>
+                            {isEditable ? "Update" : "Submit"}
+                        </Button>
+                    </Box>
                 </form>
             </Box>
 

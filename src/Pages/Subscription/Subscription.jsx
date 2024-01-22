@@ -10,8 +10,8 @@ const Subscription = () => {
     const [isOpenSunscriptionPlanModal, setIsOpenSubscriptionPlanModal] = useState(false)
     const [isEditRecord, setIsEditRecord] = useState({})
     const data = [
-        { Subscription_Name: 'John Doe', Features: "500 ebooks", Rate: "500", Duration: "Monthly" },
-        { Subscription_Name: 'lakhan dev', Features: "500 ebooks", Rate: "500", Duration: "Monthly" },
+        { S: 1, Subscription_Name: 'John Doe', Features: "500 ebooks", Rate: "500", Duration: "Monthly" },
+        { S: 2, Subscription_Name: 'lakhan dev', Features: "500 ebooks", Rate: "500", Duration: "Monthly" },
         // Add more rows as needed
     ];
     return (
@@ -24,7 +24,7 @@ const Subscription = () => {
                     <Button onClick={() => {
                         setIsEditRecord({})
                         setIsOpenSubscriptionPlanModal(true)
-                    }} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+{AppStrings?.add_plans}</Button>
+                    }} variant='contained'>+ {AppStrings?.add_plans}</Button>
                 </Box>
             </Box>
             <CommonTable columns={SubscriptionTablesColumn} data={data} rowSelect={() => console.log("row selected")} editRecord={(e) => {

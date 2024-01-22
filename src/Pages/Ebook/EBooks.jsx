@@ -28,6 +28,34 @@ const EBooks = () => {
     const open = Boolean(isPopOver);
     const id = open ? 'simple-popover' : undefined;
 
+    const data = [
+        {
+            S: 1,
+            E_book_Name: "Siddhartha",
+            img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz5N9rMzWE_vpTIaApKr7KP6NnbaJBfXiGBg&usqp=CAU",
+            Category: "Horror",
+            Author: "Fiction",
+            Type: "Fiction",
+        },
+        {
+            S: 2,
+            img: "https://aliabdaal.com/wp-content/uploads/2023/01/Atomic-Habits.jpg",
+            E_book_Name: "The Count of Monte Cristo",
+            Category: "True Crime",
+            Author: "Daisy-Mae Cameron",
+            Type: "Non-Fiction",
+        },
+        {
+            S: 3,
+            img: "https://aliabdaal.com/wp-content/uploads/2023/01/Atomic-Habits.jpg",
+            E_book_Name: "Atomic habit",
+            Category: "insired",
+            Author: "me",
+            Type: "good",
+        },
+
+    ]
+
 
     return (
         <Container maxWidth="xl">
@@ -44,11 +72,11 @@ const EBooks = () => {
                         <Button onClick={() => {
                             setIsEditable({});
                             setIsOpenEbookModal(true);
-                        }} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+{AppStrings?.add_e_book}</Button>
+                        }} variant="contained">+{AppStrings?.add_e_book}</Button>
                     </Box>
                 </Box>
             </Box>
-            <CommonTable columns={ebooksTablesColumn} data={[]} rowSelect={() => console.log("row selected")} editRecord={(e) => {
+            <CommonTable columns={ebooksTablesColumn} data={data || []} rowSelect={() => console.log("row selected")} editRecord={(e) => {
 
                 setIsEditable({ id: 1 });
                 setIsOpenEbookModal(true);

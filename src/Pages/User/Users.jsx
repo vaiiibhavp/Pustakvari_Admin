@@ -13,7 +13,7 @@ const Users = () => {
 
     const data = [
         { S: 1, User_Name: 'John Doe', Age: 25, Institute_user: false, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false },
-        { S: 2, Name: 'lakhan dev', Age: 25, Institute_user: true, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false },
+        { S: 2, User_Name: 'lakhan dev', Age: 25, Institute_user: true, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false },
         // Add more rows as needed
     ];
     return (
@@ -23,10 +23,13 @@ const Users = () => {
                 <Typography variant='h5'>Users</Typography>
                 <Box sx={{ display: "flex", gap: 1 }}>
                     <Searchbar onSearch={(e) => console.log("hello", e)} />
-                    <Button onClick={() => {
-                        setIsEditable({});
-                        setIsUserModalOpen(true)
-                    }} sx={{ background: colorCodes?.PRIMARY_COLOR, color: colorCodes?.GRAY_SHAD_500 }}>{AppStrings?.Add_user}</Button>
+                    <Button
+                        variant='contained'
+
+                        onClick={() => {
+                            setIsEditable({});
+                            setIsUserModalOpen(true)
+                        }} > + {AppStrings?.Add_user}</Button>
                 </Box>
             </Box>
             <CommonTable columns={usersSuperAdminTablesColumn} data={data} rowSelect={() => console.log("row selected")} editRecord={(e) => {
