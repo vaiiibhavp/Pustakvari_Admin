@@ -13,27 +13,35 @@ import { AppStrings, colorCodes } from '../../Helper/Constant';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import useAuthApis from '../../Hooks/Auth';
 
 
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const { userLogin } = useAuthApis();
 
     const navigate = useNavigate()
 
     const formik = useFormik({
         initialValues: {
-            email: '',
+            emailId: '',
             password: '',
         },
         validationSchema: Yup.object({
-            // email: Yup.string().email('Invalid email address').required('Required'),
-            // password: Yup.string().required('Required'),
+            emailId: Yup.string().email('Invalid email address').required('Required'),
+            password: Yup.string().required('Required'),
         }),
         onSubmit: (values) => {
             // You can handle form submission here
+            userLogin(values).then((res) => {
+                console.log(res, "ress i getting");
+                navigate("/Dashboard")
+            }).catch((error) => {
+                console.log(error);
+            })
             console.log('Form values:', values);
-            navigate("/Dashboard")
+
         },
     });
 
@@ -58,16 +66,16 @@ const LoginForm = () => {
                                 // sx={{ background: colorCodes?.GRAY_SHAD_100 }}
                                 fullWidth
                                 variant="outlined"
-                                id="email"
+                                id="emailId"
                                 placeholder={AppStrings?.email_Id}
                                 size="small"
-                                name="email"
+                                name="emailId"
                                 type="text"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                value={formik.values.email}
-                                error={formik.touched.email && Boolean(formik.errors.email)}
-                                helperText={formik.touched.email && formik.errors.email}
+                                value={formik.values.emailId}
+                                error={formik.touched.emailId && Boolean(formik.errors.emailId)}
+                                helperText={formik.touched.emailId && formik.errors.emailId}
                                 InputProps={{
                                     // sx: {
                                     //     background: colorCodes?.GRAY_SHAD_100,

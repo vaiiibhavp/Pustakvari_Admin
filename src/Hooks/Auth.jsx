@@ -2,11 +2,7 @@ import instance from "../Axios/Instance";
 
 const useAuthApis = () => {
     const userLogin = async (params) => {
-        let res = await instance.post(`api/login`, params, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
+        let res = await instance.post(`/userLogin`, params);
         return res.data;
     };
 
@@ -46,7 +42,6 @@ const useAuthApis = () => {
 
     const getUserProfile = async () => {
         let res = await instance.get(`/users/profile`);
-
         return res.data;
     };
 
