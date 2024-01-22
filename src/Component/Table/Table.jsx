@@ -69,7 +69,7 @@ const CommonTable = ({
         rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     const renderText = (item, whichCoulumn) => {
-        console.log(item);
+        console.log(item, whichCoulumn);
         if (whichCoulumn?.icon) {
             if (whichCoulumn?.deleteIcon && whichCoulumn?.editIcon) {
                 return (
@@ -167,13 +167,14 @@ const CommonTable = ({
             return (
                 <Box sx={{ display: "flex", cursor: "pointer" }} onClick={onSeeDetail} >
                     <img
-                        src="https://media.licdn.com/dms/image/C4D03AQHH159tOQPesQ/profile-displayphoto-shrink_200_200/0/1661018767590?e=2147483647&v=beta&t=oEoaEhpSN2dsjwcAi5kHgmJRiXOIs5x1p-wIUsrVZls"
+                        src={""}
                         alt=""
                         style={{
                             width: "30px",
                             height: "30px",
                             borderRadius: "50%",
                             marginRight: "5px",
+                            background: theme?.palette?.grey[400]
                         }}
                     />
                     <Typography>{item}</Typography>
@@ -185,13 +186,14 @@ const CommonTable = ({
             return (
                 <Box sx={{ display: "flex", cursor: "pointer" }}  >
                     <img
-                        src="https://media.licdn.com/dms/image/C4D03AQHH159tOQPesQ/profile-displayphoto-shrink_200_200/0/1661018767590?e=2147483647&v=beta&t=oEoaEhpSN2dsjwcAi5kHgmJRiXOIs5x1p-wIUsrVZls"
-                        alt=""
+                        src={""}
+                        alt="img"
                         style={{
                             width: "30px",
                             height: "30px",
                             borderRadius: "50%",
                             marginRight: "5px",
+                            background: theme?.palette?.grey[400]
                         }}
                     />
                     <Typography>{item}</Typography>

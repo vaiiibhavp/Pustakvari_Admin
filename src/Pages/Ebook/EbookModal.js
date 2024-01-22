@@ -138,53 +138,37 @@ const EbookModal = ({
 
         <Box>
           <form onSubmit={formik.handleSubmit} style={{ padding: "10px 0" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "start",
-                marginBottom: "16px",
-              }}
-            >
-              <Typography style={{ padding: "0 0 5px 0" }}>
-                Book Image:
-              </Typography>
+            <Box sx={{ display: "flex", gap: 3, width: "100%" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                  marginBottom: "16px",
+                }}
+              >
+                <Typography style={{ padding: "0 0 5px 0" }}>
+                  Book Image:
+                </Typography>
 
-              <Box sx={{ display: "flex", alignItems: "start", gap: 4 }}>
-                <label htmlFor="categoryImage">
-                  <IconButton
-                    component="span"
-                    sx={{
-                      width: 80,
-                      height: 120,
-                      borderRadius: "20px",
-                      background: theme?.palette?.grey[300],
-                    }}
-                  >
-                    <AddIcon sx={{ width: 40, height: 40 }} />
-                  </IconButton>
-                </label>
-                <input
-                  type="file"
-                  id="categoryImage"
-                  name="categoryImage"
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  onChange={handleImageChange}
-                />
-                <Box>
+                <Box sx={{ display: "flex", alignItems: "start", gap: 4 }}>
                   <label htmlFor="categoryImage">
                     <IconButton
                       component="span"
                       sx={{
-                        width: 200,
+                        width: 80,
                         height: 120,
                         borderRadius: "20px",
-                        background: theme?.palette?.grey[300],
+                        background: theme?.palette?.grey[200],
                       }}
                     >
-                      {/* <AddIcon sx={{ width: 40, height: 40 }} /> */}
-                      {/* upload pdf */}
+                      <AddIcon
+                        sx={{
+                          width: 40,
+                          height: 40,
+                          color: theme.palette.grey[400],
+                        }}
+                      />
                     </IconButton>
                   </label>
                   <input
@@ -197,7 +181,50 @@ const EbookModal = ({
                   />
                 </Box>
               </Box>
+              <Box
+                fullWidth
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                }}
+              >
+                <Typography style={{ padding: "0 0 5px 0" }}>
+                  Book Pdf:
+                </Typography>
+                <label htmlFor="categoryImage">
+                  <IconButton
+                    component="span"
+                    sx={{
+                      width: 210,
+                      height: 120,
+                      borderRadius: "20px",
+                      background: theme?.palette?.grey[200],
+                      border: `1px dotted ${theme?.palette?.grey[800]}`,
+                    }}
+                  >
+                    {/* <AddIcon sx={{ width: 40, height: 40 }} /> */}
+                    <Typography
+                      sx={{
+                        fontSize: "14px",
+                        color: theme?.palette?.grey[400],
+                      }}
+                    >
+                      upload pdf
+                    </Typography>
+                  </IconButton>
+                </label>
+                <input
+                  type="file"
+                  id="categoryImage"
+                  name="categoryImage"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleImageChange}
+                />
+              </Box>
             </Box>
+
             <Box
               sx={{
                 display: "flex",

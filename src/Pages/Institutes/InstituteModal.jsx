@@ -12,6 +12,7 @@ import {
     Modal,
     Box,
     Typography,
+    useTheme,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -50,6 +51,7 @@ const style = {
 
 const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEditableRecord }) => {
 
+    const theme = useTheme();
     let isEditable = isEditableRecord?.id ? true : false
 
 
@@ -115,10 +117,10 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
                         alignItems: "center",
                     }}
                 >
-                    {isEditable ? "Edit" : "Create New User"}
+                    {isEditable ? "Edit institute" : "Create New Institute"}
 
                     <span onClick={handleClose}>
-                        <CloseIcon />
+                        <CloseIcon sx={{ color: theme.palette.grey[400] }} />
                     </span>
                 </Typography>
                 <form onSubmit={formik.handleSubmit} style={{ padding: "10px 0" }}>
@@ -250,11 +252,13 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
                         </FormControl>
                     </Box>
 
+                    <Box px={3}>
 
 
-                    <Button type="submit" variant="contained" color="primary" mt={2} sx={{ marginTop: "15px" }}>
-                        {isEditable ? "Update" : "Submit"}
-                    </Button>
+                        <Button fullWidth type="submit" variant="contained" color="primary" mt={2} sx={{ marginTop: "15px", borderRadius: "18px" }}>
+                            {isEditable ? "Update" : "Submit"}
+                        </Button>
+                    </Box>
                 </form>
             </Box>
 

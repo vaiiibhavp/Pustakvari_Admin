@@ -117,7 +117,7 @@ export const usersSuperAdminTablesColumn = [
 export const ebooksTablesColumn = [
   {
     label: "SNo",
-    field: "S.No",
+    field: "S",
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -168,7 +168,7 @@ export const ebooksTablesColumn = [
 
   {
     label: "Take Actions",
-    field: "Take Actions",
+    field: "Take_Actions",
     icon: true,
     deleteIcon: true,
     editIcon: true,
