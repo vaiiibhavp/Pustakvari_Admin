@@ -13,7 +13,7 @@ const OtpValidation = () => {
         newOtp[index] = value;
         setOtp(newOtp);
     };
-
+    // 
 
     return (
         <Container component="main" maxWidth="xs">
