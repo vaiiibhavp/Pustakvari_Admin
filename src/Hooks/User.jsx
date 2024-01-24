@@ -9,7 +9,7 @@ const UseUserApis = () => {
   const createUser = async (body) => {
     const response = await instance.post(`/createUser`, body, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
     });
     return response;
@@ -18,7 +18,7 @@ const UseUserApis = () => {
   const updateUser = async (body, id) => {
     const response = await instance.put(`/updateUser/${id}`, body, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
     });
     return response;

@@ -79,11 +79,13 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
       .required("Confirm password is required"),
   });
 
-  const handleSubmit = (isEdit, value) => {
+  const handleSubmit = (isEdit, value, { resetForm }) => {
     if (isEdit) {
-      updateUser(value)
+      updateUser(value, isEditableRecord?._id)
         .then((res) => {
           console.log("update user response", res);
+          resetForm();
+          setUserModalOpen(false);
         })
         .catch((err) => {
           console.log(err);
@@ -100,6 +102,8 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
       createUser(data)
         .then((res) => {
           console.log("create user response", res);
+          resetForm();
+          setUserModalOpen(false);
         })
         .catch((err) => {
           console.log(err);
@@ -110,8 +114,9 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: (values) => {
-      handleSubmit(isEditable, values);
+
+    onSubmit: (values, { resetForm }) => {
+      handleSubmit(isEditable, values, { resetForm });
     },
   });
 
