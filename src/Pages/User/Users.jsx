@@ -15,6 +15,7 @@ import {
   useTheme,
 } from "@mui/material";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import React, { useEffect, useState } from "react";
 import CommonTable from "../../Component/Table/Table";
@@ -29,9 +30,11 @@ const Users = () => {
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [isEditable, setIsEditable] = useState(null);
   const [userData, setUserData] = useState([]);
+  const [globalData, setGlobalData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const theme = useTheme();
+  const { getUsers } = UseUserApis();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -41,7 +44,7 @@ const Users = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const { getUsers } = UseUserApis();
+
   const getUserList = () => {
     try {
       getUsers().then((res) => {
@@ -49,19 +52,34 @@ const Users = () => {
           return {
             ...ele,
             created_at: moment(ele?.created_at).format("DD-MM-YYYY h:mm:ss a"),
+            is_instituteUser: ele?.is_instituteUser === true ? "Yes" : "No",
             index: idx,
           };
         });
         setUserData(data);
+        setGlobalData(data);
       });
     } catch (err) {
       console.log(err);
     }
   };
 
+  const handeSearch = (value) => {
+    if (value) {
+      const data = globalData?.filter((e) => {
+        return e?.fullName?.toLowerCase()?.includes(value?.toLowerCase());
+      });
+      setUserData(data);
+    } else {
+      // getUserList();
+      setUserData(globalData);
+    }
+  };
+  console.log("userData", userData);
+
   useEffect(() => {
     getUserList();
-  }, []);
+  }, [isUserModalOpen]);
 
   return (
     <Container maxWidth="xl">
@@ -76,7 +94,7 @@ const Users = () => {
       >
         <Typography variant="h5">Users</Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
-          <Searchbar onSearch={(e) => console.log("hello", e)} />
+          <Searchbar onSearch={(e) => handeSearch(e)} />
           <Button
             variant="contained"
             onClick={() => {
@@ -136,15 +154,37 @@ const Users = () => {
                       </TableCell>
                       <TableCell align="right">{row?.fullName}</TableCell>
                       <TableCell align="right">{row?.mobileNo}</TableCell>
-                      <TableCell align="right">{row?.Institute_user}</TableCell>
+                      <TableCell align="right">
+                        {row?.is_instituteUser}
+                      </TableCell>
                       <TableCell align="right">{row?.emailId}</TableCell>
                       <TableCell align="right">{row?.created_at}</TableCell>
                       <TableCell align="right">{row?.Last_Login}</TableCell>
-                      <TableCell align="right">{row?.status}</TableCell>
                       <TableCell align="right">
-                        <Switch defaultChecked color="secondary" />
+                        <Button
+                          sx={{
+                            background: theme.palette?.grey[300],
+                            color: theme.palette?.grey[600],
+                            textDecoration: "none",
+                            borderRadius: "20px",
+                            padding: "0 16px",
+                            "&.active": {
+                              color: "text.primary",
+                              bgcolor: "action.selected",
+                              fontWeight: "fontWeightBold",
+                            },
+                          }}
+                        >
+                          {row?.activeStatus ? "Active" : "Inactive"}
+                        </Button>
                       </TableCell>
                       <TableCell align="right">
+                        <Switch
+                          defaultChecked={row?.activeStatus}
+                          color="secondary"
+                        />
+                      </TableCell>
+                      <TableCell align="right" style={{ minWidth: "200px" }}>
                         <Box>
                           <Button
                             sx={{
@@ -164,6 +204,10 @@ const Users = () => {
                           >
                             <BorderColorOutlinedIcon size="medium" />
                           </Button>
+                          <Button
+                            // variant="outlined"
+                            startIcon={<DeleteIcon />}
+                          ></Button>
                         </Box>
                       </TableCell>
                     </TableRow>
