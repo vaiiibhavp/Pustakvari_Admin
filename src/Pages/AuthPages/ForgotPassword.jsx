@@ -8,16 +8,23 @@ import { TextField, Button, Typography, Container, CssBaseline, Grid } from '@mu
 
 // Contants
 import { AppStrings, colorCodes } from '../../Helper/Constant';
+import useAuthApis from '../../Hooks/Auth';
 
 const ForgotPasswordForm = () => {
+   const {forgotPassword} = useAuthApis()
     const formik = useFormik({
         initialValues: {
-            email: '',
+            emailId: '',
         },
         validationSchema: Yup.object({
-            email: Yup.string().email('Invalid email address').required('Required'),
+            emailId: Yup.string().email('Invalid email address').required('Required'),
         }),
         onSubmit: (values) => {
+            forgotPassword(values).then((res)=> {
+            console.log(res,"response")
+            }).catch((err)=> {
+                console.error(err)
+            })
             // You can handle forgot password submission here
             console.log('Form values:', values);
         },
@@ -39,17 +46,17 @@ const ForgotPasswordForm = () => {
                             <TextField
                                 fullWidth
                                 variant="outlined"
-                                id="email"
+                                id="emailId"
                                 size='small'
-                                name="email"
+                                name="emailId"
                                 placeholder={AppStrings?.email_Id}
                                 // label="Email"
                                 type="text"
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                value={formik.values.email}
-                                error={formik.touched.email && Boolean(formik.errors.email)}
-                                helperText={formik.touched.email && formik.errors.email}
+                                value={formik.values.emailId}
+                                error={formik.touched.emailId && Boolean(formik.errors.emailId)}
+                                helperText={formik.touched.emailId && formik.errors.emailId}
                             />
                         </Grid>
                     </Grid>

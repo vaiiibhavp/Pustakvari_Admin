@@ -1,4 +1,5 @@
 // Tables Column
+
 // super Admin
 export const usersSuperAdminTablesColumn = [
   {
@@ -14,7 +15,7 @@ export const usersSuperAdminTablesColumn = [
   },
   {
     label: "User Name",
-    field: "User_Name",
+    field: "fullName",
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -25,7 +26,7 @@ export const usersSuperAdminTablesColumn = [
   },
   {
     label: "Contact",
-    field: "Contact",
+    field: "mobileNo",
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -47,7 +48,7 @@ export const usersSuperAdminTablesColumn = [
   },
   {
     label: "Email",
-    field: "Email",
+    field: "emailId",
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -58,7 +59,7 @@ export const usersSuperAdminTablesColumn = [
   },
   {
     label: "Account created on",
-    field: "Account created on",
+    field: `created_at`,
     icon: false,
     deleteIcon: false,
     editIcon: false,
@@ -69,7 +70,7 @@ export const usersSuperAdminTablesColumn = [
   },
   {
     label: "Last Login",
-    field: "Last Login",
+    field: "activeStatus",
     icon: false,
     deleteIcon: false,
     editIcon: false,
