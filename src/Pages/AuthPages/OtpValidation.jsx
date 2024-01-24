@@ -29,7 +29,6 @@ const OtpValidation = () => {
                     {otp.map((digit, index) => (
                         <Box key={index} mx={2}>
                             <TextField
-
                                 variant="outlined"
                                 size="small"
                                 value={digit}

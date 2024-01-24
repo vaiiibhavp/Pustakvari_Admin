@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -18,6 +18,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { AppStrings } from "../../Helper/Constant";
 import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
+import useSubscription from "../../Hooks/Subscription";
 
 const style = {
   position: "absolute",
@@ -47,18 +48,45 @@ const style = {
   scrollbarColor: "#888 #f1f1f1", // For Firefox
 };
 
-const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
+const SubscriptionModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  subscriptionData,
+  setSubscriptionData,
+  isEditRecord,
+}) => {
   let isEditable = isEditRecord?.id ? true : false;
-  console.log(isEditRecord, "isedit", isEditable);
+  const [editable, setEditable] = useState(false);
+
+  const [subscriptionModalState, setSubscriptionModalState] = useState({
+    durationList: [],
+  });
+
+  const { updateSubscripton, createSubscription, getSubscriptonDurationList } =
+    useSubscription();
   const theme = useTheme();
 
-  const initialValues = {
-    subscriptionName: "",
-    duration: "",
-    rate: "",
-    features: "",
-  };
+  const handleClose = () => setIsModalOpen(false);
 
+  useEffect(() => {
+    getSubscriptonDurationList()
+      .then((res) => {
+        console.log(res, "Ress");
+        setSubscriptionModalState((prev) => ({
+          ...prev,
+          durationList: res.data || [],
+        }));
+      })
+      .catch((error) => {
+        console.log("error");
+      });
+  }, []);
+  const initialValues = {
+    subscriptionName: isEditRecord?.subscriptionName || "",
+    duration: isEditRecord?.duration?._id || "",
+    rate: isEditRecord?.rate || "",
+    features: isEditRecord?.features || "",
+  };
   const validationSchema = Yup.object({
     subscriptionName: Yup.string().required("Subscription Name is required"),
     duration: Yup.string().required("Duration is required"),
@@ -66,24 +94,33 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
     features: Yup.string().required("Features are required"),
   });
 
-  const durationOptions = [
-    { label: "Monthly", value: "monthly" },
-    { label: "Yearly", value: "yearly" },
-    { label: "Quarterly", value: "quarterly" },
-  ];
-
   const onSubmit = (values) => {
-    // Handle form submission logic here
-    console.log(values);
+    if (isEditRecord?._id) {
+      delete values.duration;
+      updateSubscripton(values, isEditRecord?._id)
+        .then((res) => {
+          setIsModalOpen(false);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    } else {
+      createSubscription(values)
+        .then((res) => {
+          setIsModalOpen(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema,
+    enableReinitialize: true,
     onSubmit,
   });
-
-  const handleClose = () => setIsModalOpen(false);
 
   return (
     <Modal
@@ -104,7 +141,7 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
             alignItems: "center",
           }}
         >
-          {isEditable
+          {isEditRecord?._id
             ? AppStrings?.Edit_Subscription_title
             : AppStrings?.Add_new_subscription_plan}
 
@@ -132,7 +169,9 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
               margin="normal"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.subscriptionName}
+              value={
+                formik.values.subscriptionName || isEditRecord?.subscriptionName
+              }
               error={
                 formik.touched.subscriptionName &&
                 Boolean(formik.errors.subscriptionName)
@@ -169,19 +208,19 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
                 }}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.duration}
+                value={formik.values.duration || isEditRecord?.duration?._id}
                 error={
                   formik.touched.duration && Boolean(formik.errors.duration)
                 }
               >
                 <MenuItem value="" label="Select Duration" />
-                {durationOptions.map((option) => (
+                {subscriptionModalState?.durationList?.map((option) => (
                   <MenuItem
-                    key={option.value}
-                    value={option.value}
-                    label={option.label}
+                    key={option._id}
+                    value={option._id}
+                    label={option.duration}
                   >
-                    {option.label}
+                    {option.duration}
                   </MenuItem>
                 ))}
               </Select>
@@ -216,7 +255,7 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
               margin="normal"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.rate}
+              value={formik.values.rate || isEditRecord?.rate}
               error={formik.touched.rate && Boolean(formik.errors.rate)}
               helperText={formik.touched.rate && formik.errors.rate}
             />
@@ -238,7 +277,7 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
               placeholder="Enter Features"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.features}
+              value={formik.values.features || isEditRecord?.features}
               style={{ width: "100%", marginBottom: "5px" }}
             />
             {formik.touched.features && formik.errors.features && (
@@ -261,7 +300,7 @@ const SubscriptionModal = ({ isModalOpen, setIsModalOpen, isEditRecord }) => {
               color="primary"
               sx={{ borderRadius: "18px" }}
             >
-              Submit
+              {isEditRecord?._id ? "Update" : "Submit"}
             </Button>
           </Box>
         </form>

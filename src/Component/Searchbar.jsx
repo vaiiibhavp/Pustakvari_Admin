@@ -8,8 +8,9 @@ const Searchbar = ({ onSearch }) => {
 
     return (
         <TextField
-            label="Search here ..."
+            // label="Search here ..."
             variant="outlined"
+            placeholder='Search Here'
             size='small'
             sx={{ border: "1px solid white" }}
             onChange={handleChange}
