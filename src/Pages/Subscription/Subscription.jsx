@@ -1,4 +1,4 @@
-import { Box, Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from '@mui/material'
+import { Box, Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import CommonTable from '../../Component/Table/Table'
 import { SubscriptionTablesColumn, usersSuperAdminTablesColumn } from '../Utils/constant';
@@ -17,9 +17,12 @@ const Subscription = () => {
 
     const { getSubscriptonList, deleteSubscription } = useSubscription();
     const theme = useTheme()
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const [subscriptionData, setSubscriptionData] = useState({
         subscriptionList: [],
+        globalData: [],
     })
 
     const [isOpenSunscriptionPlanModal, setIsOpenSubscriptionPlanModal] = useState(false)
@@ -28,7 +31,7 @@ const Subscription = () => {
 
     useEffect(() => {
         getSubscriptonList().then((res) => {
-            setSubscriptionData((prev) => ({ ...prev, subscriptionList: res.data || [] }))
+            setSubscriptionData((prev) => ({ ...prev, subscriptionList: res.data || [], globalData: res?.data || [] }))
 
         }).catch((error) => {
             console.log(error);
@@ -50,24 +53,33 @@ const Subscription = () => {
         })
     }
 
-    const onSearch = (e) => {
-        // if (e?.length > 0) {
+    const onSearch = (value) => {
 
-        //     const filteredSubscriptionList = subscriptionData?.subscriptionList?.filter((item) => {
-        //         return item.subscriptionName.toLowerCase().includes(e.toLowerCase());
-        //     });
-        //     setSubscriptionData((prev) => ({
-        //         ...prev, subscriptionList: filteredSubscriptionList
-        //     }))
-        // } else {
-        //     setSubscriptionData((prev) => ({
-        //         ...prev
-        //     }))
-        // }
+        if (value) {
+            const data = subscriptionData?.globalData?.filter((e) => {
+                return e?.subscriptionName?.toLowerCase()?.includes(value?.toLowerCase());
+            });
+            setSubscriptionData((prev) => ({ ...prev, subscriptionList: data }))
+        } else {
+            // getUserList();
+            setSubscriptionData((prev) => ({ ...prev, subscriptionList: subscriptionData.globalData }))
+
+        }
+
+
     }
 
 
 
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
 
 
 
@@ -91,28 +103,27 @@ const Subscription = () => {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead sx={{ background: theme.palette.grey[700] }}>
                             <TableRow sx={{ background: "gray" }}>
-                                <TableCell style={{ minWidth: "80px" }}>Sr No</TableCell>
+                                <TableCell style={{ minWidth: "80px" }}>{AppStrings?.sNo}</TableCell>
                                 <TableCell align="keft" style={{ minWidth: "150px" }}>
-                                    Subscription Name
+                                    {AppStrings?.subscription_Name}
                                 </TableCell>
                                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                                    Features
+                                    {AppStrings?.Duration}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "150px" }}>
-                                    Rate                                </TableCell>
+                                    {AppStrings?.rate}                                </TableCell>
                                 <TableCell align="center" style={{ minWidth: "120px" }}>
-                                    Duration
+                                    {AppStrings?.features}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "120px" }}>
-                                    Take Actions
+                                    {AppStrings?.takeAction}
                                 </TableCell>
-
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {subscriptionData?.subscriptionList?.length > 0 ?
                                 subscriptionData?.subscriptionList
-                                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((subscription, idx) => {
                                         console.log(subscription, "ddd");
                                         let { _id, duration, features, rate, subscriptionName, created_at, updated_at } = subscription;
@@ -169,23 +180,24 @@ const Subscription = () => {
                                         <Box sx={{ padding: "20px 0" }}>
                                             <ErrorOutlineIcon fontSize="large" sx={{ color: theme.palette.grey[500] }} />
                                             <Typography sx={{ color: theme.palette.grey[400] }} mt={1} mb={4}>
-                                                No data available
+                                                {AppStrings?.no_data_available}
                                             </Typography>
                                         </Box>
                                     </TableCell>
-                                </TableRow>}
+                                </TableRow>
+                            }
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {/* <TablePagination
+                <TablePagination
                     rowsPerPageOptions={[10, 25, 100]}
                     component="div"
-                    count={userData.length}
+                    count={subscriptionData?.subscriptionList?.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
-                /> */}
+                />
             </Paper>
             <SubscriptionModal isModalOpen={isOpenSunscriptionPlanModal} subscriptionData={subscriptionData} setSubscriptionData={setSubscriptionData} setIsModalOpen={setIsOpenSubscriptionPlanModal} isEditRecord={isEditRecord} />
         </Container>
