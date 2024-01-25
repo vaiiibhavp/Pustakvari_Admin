@@ -169,9 +169,7 @@ const SubscriptionModal = ({
               margin="normal"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={
-                formik.values.subscriptionName || isEditRecord?.subscriptionName
-              }
+              value={formik.values.subscriptionName}
               error={
                 formik.touched.subscriptionName &&
                 Boolean(formik.errors.subscriptionName)
@@ -208,7 +206,7 @@ const SubscriptionModal = ({
                 }}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.duration || isEditRecord?.duration?._id}
+                value={formik.values.duration}
                 error={
                   formik.touched.duration && Boolean(formik.errors.duration)
                 }
@@ -255,7 +253,7 @@ const SubscriptionModal = ({
               margin="normal"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.rate || isEditRecord?.rate}
+              value={formik.values.rate}
               error={formik.touched.rate && Boolean(formik.errors.rate)}
               helperText={formik.touched.rate && formik.errors.rate}
             />
@@ -277,7 +275,7 @@ const SubscriptionModal = ({
               placeholder="Enter Features"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.features || isEditRecord?.features}
+              value={formik.values.features}
               style={{ width: "100%", marginBottom: "5px" }}
             />
             {formik.touched.features && formik.errors.features && (
