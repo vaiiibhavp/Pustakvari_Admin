@@ -18,6 +18,9 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import CloseIcon from "@mui/icons-material/Close";
 import { ModalCSSStyle } from '../../Helper/utils/ModalCss';
+import useInstitues from '../../Hooks/Institutes';
+
+import { AppStrings } from '../../Helper/Constant';
 
 
 const style = {
@@ -49,25 +52,31 @@ const style = {
     scrollbarColor: '#888 #f1f1f1', // For Firefox
 };
 
-const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEditableRecord }) => {
+const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setParentState, isEditableRecord, setDetroyExistRecord }) => {
 
     const theme = useTheme();
     let isEditable = isEditableRecord?.id ? true : false
 
+    const { createInstituteRecord,
+        updateInstituteRecord
+    } = useInstitues()
 
-    const handleClose = () => setIsInstituteModalOpen(false);
+    const handleClose = () => {
+        setDetroyExistRecord({});
+        setIsInstituteModalOpen(false)
+    };
     const initialValues = {
-        instituteName: '',
-        email: '',
-        contactNumber: '',
+        instituteName: isEditableRecord?.instituteName || '',
+        emailId: isEditableRecord?.emailId || '',
+        mobileNo: isEditableRecord?.mobileNo || '',
         password: '',
         confirmPassword: '',
     };
 
     const validationSchema = Yup.object().shape({
         instituteName: Yup.string().required('Full name is required'),
-        email: Yup.string().email('Invalid email address').required('Email is required'),
-        contactNumber: Yup.string().required('Contact number is required'),
+        emailId: Yup.string().email('Invalid email address').required('Email is required'),
+        mobileNo: Yup.string().required('Contact number is required'),
         password: Yup.string().required('Password is required'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
@@ -77,11 +86,29 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
     const formik = useFormik({
         initialValues,
         validationSchema,
+        enableReinitialize: true,
         onSubmit: (values) => {
-            if (isEditable) {
-                console.log("ediRecords", values);
+            if (isEditableRecord?._id) {
+                delete values.confirmPassword;
+                updateInstituteRecord(values, isEditableRecord?._id).then((res) => {
+                    if (res.status === 200) {
+                        setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res.data.message }))
+                        setIsInstituteModalOpen(false)
+                        setDetroyExistRecord({});
+                    }
+                })
             } else {
-                console.log("adding result", values)
+                delete values.confirmPassword;
+                createInstituteRecord(values).then((res) => {
+                    if (res.status === 200) {
+                        setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res?.data.message }))
+                        setIsInstituteModalOpen(false)
+                    }
+                }).catch((errr) => {
+                    console.log(
+                        errr, "errro"
+                    );
+                })
             }
         },
     });
@@ -126,7 +153,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
                 <form onSubmit={formik.handleSubmit} style={{ padding: "10px 0" }}>
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>Institute Name:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.institute_name}:</Typography>
                         <TextField
                             fullWidth
                             id="instituteName"
@@ -134,7 +161,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
                             name="instituteName"
                             // label="Full Name"
                             size='small'
-                            placeholder='instituteName'
+                            placeholder={AppStrings?.institute_name}
                             variant="outlined"
                             margin="normal"
                             value={formik.values.instituteName}
@@ -147,50 +174,51 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>Email:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.email}:</Typography>
 
                         <TextField
                             fullWidth
-                            id="email"
-                            name="email"
+                            id="emailId"
+                            name="emailId"
                             // label="Email"
                             sx={{ marginTop: "0px" }}
                             size='small'
                             variant="outlined"
                             margin="normal"
+                            placeholder={AppStrings?.email}
                             type="email"
-                            value={formik.values.email}
+                            value={formik.values.emailId}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            error={formik.touched.email && Boolean(formik.errors.email)}
-                            helperText={formik.touched.email && formik.errors.email}
+                            error={formik.touched.emailId && Boolean(formik.errors.emailId)}
+                            helperText={formik.touched.emailId && formik.errors.emailId}
                         />
                     </Box>
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>Contact:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.contact_no}:</Typography>
 
                         <TextField
                             fullWidth
-                            id="contactNumber"
-                            name="contactNumber"
+                            id="mobileNo"
+                            name="mobileNo"
                             size='small'
                             sx={{ marginTop: "0px" }}
-                            // label="Contact Number"
+                            placeholder={AppStrings?.contact_no}
                             variant="outlined"
                             margin="normal"
-                            value={formik.values.contactNumber}
+                            value={formik.values.mobileNo}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            error={formik.touched.contactNumber && Boolean(formik.errors.contactNumber)}
-                            helperText={formik.touched.contactNumber && formik.errors.contactNumber}
+                            error={formik.touched.mobileNo && Boolean(formik.errors.mobileNo)}
+                            helperText={formik.touched.mobileNo && formik.errors.mobileNo}
                         />
                     </Box>
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>Password:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.password}:</Typography>
 
                         <FormControl fullWidth variant="outlined" margin="normal" sx={{ marginTop: "0px" }}>
                             <OutlinedInput
@@ -200,6 +228,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
                                 value={formik.values.password}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
+                                placeholder={AppStrings?.password}
                                 error={formik.touched.password && Boolean(formik.errors.password)}
                                 endAdornment={
                                     <InputAdornment position="end">
@@ -207,7 +236,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
                                             edge="end"
                                             onClick={handleClickShowPassword}
                                             onMouseDown={handleMouseDownPassword}
-                                            edge="end"
+
                                         >
                                             {formik.values.passwordVisible ? <Visibility /> : <VisibilityOff />}
                                         </IconButton>
@@ -222,14 +251,14 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, isEdita
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
-                        <Typography style={{ padding: "0 0 5px 0" }}>Confirm Password:</Typography>
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.confirmPassword}:</Typography>
 
                         <FormControl fullWidth variant="outlined" margin="normal" sx={{ marginTop: "0px" }}>
 
                             <OutlinedInput
                                 id="confirmPassword"
                                 name="confirmPassword"
-
+                                placeholder={AppStrings?.confirmPassword}
                                 type={formik.values.confirmPasswordVisible ? 'text' : 'password'}
                                 value={formik.values.confirmPassword}
                                 onChange={formik.handleChange}

@@ -81,7 +81,6 @@ const Users = () => {
   };
 
   const onRemoveHandler = (id) => {
-    console.log(id);
     deleteUserInfo(id).then((res) => {
       let filternewData = userData?.filter((item) => {
         return item._id !== id

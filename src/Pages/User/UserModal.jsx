@@ -53,7 +53,6 @@ const style = {
 const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
   let isEditable = isEditableRecord !== null ? true : false;
   const { updateUser, createUser } = UseUserApis();
-  console.log(isEditableRecord, "isEditableRecord");
   const theme = useTheme();
 
   const handleClose = () => setUserModalOpen(false);
@@ -83,7 +82,6 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
     if (isEdit) {
       updateUser(value, isEditableRecord?._id)
         .then((res) => {
-          console.log("update user response", res);
           resetForm();
           setUserModalOpen(false);
         })
@@ -101,7 +99,6 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
       };
       createUser(data)
         .then((res) => {
-          console.log("create user response", res);
           resetForm();
           setUserModalOpen(false);
         })
@@ -282,7 +279,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
                       edge="end"
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
-                      edge="end"
+
                     >
                       {formik.values.passwordVisible ? (
                         <Visibility />

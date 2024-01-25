@@ -71,7 +71,6 @@ const SubscriptionModal = ({
   useEffect(() => {
     getSubscriptonDurationList()
       .then((res) => {
-        console.log(res, "Ress");
         setSubscriptionModalState((prev) => ({
           ...prev,
           durationList: res.data || [],

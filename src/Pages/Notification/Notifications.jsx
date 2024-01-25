@@ -209,11 +209,9 @@ const Notifications = () => {
                     page={page}
                     rowsPerPage={rowsPerPage}
                     handleChangePage={(item, newPage) => {
-                        console.log("clicked", newPage);
                         setPage(newPage);
                     }}
                     handleChangeRowsPerPage={(event) => {
-                        console.log("clicked change row", event);
                         setRowsPerPage(parseInt(event.target.value, 10));
                         setPage(0);
                     }}

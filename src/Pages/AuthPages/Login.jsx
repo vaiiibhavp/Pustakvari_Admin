@@ -35,14 +35,11 @@ const LoginForm = () => {
         onSubmit: (values) => {
             // You can handle form submission here
             userLogin(values).then((res) => {
-                console.log(res, "ress i getting");
-                localStorage.setItem('user_token',res?.body?.token)
-                console.log(res?.body?.token, "data token ")
+                localStorage.setItem('user_token', res?.body?.token)
                 navigate("/Dashboard")
             }).catch((error) => {
                 console.log(error);
             })
-            console.log('Form values:', values);
 
         },
     });

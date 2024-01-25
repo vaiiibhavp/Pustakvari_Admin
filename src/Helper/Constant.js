@@ -179,6 +179,9 @@ export const AppStrings = {
   institute_user: "Institute user",
   last_login: "Last Login",
   status: "Status",
+  No_Of_questIon: "No of questIon",
+  Solved_by_No_of_users: "Solved by No ofusers",
+  Total_users: "Total User",
 
   no_data_available: "No data available",
 };

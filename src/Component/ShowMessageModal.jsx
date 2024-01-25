@@ -34,26 +34,25 @@ const style = {
     scrollbarColor: '#888 #f1f1f1', // For Firefox
 };
 
-export default function ShowsMessageModal({ message }) {
-    const [isOpenMessageModal, setIsOpenMessageModal] = React.useState(false);
-    const handleOpen = () => setIsOpenMessageModal(true);
-    const handleClose = () => setIsOpenMessageModal(false);
+export default function ShowsMessageModal({ isOpen, setIsOpen, message }) {
+    const handleOpen = () => setIsOpen((prev) => ({ ...prev, showSuccessModal: false, message: "" }));
+    const handleClose = () => setIsOpen((prev) => ({ ...prev, showSuccessModal: false, message: "" }));
+
 
     return (
         <div>
-            <Button onClick={handleOpen}>Open modal</Button>
             <Modal
-                open={isOpenMessageModal}
+                open={isOpen}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={ModalCSSStyle} textAlign={"center"}>
-                    {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Text in a modal
-                    </Typography> */}
-                    <img src={successImage} alt="success" style={{ height: "100px", padding: "10px 0" }} />
-                    <Typography fontSize={19} id="modal-modal-description" fontWeight={600} sx={{ mt: 2 }}>
+                    <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+
+                        <img src={successImage} alt="success" style={{ height: "100px", padding: "10px 0" }} />
+                    </Box>
+                    <Typography pb={2} fontSize={19} id="modal-modal-description" fontWeight={600} sx={{ mt: 2 }}>
                         {message || "record updated successfully!"}
                     </Typography>
                 </Box>

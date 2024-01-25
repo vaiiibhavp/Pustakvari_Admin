@@ -6,11 +6,11 @@ import { AppStrings, colorCodes } from '../../Helper/Constant';
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"; // Import the icon you want to use
 import SubscriptionModal from './SubscriptionModal';
 import Searchbar from '../../Component/Searchbar';
 import useSubscription from '../../Hooks/Subscription';
 
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"; // Import the icon you want to use
 
 
 const Subscription = () => {
@@ -39,9 +39,7 @@ const Subscription = () => {
     }, [isOpenSunscriptionPlanModal])
 
     const onRemoveHandler = (id) => {
-        console.log(id);
         deleteSubscription(id).then((res) => {
-            console.log(res, "ress");
             let filternewData = subscriptionData?.subscriptionList?.filter((item) => {
                 return item._id !== id
             })
@@ -65,12 +63,7 @@ const Subscription = () => {
             setSubscriptionData((prev) => ({ ...prev, subscriptionList: subscriptionData.globalData }))
 
         }
-
-
     }
-
-
-
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -125,7 +118,6 @@ const Subscription = () => {
                                 subscriptionData?.subscriptionList
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((subscription, idx) => {
-                                        console.log(subscription, "ddd");
                                         let { _id, duration, features, rate, subscriptionName, created_at, updated_at } = subscription;
                                         return (
                                             <TableRow key={_id}>

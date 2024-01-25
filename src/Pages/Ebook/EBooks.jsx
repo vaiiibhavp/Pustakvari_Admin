@@ -88,7 +88,6 @@ const EBooks = () => {
 
             <CategoryPopover id={id} open={open} isPopOver={isPopOver} handleClose={handleClose}
                 onEditHandler={() => {
-                    console.log("hello edit handler");
                     setIscatgoryEditRecord({ id: 2 })
                     setIsCategoryModalOpen(true);
                     setIsPopOver(null)

@@ -108,7 +108,6 @@ const EbookModal = ({
     formik.setFieldValue("categoryImage", event.currentTarget.files[0]);
   };
 
-  console.log(theme);
 
   return (
     <Modal
