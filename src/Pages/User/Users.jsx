@@ -16,11 +16,15 @@ import {
 } from "@mui/material";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"; // Import the icon you want to use
+
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import React, { useEffect, useState } from "react";
 import CommonTable from "../../Component/Table/Table";
 import { AppStrings, colorCodes } from "../../Helper/Constant";
 import { usersSuperAdminTablesColumn } from "../Utils/constant";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+
 import UserModal from "./UserModal";
 import Searchbar from "../../Component/Searchbar";
 import UseUserApis from "../../Hooks/User";
@@ -34,7 +38,7 @@ const Users = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const theme = useTheme();
-  const { getUsers } = UseUserApis();
+  const { getUsers, deleteUserInfo } = UseUserApis();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -75,7 +79,19 @@ const Users = () => {
       setUserData(globalData);
     }
   };
-  console.log("userData", userData);
+
+  const onRemoveHandler = (id) => {
+    console.log(id);
+    deleteUserInfo(id).then((res) => {
+      let filternewData = userData?.filter((item) => {
+        return item._id !== id
+      })
+      setUserData(filternewData)
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
 
   useEffect(() => {
     getUserList();
@@ -115,36 +131,35 @@ const Users = () => {
               <TableRow>
                 <TableCell style={{ minWidth: "80px" }}>Sr No</TableCell>
                 <TableCell align="right" style={{ minWidth: "150px" }}>
-                  User Name
+                  {AppStrings?.user_Name}
                 </TableCell>
                 <TableCell align="right" style={{ minWidth: "100px" }}>
-                  Contact
+                  {AppStrings?.Contact}
                 </TableCell>
                 <TableCell align="right" style={{ minWidth: "150px" }}>
-                  Institute user
+                  {AppStrings?.institute_user}
                 </TableCell>
                 <TableCell align="right" style={{ minWidth: "120px" }}>
-                  Email
+                  {AppStrings?.email}
                 </TableCell>
                 <TableCell align="right" style={{ minWidth: "200px" }}>
-                  Account created on
+                  {AppStrings?.Account_created_on}
                 </TableCell>
                 <TableCell align="right" style={{ minWidth: "180px" }}>
-                  Last Login
+                  {AppStrings?.last_login}
                 </TableCell>
                 <TableCell align="right" style={{ minWidth: "100px" }}>
-                  Status
+                  {AppStrings?.status}
                 </TableCell>
                 <TableCell align="right" style={{ minWidth: "100px" }}>
-                  Deactivate
+                  {AppStrings?.deactivate}
                 </TableCell>
                 <TableCell align="right" style={{ minWidth: "150px" }}>
-                  Take Actions
-                </TableCell>
+                  {AppStrings?.takeAction}                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {userData
+              {userData?.length > 0 ? userData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, idx) => {
                   return (
@@ -205,14 +220,33 @@ const Users = () => {
                             <BorderColorOutlinedIcon size="medium" />
                           </Button>
                           <Button
-                            // variant="outlined"
-                            startIcon={<DeleteIcon />}
-                          ></Button>
+                            sx={{
+                              margin: " 0 10px",
+                              background: theme.palette?.secondary?.lighter,
+                              color: theme.palette?.secondary.main,
+                              "&.active": {
+                                color: "text.secondary",
+                                bgcolor: "action.selected",
+                                fontWeight: "fontWeightBold",
+                              },
+                            }}
+                            onClick={() => onRemoveHandler(row._id)}
+                          > <DeleteOutlineOutlinedIcon size="medium" /></Button>
                         </Box>
                       </TableCell>
                     </TableRow>
                   );
-                })}
+                }) :
+                <TableRow>
+                  <TableCell colSpan={12} align="center">
+                    <Box sx={{ padding: "20px 0" }}>
+                      <ErrorOutlineIcon fontSize="large" sx={{ color: theme.palette.grey[500] }} />
+                      <Typography sx={{ color: theme.palette.grey[400] }} mt={1} mb={4}>
+                        {AppStrings?.no_data_available}
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                </TableRow>}
             </TableBody>
           </Table>
         </TableContainer>

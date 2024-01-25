@@ -6,15 +6,6 @@ import bookframe from "../Assets/Images/booksFrame.svg";
 // menusIcons
 // import dashboardIcon from "../Assets/Images/price-list (1) 1 1.svg"
 
-import dashboardIcon from "../Assets/Images/graphIcon.svg";
-import usericon from "../Assets/Images/userIcon.svg";
-import instituteIcon from "../Assets/Images/institute.svg";
-
-import ebookicon from "../Assets/Images/bookIcon.svg";
-
-import planIcon from "../Assets/Images/planIcon.svg";
-import lightIcon from "../Assets/Images/lightIcon.svg";
-
 export const AppStrings = {
   welcome_message: "Hi, Welcome back",
   // Auth Pages
@@ -155,9 +146,7 @@ export const AppStrings = {
   Add_new_subscription_plan: "Add new subscription plan",
   Subscription_Name: "Subscription Name",
   Edit_Subscription_title: "Edit subscription plan",
-  Duration: "Duration",
-  rate: "Rate",
-  features: "Features",
+
   delete_subscription_messgae:
     "Are you sure  you want to delete the subscription?",
   edit_subcription_message: "Subscription has been edited successfully!",
@@ -175,6 +164,23 @@ export const AppStrings = {
   answer_key: "Answer key",
   delete_quize_confirm_message: "Are you sure do you want to delete this quiz?",
   added_quize_message: "Quiz has been added successfully!",
+
+  // tables header
+
+  sNo: "Sr. No",
+  subscription_Name: "Subscription Name",
+  Duration: "Duration",
+  rate: "Rate",
+  features: "Features",
+  takeAction: "Take Actions",
+
+  user_Name: " User Name",
+  Contact: "Contact",
+  institute_user: "Institute user",
+  last_login: "Last Login",
+  status: "Status",
+
+  no_data_available: "No data available",
 };
 
 export const colorCodes = {
