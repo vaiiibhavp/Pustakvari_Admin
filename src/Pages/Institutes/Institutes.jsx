@@ -30,7 +30,7 @@ const label = { inputProps: { "aria-label": "Color switch demo" } };
 
 const Institutes = () => {
     const [isInstituteModalOpen, setIsInstituteModalOpen] = useState(false);
-    const { getInstituteList } = useInstitues();
+    const { getInstituteList, onStatusChangeInstitute } = useInstitues();
     const theme = useTheme();
     const [dataState, setDataState] = useState({
         instituteList: [],
@@ -38,6 +38,7 @@ const Institutes = () => {
         showSuccessModal: false,
         message: "",
         showEditSuccess: false,
+        render: false
     });
     const [isEditable, setIsEditable] = useState({});
     const navigate = useNavigate();
@@ -50,13 +51,14 @@ const Institutes = () => {
                         ...prev,
                         instituteList: res.data || [],
                         globalInstituteList: res.data || [],
+                        render: false
                     }));
                 }
             })
             .catch((error) => {
                 console.log("errro");
             });
-    }, [isInstituteModalOpen]);
+    }, [isInstituteModalOpen, dataState?.render]);
 
     const handleSearch = (value) => {
 
@@ -77,6 +79,18 @@ const Institutes = () => {
 
             }))
         }
+    }
+
+
+    const handleCheckStatus = (e, status) => {
+        let statusValue = status === true ? false : status === false ? true : true
+        onStatusChangeInstitute({ id: e, params: statusValue }).then((res) => {
+            setDataState((prev) => ({
+                render: true
+            }))
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
     return (
@@ -185,12 +199,15 @@ const Institutes = () => {
                                                             },
                                                         }}
                                                     >
-                                                        {!is_active ? "Active" : "Deactive"}
+                                                        {is_active ? "Active" : "Deactive"}
                                                     </Button>
                                                 </TableCell>
                                                 <TableCell align="center">{studentCount}</TableCell>
                                                 <TableCell align="center">
-                                                    <Switch {...label} defaultChecked color="secondary" />
+                                                    <Switch value={_id} defaultChecked={is_active} onChange={(e) => {
+                                                        console.log("hello", e.target.value);
+                                                        handleCheckStatus(e.target.value, is_active)
+                                                    }} color="secondary" />
                                                 </TableCell>
 
                                                 <TableCell align="center" style={{ minWidth: "200px" }}>

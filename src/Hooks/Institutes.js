@@ -33,8 +33,10 @@ const useInstitues = () => {
     return response.data;
   };
 
-  const onStatusChangeInstitute = async (id, body) => {
-    const response = await instance.put(`/instituteStatus/${id}`, body);
+  const onStatusChangeInstitute = async ({ id, params }) => {
+    const response = await instance.put(
+      `/instituteStatus/${id}?activeStatus=${params}`
+    );
     return response.data;
   };
 
