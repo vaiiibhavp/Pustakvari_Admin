@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from '@mui/material'
+import { Box, Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from '@mui/material'
 import React, { useState } from 'react'
 import { ebooksTablesColumn } from '../Utils/constant'
 import CommonTable from '../../Component/Table/Table'
@@ -9,6 +9,8 @@ import CategoryModal from './CategoryModal'
 import Searchbar from '../../Component/Searchbar'
 
 const EBooks = () => {
+
+    const theme = useTheme();
 
     const [isOpenEbookModal, setIsOpenEbookModal] = useState(false);
     const [isCatgoryModalOpen, setIsCategoryModalOpen] = useState(false)
@@ -28,33 +30,9 @@ const EBooks = () => {
     const open = Boolean(isPopOver);
     const id = open ? 'simple-popover' : undefined;
 
-    const data = [
-        {
-            S: 1,
-            E_book_Name: "Siddhartha",
-            img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz5N9rMzWE_vpTIaApKr7KP6NnbaJBfXiGBg&usqp=CAU",
-            Category: "Horror",
-            Author: "Fiction",
-            Type: "Fiction",
-        },
-        {
-            S: 2,
-            img: "https://aliabdaal.com/wp-content/uploads/2023/01/Atomic-Habits.jpg",
-            E_book_Name: "The Count of Monte Cristo",
-            Category: "True Crime",
-            Author: "Daisy-Mae Cameron",
-            Type: "Non-Fiction",
-        },
-        {
-            S: 3,
-            img: "https://aliabdaal.com/wp-content/uploads/2023/01/Atomic-Habits.jpg",
-            E_book_Name: "Atomic habit",
-            Category: "insired",
-            Author: "me",
-            Type: "good",
-        },
 
-    ]
+    let InstituteUserData = [11, 2]
+
 
 
     return (
@@ -76,12 +54,93 @@ const EBooks = () => {
                     </Box>
                 </Box>
             </Box>
-            <CommonTable columns={ebooksTablesColumn} data={data || []} rowSelect={() => console.log("row selected")} editRecord={(e) => {
 
-                setIsEditable({ id: 1 });
-                setIsOpenEbookModal(true);
+            <Paper sx={{ width: "100%" }}>
+                <TableContainer sx={{ maxHeight: 440 }}>
+                    <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell style={{ minWidth: "60px" }}>Sr No</TableCell>
+                                <TableCell align="center" style={{ minWidth: "150px" }}>
+                                    {AppStrings?.e_books}
+                                </TableCell>
+                                <TableCell align="center" style={{ minWidth: "100px" }}>
+                                    {AppStrings?.Category}
+                                </TableCell>
 
-            }} showSubscription={() => console.log("show subscription")} />
+                                <TableCell align="center" style={{ minWidth: "120px" }}>
+                                    {AppStrings?.author_Name}
+                                </TableCell>
+                                <TableCell align="center" style={{ minWidth: "180px" }}>
+                                    {AppStrings?.type || "Type"}
+                                </TableCell>
+                                <TableCell align="center" style={{ minWidth: "180px" }}>
+                                    {AppStrings?.takeAction}
+                                </TableCell>
+
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {InstituteUserData?.length > 0 ? InstituteUserData
+                                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row, idx) => {
+                                    return (
+                                        <TableRow key={row?.id}>
+                                            <TableCell component="th" scope="row">
+                                                {idx + 1}
+                                            </TableCell>
+                                            <TableCell align="center">{row?.fullName}</TableCell>
+                                            <TableCell align="center">{row?.mobileNo}</TableCell>
+
+                                            <TableCell align="center">{row?.emailId}</TableCell>
+
+                                            <TableCell align="center">
+                                                <Button
+                                                    sx={{
+                                                        background: theme.palette?.grey[300],
+                                                        color: theme.palette?.grey[600],
+                                                        textDecoration: "none",
+                                                        borderRadius: "20px",
+                                                        padding: "0 16px",
+                                                        "&.active": {
+                                                            color: "text.primary",
+                                                            bgcolor: "action.selected",
+                                                            fontWeight: "fontWeightBold",
+                                                        },
+                                                    }}
+                                                >
+                                                    {row?.activeStatus ? AppStrings?.subscribed : AppStrings?.unsubscribed}
+                                                </Button>
+                                            </TableCell>
+
+
+                                        </TableRow>
+                                    );
+                                }) :
+                                <TableRow>
+                                    <TableCell colSpan={12} align="center">
+                                        <Box sx={{ padding: "20px 0" }}>
+                                            {/* <ErrorOutlineIcon fontSize="large" sx={{ color: theme.palette.grey[500] }} /> */}
+                                            <Typography sx={{ color: theme.palette.grey[400] }} mt={1} mb={4}>
+                                                {AppStrings?.no_data_available}
+                                            </Typography>
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                {/* <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={userData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        /> */}
+            </Paper>
+
             <EbookModal isOpenEbookModal={isOpenEbookModal}
                 setIsOpenEbookModal={setIsOpenEbookModal}
                 isEditableRecord={isEditable} />
