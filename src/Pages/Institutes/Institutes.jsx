@@ -159,7 +159,7 @@ const Institutes = () => {
                                                 <TableCell component="th" scope="row">
                                                     {idx + 1}
                                                 </TableCell>
-                                                <TableCell align="left">{instituteName}</TableCell>
+                                                <TableCell align="left" onClick={() => navigate(`/institute/${_id}`, { state: institute })}>{instituteName}</TableCell>
                                                 <TableCell align="left">{mobileNo}</TableCell>
                                                 <TableCell align="center">{emailId}</TableCell>
                                                 <TableCell align="center">

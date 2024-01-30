@@ -88,6 +88,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         validationSchema,
         enableReinitialize: true,
         onSubmit: (values) => {
+
             if (isEditableRecord?._id) {
                 delete values.confirmPassword;
                 updateInstituteRecord(values, isEditableRecord?._id).then((res) => {

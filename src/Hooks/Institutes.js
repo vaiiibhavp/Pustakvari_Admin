@@ -11,7 +11,7 @@ const useInstitues = () => {
         "Content-Type": "application/json",
       },
     });
-    return response;
+    return response.data;
   };
 
   const updateInstituteRecord = async (body, id) => {
@@ -20,22 +20,22 @@ const useInstitues = () => {
         "Content-Type": "application/json",
       },
     });
-    return response;
+    return response.data;
   };
 
   const getInstituteRecordDetail = async (id) => {
     const response = await instance.get(`/getInstituteInfo/${id}`);
-    return response;
+    return response.data;
   };
 
   const deleteInstituteRecord = async (id) => {
     const response = await instance.delete(`/deleteInstituteInfo/${id}`);
-    return response;
+    return response.data;
   };
 
   const onStatusChangeInstitute = async (id, body) => {
     const response = await instance.put(`/instituteStatus/${id}`, body);
-    return response;
+    return response.data;
   };
 
   return {
