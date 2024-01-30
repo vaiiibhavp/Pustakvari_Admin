@@ -15,16 +15,11 @@ import {
   useTheme,
 } from "@mui/material";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"; // Import the icon you want to use
-
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import React, { useEffect, useState } from "react";
-import CommonTable from "../../Component/Table/Table";
-import { AppStrings, colorCodes } from "../../Helper/Constant";
-import { usersSuperAdminTablesColumn } from "../Utils/constant";
+import { AppStrings } from "../../Helper/Constant";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-
 import UserModal from "./UserModal";
 import Searchbar from "../../Component/Searchbar";
 import UseUserApis from "../../Hooks/User";
