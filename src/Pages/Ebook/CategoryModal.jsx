@@ -21,6 +21,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
 import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
+import useCategoryApis from "../../Hooks/Category";
 
 const style = {
     position: "absolute",
@@ -61,10 +62,12 @@ const CategoryModal = ({
     const theme = useTheme();
     let isEditable = isEditableRecord?.id ? true : false;
 
+    let { createCategory } = useCategoryApis();
+
     const handleClose = () => setIsOpenCategoryModal(false);
     const validationSchema = Yup.object({
         categoryName: Yup.string().required("Category name is required"),
-        categoryImage: Yup.mixed()
+        files: Yup.mixed()
             .required("Image is required")
             .test(
                 "fileSize",
@@ -82,18 +85,21 @@ const CategoryModal = ({
     const formik = useFormik({
         initialValues: {
             categoryName: "",
-            categoryImage: null,
+            files: null,
         },
         validationSchema,
         onSubmit: (values) => {
-            // Handle form submission here
-            console.log("Form submitted:", values);
-            //   onSubmit(values);
+
+            createCategory(values).then((res) => {
+                setIsOpenCategoryModal(false)
+            }).catch((err) => {
+                console.log(err);
+            })
         },
     });
 
     const handleImageChange = (event) => {
-        formik.setFieldValue("categoryImage", event.currentTarget.files[0]);
+        formik.setFieldValue("files", event.currentTarget.files[0]);
     };
 
 
@@ -138,7 +144,7 @@ const CategoryModal = ({
                             </Typography>
 
                             <Box sx={{ display: "flex", alignItems: "start" }}>
-                                <label htmlFor="categoryImage">
+                                <label htmlFor="files">
                                     <IconButton
                                         component="span"
                                         sx={{
@@ -153,8 +159,8 @@ const CategoryModal = ({
                                 </label>
                                 <input
                                     type="file"
-                                    id="categoryImage"
-                                    name="categoryImage"
+                                    id="files"
+                                    name="files"
                                     accept="image/*"
                                     style={{ display: "none" }}
                                     onChange={handleImageChange}

@@ -50,7 +50,8 @@ const style = {
   scrollbarColor: "#888 #f1f1f1", // For Firefox
 };
 
-const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
+const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUserDataState,
+  userDataState }) => {
   let isEditable = isEditableRecord !== null ? true : false;
   const { updateUser, createUser } = UseUserApis();
   const theme = useTheme();
@@ -83,7 +84,11 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
       updateUser(value, isEditableRecord?._id)
         .then((res) => {
           console.log(res, "res is updating");
-
+          setUserDataState((prev) => ({
+            ...prev,
+            showSuccessModal: true,
+            message: res?.data.message,
+          }));
           resetForm();
           setUserModalOpen(false);
         })
@@ -102,7 +107,11 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
       createUser(data)
         .then((res) => {
 
-          console.log(res, "res is creatiing");
+          setUserDataState((prev) => ({
+            ...prev,
+            showSuccessModal: true,
+            message: res?.data.message,
+          }));
           resetForm();
           setUserModalOpen(false);
         })

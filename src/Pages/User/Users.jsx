@@ -15,16 +15,11 @@ import {
   useTheme,
 } from "@mui/material";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"; // Import the icon you want to use
-
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import React, { useEffect, useState } from "react";
-import CommonTable from "../../Component/Table/Table";
-import { AppStrings, colorCodes } from "../../Helper/Constant";
-import { usersSuperAdminTablesColumn } from "../Utils/constant";
+import { AppStrings } from "../../Helper/Constant";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-
 import UserModal from "./UserModal";
 import Searchbar from "../../Component/Searchbar";
 import UseUserApis from "../../Hooks/User";
@@ -39,10 +34,11 @@ const Users = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const theme = useTheme();
-  const { getUsers, deleteUserInfo } = UseUserApis();
+  const { getUsers, deleteUserInfo, changeUserStatus } = UseUserApis();
   const [userDataState, setUserDataState] = useState({
     showSuccessModal: false,
-    message: ""
+    message: "",
+    render: false
   })
 
   const handleChangePage = (event, newPage) => {
@@ -85,12 +81,24 @@ const Users = () => {
     }
   };
 
-  const onRemoveHandler = (id) => {
-    deleteUserInfo(id).then((res) => {
-      let filternewData = userData?.filter((item) => {
-        return item._id !== id
-      })
-      setUserData(filternewData)
+  // const onRemoveHandler = (id) => {
+  //   deleteUserInfo(id).then((res) => {
+  //     let filternewData = userData?.filter((item) => {
+  //       return item._id !== id
+  //     })
+  //     setUserData(filternewData)
+  //   }).catch((error) => {
+  //     console.log(error);
+  //   })
+  // }
+
+  const handleCheckStatus = (e, status) => {
+    let statusValue = status === true ? false : status === false ? true : true
+    
+    changeUserStatus({ id: e, params: { activeStatus: statusValue } }).then((res) => {
+      setUserDataState((prev) => ({
+        render: true
+      }))
     }).catch((error) => {
       console.log(error);
     })
@@ -99,7 +107,10 @@ const Users = () => {
 
   useEffect(() => {
     getUserList();
-  }, [isUserModalOpen]);
+    setUserDataState((prev) => ({
+      render: false
+    }))
+  }, [isUserModalOpen, userDataState?.render]);
 
   return (
     <Container maxWidth="xl">
@@ -134,31 +145,31 @@ const Users = () => {
             <TableHead>
               <TableRow>
                 <TableCell style={{ minWidth: "80px" }}>Sr No</TableCell>
-                <TableCell align="right" style={{ minWidth: "150px" }}>
+                <TableCell align="center" style={{ minWidth: "150px" }}>
                   {AppStrings?.user_Name}
                 </TableCell>
-                <TableCell align="right" style={{ minWidth: "100px" }}>
+                <TableCell align="center" style={{ minWidth: "100px" }}>
                   {AppStrings?.Contact}
                 </TableCell>
-                <TableCell align="right" style={{ minWidth: "150px" }}>
+                <TableCell align="center" style={{ minWidth: "150px" }}>
                   {AppStrings?.institute_user}
                 </TableCell>
-                <TableCell align="right" style={{ minWidth: "120px" }}>
+                <TableCell align="center" style={{ minWidth: "120px" }}>
                   {AppStrings?.email}
                 </TableCell>
-                <TableCell align="right" style={{ minWidth: "200px" }}>
+                <TableCell align="center" style={{ minWidth: "200px" }}>
                   {AppStrings?.Account_created_on}
                 </TableCell>
-                <TableCell align="right" style={{ minWidth: "180px" }}>
+                <TableCell align="center" style={{ minWidth: "180px" }}>
                   {AppStrings?.last_login}
                 </TableCell>
-                <TableCell align="right" style={{ minWidth: "100px" }}>
+                <TableCell align="center" style={{ minWidth: "100px" }}>
                   {AppStrings?.status}
                 </TableCell>
-                <TableCell align="right" style={{ minWidth: "100px" }}>
+                <TableCell align="center" style={{ minWidth: "100px" }}>
                   {AppStrings?.deactivate}
                 </TableCell>
-                <TableCell align="right" style={{ minWidth: "150px" }}>
+                <TableCell align="center" style={{ minWidth: "150px" }}>
                   {AppStrings?.takeAction}                </TableCell>
               </TableRow>
             </TableHead>
@@ -171,15 +182,15 @@ const Users = () => {
                       <TableCell component="th" scope="row">
                         {idx + 1}
                       </TableCell>
-                      <TableCell align="right">{row?.fullName}</TableCell>
-                      <TableCell align="right">{row?.mobileNo}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">{row?.fullName}</TableCell>
+                      <TableCell align="center">{row?.mobileNo}</TableCell>
+                      <TableCell align="center">
                         {row?.is_instituteUser}
                       </TableCell>
-                      <TableCell align="right">{row?.emailId}</TableCell>
-                      <TableCell align="right">{row?.created_at}</TableCell>
-                      <TableCell align="right">{row?.Last_Login}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">{row?.emailId}</TableCell>
+                      <TableCell align="center">{row?.created_at}</TableCell>
+                      <TableCell align="center">{row?.Last_Login}</TableCell>
+                      <TableCell align="center">
                         <Button
                           sx={{
                             background: theme.palette?.grey[300],
@@ -199,8 +210,14 @@ const Users = () => {
                       </TableCell>
                       <TableCell align="right">
                         <Switch
+                          value={row?._id}
+                          // checked={}
                           defaultChecked={row?.activeStatus}
                           color="secondary"
+                          onChange={(e) => {
+
+                            handleCheckStatus(e.target.value, row?.activeStatus)
+                          }}
                         />
                       </TableCell>
                       <TableCell align="right" style={{ minWidth: "200px" }}>
@@ -223,7 +240,7 @@ const Users = () => {
                           >
                             <BorderColorOutlinedIcon size="medium" />
                           </Button>
-                          <Button
+                          {/* <Button
                             sx={{
                               margin: " 0 10px",
                               background: theme.palette?.secondary?.lighter,
@@ -235,7 +252,7 @@ const Users = () => {
                               },
                             }}
                             onClick={() => onRemoveHandler(row._id)}
-                          > <DeleteOutlineOutlinedIcon size="medium" /></Button>
+                          > <DeleteOutlineOutlinedIcon size="medium" /></Button> */}
                         </Box>
                       </TableCell>
                     </TableRow>
@@ -268,6 +285,8 @@ const Users = () => {
       <UserModal
         isUserModalOpen={isUserModalOpen}
         setUserModalOpen={setIsUserModalOpen}
+        setUserDataState={setUserDataState}
+        userDataState={userDataState}
         isEditableRecord={isEditable}
       />
 

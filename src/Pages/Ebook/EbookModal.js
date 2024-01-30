@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -22,6 +22,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
 import { AppStrings } from "../../Helper/Constant";
 import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
+import useEbookApis from "../../Hooks/Ebook";
+import useCategoryApis from "../../Hooks/Category";
 
 const style = {
   position: "absolute",
@@ -60,19 +62,26 @@ const EbookModal = ({
   setIsOpenEbookModal,
   isEditableRecord,
 }) => {
+  const [dataState, setDataState] = useState({
+    categories: [],
+    types: [],
+  });
+  const { createBookRecord, updateBookRecord, getTypeBookList } =
+    useEbookApis();
+  const { getCateogoryList } = useCategoryApis();
   const theme = useTheme();
   let isEditable = isEditableRecord?.id ? true : false;
 
   const handleClose = () => setIsOpenEbookModal(false);
   const validationSchema = Yup.object({
-    categoryName: Yup.string().required("Category name is required"),
+    category: Yup.string().required("Category name is required"),
     authorName: Yup.string().required("Author name is required"),
     category: Yup.string().required("Category is required"),
     type: Yup.string().required("Type is required"),
     videoLink: Yup.string()
       .url("Invalid URL")
       .required("Video link is required"),
-    categoryImage: Yup.mixed()
+    bookImage: Yup.mixed()
       .required("Image is required")
       .test(
         "fileSize",
@@ -87,27 +96,53 @@ const EbookModal = ({
       ),
   });
 
+  // bookName;
+  // authorName;
+  // bookPdf;
+  // bookImage;
+  // category;
+  // bookType;
+
   const formik = useFormik({
     initialValues: {
-      categoryName: "",
+      bookName: "",
       authorName: "",
+      bookPdf: null,
       category: "",
-      type: "",
+      bookType: "",
       videoLink: "",
-      categoryImage: null,
+      bookImage: null,
     },
     validationSchema,
     onSubmit: (values) => {
-      // Handle form submission here
-      console.log("Form submitted:", values);
-      //   onSubmit(values);
+      if (isEditableRecord) {
+        console.log("edit ", values);
+      } else {
+        console.log("created", values);
+      }
     },
   });
 
   const handleImageChange = (event) => {
-    formik.setFieldValue("categoryImage", event.currentTarget.files[0]);
+    formik.setFieldValue("bookImage", event.currentTarget.files[0]);
   };
 
+  useEffect(() => {
+    getCateogoryList()
+      .then((res) => {
+        setDataState((prev) => ({ ...prev, categories: res.data || [] }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    getTypeBookList()
+      .then((res) => {
+        setDataState((prev) => ({ ...prev, types: res.data || [] }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <Modal
@@ -151,7 +186,7 @@ const EbookModal = ({
                 </Typography>
 
                 <Box sx={{ display: "flex", alignItems: "start", gap: 4 }}>
-                  <label htmlFor="categoryImage">
+                  <label htmlFor="bookImage">
                     <IconButton
                       component="span"
                       sx={{
@@ -172,8 +207,8 @@ const EbookModal = ({
                   </label>
                   <input
                     type="file"
-                    id="categoryImage"
-                    name="categoryImage"
+                    id="bookImage"
+                    name="bookImage"
                     accept="image/*"
                     style={{ display: "none" }}
                     onChange={handleImageChange}
@@ -191,7 +226,7 @@ const EbookModal = ({
                 <Typography style={{ padding: "0 0 5px 0" }}>
                   Book Pdf:
                 </Typography>
-                <label htmlFor="categoryImage">
+                <label htmlFor="bookPdf">
                   <IconButton
                     component="span"
                     sx={{
@@ -215,8 +250,8 @@ const EbookModal = ({
                 </label>
                 <input
                   type="file"
-                  id="categoryImage"
-                  name="categoryImage"
+                  id="bookPdf"
+                  name="bookPdf"
                   accept="image/*"
                   style={{ display: "none" }}
                   onChange={handleImageChange}
@@ -237,23 +272,20 @@ const EbookModal = ({
 
               <TextField
                 fullWidth
-                id="categoryName"
-                name="categoryName"
+                id="bookName"
+                name="bookName"
                 sx={{ marginTop: "0px" }}
                 //   label="Category Name"
                 size="small"
                 variant="outlined"
                 margin="normal"
-                value={formik.values.categoryName}
+                value={formik.values.bookName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={
-                  formik.touched.categoryName &&
-                  Boolean(formik.errors.categoryName)
+                  formik.touched.bookName && Boolean(formik.errors.bookName)
                 }
-                helperText={
-                  formik.touched.categoryName && formik.errors.categoryName
-                }
+                helperText={formik.touched.bookName && formik.errors.bookName}
               />
             </Box>
             <Box
@@ -315,9 +347,9 @@ const EbookModal = ({
                     formik.touched.category && Boolean(formik.errors.category)
                   }
                 >
-                  {categories.map((category) => (
-                    <MenuItem key={category} value={category}>
-                      {category}
+                  {dataState?.categories.map((category) => (
+                    <MenuItem key={category?._id} value={category?._id}>
+                      {category.categoryName}
                     </MenuItem>
                   ))}
                 </Select>
@@ -339,18 +371,20 @@ const EbookModal = ({
               >
                 {/* <InputLabel htmlFor="type">Type</InputLabel> */}
                 <Select
-                  id="type"
+                  id="bookType"
                   size="small"
-                  name="type"
+                  name="bookType"
                   //   label="Type"
-                  value={formik.values.type}
+                  value={formik.values.bookType}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  error={formik.touched.type && Boolean(formik.errors.type)}
+                  error={
+                    formik.touched.bookType && Boolean(formik.errors.bookType)
+                  }
                 >
-                  {types.map((type) => (
-                    <MenuItem key={type} value={type}>
-                      {type}
+                  {dataState?.types.map((type) => (
+                    <MenuItem key={type?._id} value={type?._id}>
+                      {type.ebookType}
                     </MenuItem>
                   ))}
                 </Select>

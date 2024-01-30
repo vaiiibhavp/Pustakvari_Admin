@@ -1,22 +1,46 @@
 import { Box, Button, Card, Container, Grid, Typography, useTheme, IconButton } from '@mui/material';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CommonTable from '../../Component/Table/Table';
 import { InstitutesTablesColumn, InstitutesTablesUsers, usersSuperAdminTablesColumn } from '../Utils/constant';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AppStrings, colorCodes } from '../../Helper/Constant';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 // import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import useInstitues from '../../Hooks/Institutes';
+import InstitutesUsers from './InstitutesUsers';
 
 const InstitutesDetail = () => {
+    const [instiDetail, setInstiDetail] = useState({
+        detail: {}
+    })
     const navigate = useNavigate();
     const theme = useTheme()
-    const data = [
-        { S: 1, User_Name: 'John Doe', Age: 25, Institute_user: false, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false, subscribe: true },
-        { S: 2, User_Name: 'lakhan dev', Age: 25, Institute_user: true, City: 'New York', Contact: "01718173355", Email: "aibrahim@verizon.net", Last_Login: "07/05/2016", Account_created_on: "07/05/2016", status: false, deactivate: false, subscribe: false },
-        // Add more rows as needed
-    ];
+
+    const { getInstituteRecordDetail } = useInstitues();
+
+    const { state } = useLocation();
+    console.log(state, "data ");
+
+    useEffect(() => {
+        if (state?._id) {
+            getInstituteRecordDetail(state?._id).then((res) => {
+                console.log("hello ", res.body);
+                setInstiDetail((prev) => ({ ...prev, detail: res.body }))
+            }).catch((error) => {
+                console.log(error);
+            })
+        }
+    }, [])
+
+
+
+    let { instituteDetail, instituteInfo
+    } = instiDetail.detail || {};
+
+
+
     return (
         <Container maxWidth="xl" >
             <Box mb={3}>
@@ -29,7 +53,7 @@ const InstitutesDetail = () => {
                         <Card sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "20px 10px" }}>
                             <img src="https://www.orchidfoundation.info/sites/default/files/2020-08/Jaipur-National-University-.jpg" alt="" style={{ width: "150px", height: "150px", borderRadius: "50%", marginBottom: "10px" }} />
                             <Typography>
-                                BPHE sociaty Institute
+                                {instituteDetail?.instituteName}
                             </Typography>
                         </Card>
                     </Box>
@@ -63,30 +87,25 @@ const InstitutesDetail = () => {
                         </Box>
                         <Box py={3}>
 
-                            <Typography sx={{ display: "flex", flexDirection: "column", pb: 1 }}>Emails: <span style={{ color: theme?.palette?.grey[500] }}>mankind@gmail.com</span></Typography>
-                            <Typography sx={{ display: "flex", flexDirection: "column", pb: 1 }}>Mobile no: <span style={{ color: theme?.palette?.grey[500] }}>mankind@gmail.com</span></Typography>
-                            <Typography sx={{ display: "flex", flexDirection: "column", pb: 1 }}>Account Created on: <span style={{ color: theme?.palette?.grey[500] }}>mankind@gmail.com</span></Typography>
-                            <Typography sx={{ display: "flex", flexDirection: "column", pb: 1 }}>Status: <span style={{
-                                background: theme.palette?.secondary?.lighter,
-                                color: theme.palette?.secondary.main,
+                            <Typography sx={{ display: "flex", flexDirection: "column", pb: 1 }}>{AppStrings?.email} : <span style={{ color: theme?.palette?.grey[500] }}>{instituteDetail?.emailId}</span></Typography>
+                            <Typography sx={{ display: "flex", flexDirection: "column", pb: 1 }}>{AppStrings?.contact_no} : <span style={{ color: theme?.palette?.grey[500] }}>{instituteDetail?.mobileNo}</span></Typography>
+                            <Typography sx={{ display: "flex", flexDirection: "column", pb: 1 }}>{AppStrings?.Account_created_on} : <span style={{ color: theme?.palette?.grey[500] }}>mankind@gmail.com</span></Typography>
+                            <Typography sx={{ display: "flex", flexDirection: "column", pb: 1 }}>{AppStrings?.status} : <span style={{
+                                background: !instituteDetail?.is_active ? theme.palette?.secondary?.lighter : theme.palette?.grey[400],
+                                color: !instituteDetail?.is_active ? theme.palette?.secondary.main : theme.palette.grey[500],
                                 width: "30%",
                                 textAlign: "center",
                                 borderRadius: "20px",
                                 fontWeight: "bold",
                                 padding: "3px"
-                            }}>Active</span></Typography>
-                            <Typography sx={{ display: "flex", flexDirection: "column", pb: 1 }}>Total Users:: <span style={{ color: theme?.palette?.grey[500] }}>246</span></Typography>
+                            }}>{!instituteDetail?.is_active ? "Active" : "Deactive"}</span></Typography>
+                            <Typography sx={{ display: "flex", flexDirection: "column", pb: 1 }}>{AppStrings?.total_user} : <span style={{ color: theme?.palette?.grey[500] }}>{instituteDetail?.studentCount}</span></Typography>
                         </Box>
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={9} lg={9}>
                     <Box p={1} mb={2} fontWeight={600} sx={{ background: "#fff" }}>{AppStrings?.institute_users}</Box>
-                    <CommonTable onSeeDetail={() => {
-                        console.log("hello");
-                    }
-                    } columns={InstitutesTablesUsers} data={data || []} rowSelect={() => console.log("row selected")} editRecord={(e) => {
-
-                    }} showSubscription={() => console.log("show subscription")} />
+                    <InstitutesUsers InstituteUserData={[]} />
                 </Grid>
             </Grid>
 

@@ -34,8 +34,10 @@ const UseUserApis = () => {
     return response;
   };
 
-  const changeUserStatus = async (id, params) => {
-    const response = await instance.put(`userStatus/${id}`, params);
+  const changeUserStatus = async ({ id, params }) => {
+
+    console.log(id, params);
+    const response = await instance.put(`userStatus/${id}?activeStatus=${params?.activeStatus}`);
     return response;
   };
 

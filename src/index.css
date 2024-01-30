@@ -4,3 +4,9 @@ body {
   margin: 0;
   box-sizing: border-box;
 }
+
+.MuiButtonBase-root.MuiListItemButton-root.MuiListItemButton-root.active
+  svg
+  path {
+  fill: #fe6b01;
+}

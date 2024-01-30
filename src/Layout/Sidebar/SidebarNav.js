@@ -28,6 +28,7 @@ function NavItem({ item }) {
     <StyledNavItem
       component={RouterLink}
       to={path}
+      // onClick={() => alert("title", title)}
       sx={{
         "&.active": {
           color: colorCodes.PRIMARY_COLOR,
@@ -39,23 +40,7 @@ function NavItem({ item }) {
         },
       }}
     >
-      <StyledNavItemIcon>
-        {icon && (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            className="icon"
-            style={{
-              fill: "red", // Set the default fill color
-            }}
-          >
-            {/* Your SVG path here */}
-            {icon}
-          </svg>
-        )}
-      </StyledNavItemIcon>
+      <StyledNavItemIcon>{icon && <>{icon}</>}</StyledNavItemIcon>
 
       <ListItemText disableTypography primary={title} />
 
