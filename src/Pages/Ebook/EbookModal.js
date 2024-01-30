@@ -96,10 +96,18 @@ const EbookModal = ({
       ),
   });
 
+  // bookName;
+  // authorName;
+  // bookPdf;
+  // bookImage;
+  // category;
+  // bookType;
+
   const formik = useFormik({
     initialValues: {
-      category: "",
+      bookName: "",
       authorName: "",
+      bookPdf: null,
       category: "",
       bookType: "",
       videoLink: "",
@@ -218,7 +226,7 @@ const EbookModal = ({
                 <Typography style={{ padding: "0 0 5px 0" }}>
                   Book Pdf:
                 </Typography>
-                <label htmlFor="bookImage">
+                <label htmlFor="bookPdf">
                   <IconButton
                     component="span"
                     sx={{
@@ -242,8 +250,8 @@ const EbookModal = ({
                 </label>
                 <input
                   type="file"
-                  id="bookImage"
-                  name="bookImage"
+                  id="bookPdf"
+                  name="bookPdf"
                   accept="image/*"
                   style={{ display: "none" }}
                   onChange={handleImageChange}
@@ -264,20 +272,20 @@ const EbookModal = ({
 
               <TextField
                 fullWidth
-                id="category"
-                name="category"
+                id="bookName"
+                name="bookName"
                 sx={{ marginTop: "0px" }}
                 //   label="Category Name"
                 size="small"
                 variant="outlined"
                 margin="normal"
-                value={formik.values.category}
+                value={formik.values.bookName}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={
-                  formik.touched.category && Boolean(formik.errors.category)
+                  formik.touched.bookName && Boolean(formik.errors.bookName)
                 }
-                helperText={formik.touched.category && formik.errors.category}
+                helperText={formik.touched.bookName && formik.errors.bookName}
               />
             </Box>
             <Box
