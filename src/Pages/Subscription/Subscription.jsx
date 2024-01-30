@@ -10,6 +10,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"; // Import the i
 import SubscriptionModal from './SubscriptionModal';
 import Searchbar from '../../Component/Searchbar';
 import useSubscription from '../../Hooks/Subscription';
+import ShowsMessageModal from '../../Component/ShowMessageModal';
 
 
 
@@ -23,6 +24,8 @@ const Subscription = () => {
     const [subscriptionData, setSubscriptionData] = useState({
         subscriptionList: [],
         globalData: [],
+        showSuccessModal: false,
+        message: "",
     })
 
     const [isOpenSunscriptionPlanModal, setIsOpenSubscriptionPlanModal] = useState(false)
@@ -192,6 +195,8 @@ const Subscription = () => {
                 />
             </Paper>
             <SubscriptionModal isModalOpen={isOpenSunscriptionPlanModal} subscriptionData={subscriptionData} setSubscriptionData={setSubscriptionData} setIsModalOpen={setIsOpenSubscriptionPlanModal} isEditRecord={isEditRecord} />
+            <ShowsMessageModal isOpen={subscriptionData.showSuccessModal} setIsOpen={setSubscriptionData} message={subscriptionData?.message} />
+
         </Container>
     )
 }

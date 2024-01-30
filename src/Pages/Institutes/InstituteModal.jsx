@@ -7,7 +7,7 @@ import {
     InputAdornment,
     IconButton,
     FormControl,
-    InputLabel,
+
     OutlinedInput,
     Modal,
     Box,

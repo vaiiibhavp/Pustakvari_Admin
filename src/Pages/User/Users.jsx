@@ -29,6 +29,7 @@ import UserModal from "./UserModal";
 import Searchbar from "../../Component/Searchbar";
 import UseUserApis from "../../Hooks/User";
 import moment from "moment";
+import ShowsMessageModal from "../../Component/ShowMessageModal";
 
 const Users = () => {
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
@@ -39,6 +40,10 @@ const Users = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const theme = useTheme();
   const { getUsers, deleteUserInfo } = UseUserApis();
+  const [userDataState, setUserDataState] = useState({
+    showSuccessModal: false,
+    message: ""
+  })
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -265,6 +270,8 @@ const Users = () => {
         setUserModalOpen={setIsUserModalOpen}
         isEditableRecord={isEditable}
       />
+
+      <ShowsMessageModal isOpen={userDataState.showSuccessModal} setIsOpen={setUserDataState} message={userDataState?.message} />
     </Container>
   );
 };

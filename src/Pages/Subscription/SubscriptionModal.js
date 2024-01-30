@@ -98,7 +98,14 @@ const SubscriptionModal = ({
       delete values.duration;
       updateSubscripton(values, isEditRecord?._id)
         .then((res) => {
-          setIsModalOpen(false);
+          if (res.status) {
+            setIsModalOpen(false);
+            setSubscriptionData((prev) => ({
+              ...prev,
+              showSuccessModal: true,
+              message: res?.data.message,
+            }));
+          }
         })
         .catch((error) => {
           console.log("error", error);
@@ -106,7 +113,14 @@ const SubscriptionModal = ({
     } else {
       createSubscription(values)
         .then((res) => {
-          setIsModalOpen(false);
+          if (res.status === 200) {
+            setIsModalOpen(false);
+            setSubscriptionData((prev) => ({
+              ...prev,
+              showSuccessModal: true,
+              message: res?.data.message,
+            }));
+          }
         })
         .catch((error) => {
           console.log(error);

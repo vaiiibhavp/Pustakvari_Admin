@@ -82,6 +82,8 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
     if (isEdit) {
       updateUser(value, isEditableRecord?._id)
         .then((res) => {
+          console.log(res, "res is updating");
+
           resetForm();
           setUserModalOpen(false);
         })
@@ -99,6 +101,8 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord }) => {
       };
       createUser(data)
         .then((res) => {
+
+          console.log(res, "res is creatiing");
           resetForm();
           setUserModalOpen(false);
         })
