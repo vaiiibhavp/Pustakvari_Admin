@@ -25,8 +25,11 @@ import Searchbar from "../../Component/Searchbar";
 import UseUserApis from "../../Hooks/User";
 import moment from "moment";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
+import { useSelector } from "react-redux";
 
 const Users = () => {
+
+  let { user } = useSelector((state) => state.AuthUser)
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [isEditable, setIsEditable] = useState(null);
   const [userData, setUserData] = useState([]);
@@ -51,8 +54,10 @@ const Users = () => {
   };
 
   const getUserList = () => {
+    console.log(user, "user");
+    let isIntitute = user?.instituteIfo
     try {
-      getUsers().then((res) => {
+      getUsers({ user: user?.instituteIfo }).then((res) => {
         const data = res?.data?.data?.map((ele, idx) => {
           return {
             ...ele,
@@ -94,7 +99,7 @@ const Users = () => {
 
   const handleCheckStatus = (e, status) => {
     let statusValue = status === true ? false : status === false ? true : true
-    
+
     changeUserStatus({ id: e, params: { activeStatus: statusValue } }).then((res) => {
       setUserDataState((prev) => ({
         render: true

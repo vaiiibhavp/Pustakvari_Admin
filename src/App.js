@@ -22,8 +22,12 @@ import Notifications from "./Pages/Notification/Notifications";
 import InstitutesDetail from "./Pages/Institutes/InstitutesDetail";
 import CreateQuiz from "./Pages/Quiz/CreateQuiz";
 import PaymentTracking from "./Pages/InstituteAdmin/PaymentTrackings";
+import InstituteLayout from "./Layout/InstituteLayout";
+import { useSelector } from "react-redux";
 
 const App = () => {
+  const { user } = useSelector((state) => state?.AuthUser);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -34,7 +38,9 @@ const App = () => {
           <Route path="/reset" element={<ResetPasswordForm />} />
           {/* <Route path="/modal" element={<DeleteModal />} /> */}
         </Route>
-        <Route element={<MainContent />}>
+        <Route
+          element={user?.instituteInfo ? <InstituteLayout /> : <MainContent />}
+        >
           {/* above three for use for admin and superadmin both */}
           <Route path="/Payments" element={<PaymentTracking />} />
           <Route path="/Dashboard" element={<Dashboard />} />

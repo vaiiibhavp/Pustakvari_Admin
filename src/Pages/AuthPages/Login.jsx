@@ -14,12 +14,15 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import useAuthApis from '../../Hooks/Auth';
+import { useDispatch } from 'react-redux';
+import { LogIn } from '../../Store/Slice/AuthSlice';
 
 
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { userLogin } = useAuthApis();
+    const dispatch = useDispatch();
 
     const navigate = useNavigate()
 
@@ -36,6 +39,8 @@ const LoginForm = () => {
             // You can handle form submission here
             userLogin(values).then((res) => {
                 localStorage.setItem('user_token', res?.body?.token)
+                localStorage.setItem('user', JSON.stringify(res?.body))
+                dispatch(LogIn(res.body))
                 navigate("/Dashboard")
             }).catch((error) => {
                 console.log(error);

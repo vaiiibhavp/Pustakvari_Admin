@@ -5,7 +5,7 @@ import Header from './Header/Header'
 import Sidebar from './Sidebar/Sidebar'
 
 
-const MainContent = () => {
+const InstituteLayout = () => {
 
 
 
@@ -24,4 +24,4 @@ const MainContent = () => {
     )
 }
 
-export default MainContent
+export default InstituteLayout
