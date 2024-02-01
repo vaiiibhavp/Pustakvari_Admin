@@ -125,7 +125,7 @@ const EBooks = () => {
                         <Searchbar onSearch={(e) => console.log("hello", e)} />
                         <Button
                             onClick={() => {
-                                setIsEditable({});
+                                setIsEditable();
                                 setIsOpenEbookModal(true);
                             }}
                             variant="contained"

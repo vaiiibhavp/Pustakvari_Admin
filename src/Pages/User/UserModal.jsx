@@ -20,6 +20,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { AppStrings } from "../../Helper/Constant";
 import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 import UseUserApis from "../../Hooks/User";
+import { useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -54,7 +55,10 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
   userDataState }) => {
   let isEditable = isEditableRecord !== null ? true : false;
   const { updateUser, createUser } = UseUserApis();
+  let { user } = useSelector((state) => state.AuthUser)
   const theme = useTheme();
+
+  console.log(user, "user");
 
   const handleClose = () => setUserModalOpen(false);
   const initialValues = {
@@ -63,8 +67,8 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
     mobileNo: isEditableRecord?.mobileNo ?? "",
     password: "",
     confirmPassword: "",
-    userType: "insititute_user",
-    is_instituteUser: true,
+    userType: user?.instituteInfo ? "INSTITUTE_USER" : "REGULAR_USER",
+    is_instituteUser: user?.instituteInfo ? true : false,
   };
 
   const validationSchema = Yup.object().shape({
@@ -101,8 +105,8 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
         emailId: value?.emailId,
         mobileNo: value?.mobileNo,
         password: value?.password,
-        userType: "insititute_user",
-        is_instituteUser: true,
+        userType: user?.instituteInfo ? "INSTITUTE_USER" : "REGULAR_USER",
+        is_instituteUser: user?.instituteInfo ? true : false,
       };
       createUser(data)
         .then((res) => {

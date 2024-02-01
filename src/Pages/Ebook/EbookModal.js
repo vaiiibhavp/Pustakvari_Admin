@@ -123,15 +123,24 @@ const EbookModal = ({
     // validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(values);
-
-      createBookRecord(values)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (isEditableRecord) {
+        console.log("hello");
+        // updateBookRecord(values)
+        //   .then((res) => {
+        //     setIsOpenEbookModal(false);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
+      } else {
+        createBookRecord(values)
+          .then((res) => {
+            setIsOpenEbookModal(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
   });
 

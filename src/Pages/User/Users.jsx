@@ -54,7 +54,7 @@ const Users = () => {
   };
 
   const getUserList = () => {
-    console.log(user, "user");
+
     let isIntitute = user?.instituteIfo
     try {
       getUsers({ user: user?.instituteIfo }).then((res) => {

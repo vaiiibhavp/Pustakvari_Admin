@@ -1,7 +1,8 @@
 import instance from "../Axios/Instance";
 
 const UseUserApis = () => {
-  const getUsers = async () => {
+  const getUsers = async ({ user }) => {
+
     const Response = await instance.get(`/userList`);
     return Response;
   };
