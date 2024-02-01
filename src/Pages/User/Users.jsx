@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"; // Import the icon you want to use
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import React, { useEffect, useState } from "react";
 import { AppStrings } from "../../Helper/Constant";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";

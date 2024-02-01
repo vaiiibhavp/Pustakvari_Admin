@@ -9,10 +9,15 @@ const useEbookApis = () => {
     return Response.data;
   };
 
+  const getLangaugeBookList = async () => {
+    const Response = await instance.get(`/ebooklanguageList`);
+    return Response.data;
+  };
+
   const createBookRecord = async (body) => {
     const response = await instance.post(`/createEbook`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
@@ -44,6 +49,7 @@ const useEbookApis = () => {
     updateBookRecord,
     getBookRecordDetail,
     deleteBookRecord,
+    getLangaugeBookList,
   };
 };
 

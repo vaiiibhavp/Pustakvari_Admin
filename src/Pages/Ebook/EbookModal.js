@@ -65,36 +65,42 @@ const EbookModal = ({
   const [dataState, setDataState] = useState({
     categories: [],
     types: [],
+    languages: [],
   });
-  const { createBookRecord, updateBookRecord, getTypeBookList } =
-    useEbookApis();
+  const {
+    createBookRecord,
+    updateBookRecord,
+    getTypeBookList,
+    getLangaugeBookList,
+  } = useEbookApis();
   const { getCateogoryList } = useCategoryApis();
   const theme = useTheme();
   let isEditable = isEditableRecord?.id ? true : false;
 
   const handleClose = () => setIsOpenEbookModal(false);
-  const validationSchema = Yup.object({
-    category: Yup.string().required("Category name is required"),
-    authorName: Yup.string().required("Author name is required"),
-    category: Yup.string().required("Category is required"),
-    type: Yup.string().required("Type is required"),
-    videoLink: Yup.string()
-      .url("Invalid URL")
-      .required("Video link is required"),
-    bookImage: Yup.mixed()
-      .required("Image is required")
-      .test(
-        "fileSize",
-        "File size is too large",
-        (value) => value && value.size <= 2000000
-      ) // 2MB limit
-      .test(
-        "fileType",
-        "Invalid file type",
-        (value) =>
-          value && ["image/jpeg", "image/png", "image/gif"].includes(value.type)
-      ),
-  });
+
+  // const validationSchema = Yup.object({
+  //   bookName: Yup.string().required("Book name is required"),
+  //   authorName: Yup.string().required("Author name is required"),
+  //   category: Yup.string().required("Category is required"),
+  //   type: Yup.string().required("Type is required"),
+  //   // videoLink: Yup.string()
+  //   //   .url("Invalid URL")
+  //   //   .required("Video link is required"),
+  //   bookImage: Yup.mixed()
+  //     .required("Image is required")
+  //     .test(
+  //       "fileSize",
+  //       "File size is too large",
+  //       (value) => value && value.size <= 2000000
+  //     ) // 2MB limit
+  //     .test(
+  //       "fileType",
+  //       "Invalid file type",
+  //       (value) =>
+  //         value && ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+  //     ),
+  // });
 
   // bookName;
   // authorName;
@@ -105,42 +111,53 @@ const EbookModal = ({
 
   const formik = useFormik({
     initialValues: {
-      bookName: "",
-      authorName: "",
+      bookName: isEditableRecord?.bookName || "",
+      authorName: isEditableRecord?.bookName || "",
       bookPdf: null,
-      category: "",
-      bookType: "",
-      videoLink: "",
       bookImage: null,
+      category: isEditableRecord?.category?._id || "",
+      bookType: isEditableRecord?.bookType?._id || "",
+      bookLanguage: isEditableRecord?.bookLanguage?._id || "",
+      videoLink: isEditableRecord?.bookName || "",
     },
-    validationSchema,
+    // validationSchema,
+    enableReinitialize: true,
     onSubmit: (values) => {
-      if (isEditableRecord) {
-        console.log("edit ", values);
-      } else {
-        console.log("created", values);
-      }
+      console.log(values);
+
+      createBookRecord(values)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   });
 
-  const handleImageChange = (event) => {
-    formik.setFieldValue("bookImage", event.currentTarget.files[0]);
+  const handleImageChange = (event, fieldName) => {
+    formik.setFieldValue(fieldName, event.currentTarget.files[0]);
   };
 
+  let { values } = formik;
+
   useEffect(() => {
-    getCateogoryList()
-      .then((res) => {
-        setDataState((prev) => ({ ...prev, categories: res.data || [] }));
+    const fetchCategoryList = getCateogoryList();
+    const fetchTypeList = getTypeBookList();
+    const fetchLanguageList = getLangaugeBookList();
+
+    Promise.all([fetchCategoryList, fetchTypeList, fetchLanguageList])
+      .then(([categoryRes, typeRes, languageRes]) => {
+        setDataState((prev) => ({
+          ...prev,
+          categories: categoryRes.data || [],
+          types: typeRes.data || [],
+          languages: languageRes.data || [],
+        }));
       })
-      .catch((err) => {
-        console.log(err);
-      });
-    getTypeBookList()
-      .then((res) => {
-        setDataState((prev) => ({ ...prev, types: res.data || [] }));
-      })
-      .catch((err) => {
-        console.log(err);
+      .catch((errors) => {
+        // Handle errors
+        console.log(errors);
       });
   }, []);
 
@@ -151,7 +168,7 @@ const EbookModal = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={ModalCSSStyle} textAlign={"center"}>
+      <Box sx={{ ...ModalCSSStyle }} textAlign={"center"}>
         <Typography
           id="modal-modal-title"
           variant="h6"
@@ -172,6 +189,44 @@ const EbookModal = ({
 
         <Box>
           <form onSubmit={formik.handleSubmit} style={{ padding: "10px 0" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+              }}
+            >
+              <Typography style={{ padding: "0 0 5px 0" }}>
+                Select Language:
+              </Typography>
+              <FormControl
+                sx={{ marginTop: "0px" }}
+                fullWidth
+                variant="outlined"
+                margin="normal"
+              >
+                {/* <InputLabel htmlFor="category">Category</InputLabel> */}
+                <Select
+                  id="bookLanguage"
+                  size="small"
+                  name="bookLanguage"
+                  //   label="Category"
+                  value={formik.values.bookLanguage}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.bookLanguage &&
+                    Boolean(formik.errors.bookLanguage)
+                  }
+                >
+                  {dataState?.languages.map((category) => (
+                    <MenuItem key={category?._id} value={category?._id}>
+                      {category.language}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
             <Box sx={{ display: "flex", gap: 3, width: "100%" }}>
               <Box
                 sx={{
@@ -187,23 +242,36 @@ const EbookModal = ({
 
                 <Box sx={{ display: "flex", alignItems: "start", gap: 4 }}>
                   <label htmlFor="bookImage">
-                    <IconButton
-                      component="span"
-                      sx={{
-                        width: 80,
-                        height: 120,
-                        borderRadius: "20px",
-                        background: theme?.palette?.grey[200],
-                      }}
-                    >
-                      <AddIcon
-                        sx={{
-                          width: 40,
-                          height: 40,
-                          color: theme.palette.grey[400],
+                    {values?.bookImage ? (
+                      <img
+                        src={URL.createObjectURL(values.bookImage)}
+                        alt="imageeCover"
+                        style={{
+                          width: "80px",
+                          height: "120px",
+                          borderRadius: "20px",
+                          objectFit: "cover",
                         }}
                       />
-                    </IconButton>
+                    ) : (
+                      <IconButton
+                        component="span"
+                        sx={{
+                          width: 80,
+                          height: 120,
+                          borderRadius: "20px",
+                          background: theme?.palette?.grey[200],
+                        }}
+                      >
+                        <AddIcon
+                          sx={{
+                            width: 40,
+                            height: 40,
+                            color: theme.palette.grey[400],
+                          }}
+                        />
+                      </IconButton>
+                    )}
                   </label>
                   <input
                     type="file"
@@ -211,7 +279,7 @@ const EbookModal = ({
                     name="bookImage"
                     accept="image/*"
                     style={{ display: "none" }}
-                    onChange={handleImageChange}
+                    onChange={(e) => handleImageChange(e, "bookImage")}
                   />
                 </Box>
               </Box>
@@ -230,7 +298,7 @@ const EbookModal = ({
                   <IconButton
                     component="span"
                     sx={{
-                      width: 210,
+                      width: 200,
                       height: 120,
                       borderRadius: "20px",
                       background: theme?.palette?.grey[200],
@@ -254,7 +322,7 @@ const EbookModal = ({
                   name="bookPdf"
                   accept="image/*"
                   style={{ display: "none" }}
-                  onChange={handleImageChange}
+                  onChange={(e) => handleImageChange(e, "bookPdf")}
                 />
               </Box>
             </Box>
@@ -406,7 +474,7 @@ const EbookModal = ({
                 size="small"
                 sx={{ marginTop: "0px" }}
                 name="videoLink"
-                label="Video Link"
+                // label="Video Link"
                 variant="outlined"
                 margin="normal"
                 value={formik.values.videoLink}
