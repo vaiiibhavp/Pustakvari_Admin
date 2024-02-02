@@ -38,10 +38,13 @@ const LoginForm = () => {
         onSubmit: (values) => {
             // You can handle form submission here
             userLogin(values).then((res) => {
-                localStorage.setItem('user_token', res?.body?.token)
-                localStorage.setItem('user', JSON.stringify(res?.body))
-                dispatch(LogIn(res.body))
-                navigate("/Dashboard")
+                if (res.status === 200) {
+
+                    localStorage.setItem('user_token', res?.body?.token)
+                    localStorage.setItem('user', JSON.stringify(res?.body))
+                    dispatch(LogIn(res.body))
+                    navigate("/Dashboard")
+                }
             }).catch((error) => {
                 console.log(error);
             })

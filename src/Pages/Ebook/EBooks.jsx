@@ -295,8 +295,8 @@ const EBooks = () => {
                 open={open}
                 isPopOver={isPopOver}
                 handleClose={handleClose}
-                onEditHandler={() => {
-                    setIscatgoryEditRecord({ id: 2 });
+                onEditHandler={(item) => {
+                    setIscatgoryEditRecord(item);
                     setIsCategoryModalOpen(true);
                     setIsPopOver(null);
                 }}

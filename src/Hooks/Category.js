@@ -9,16 +9,16 @@ const useCategoryApis = () => {
   const createCategory = async (body) => {
     const response = await instance.post(`/addCategory`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
   };
 
-  const updateCategoryRecord = async (body, id) => {
+  const updateCategoryRecord = async ({ id, body }) => {
     const response = await instance.put(`/updateInstitute/${id}`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
