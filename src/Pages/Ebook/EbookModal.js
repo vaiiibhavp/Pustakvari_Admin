@@ -24,6 +24,7 @@ import { AppStrings } from "../../Helper/Constant";
 import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 import useEbookApis from "../../Hooks/Ebook";
 import useCategoryApis from "../../Hooks/Category";
+import useFileGenrator from "../../Hooks/ImageFileConverter";
 
 const style = {
   position: "absolute",
@@ -61,6 +62,7 @@ const EbookModal = ({
   isOpenEbookModal,
   setIsOpenEbookModal,
   isEditableRecord,
+  setBooksState,
 }) => {
   const [dataState, setDataState] = useState({
     categories: [],
@@ -76,6 +78,8 @@ const EbookModal = ({
   const { getCateogoryList } = useCategoryApis();
   const theme = useTheme();
   let isEditable = isEditableRecord?.id ? true : false;
+
+  const { fetchImageAsFile } = useFileGenrator();
 
   const handleClose = () => setIsOpenEbookModal(false);
 
@@ -124,18 +128,29 @@ const EbookModal = ({
     enableReinitialize: true,
     onSubmit: (values) => {
       if (isEditableRecord) {
-        console.log("hello");
-        // updateBookRecord(values)
-        //   .then((res) => {
-        //     setIsOpenEbookModal(false);
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
+        delete values.bookPdf;
+        delete values.bookImage;
+        updateBookRecord({ id: isEditableRecord?._id, body: values })
+          .then((res) => {
+            setIsOpenEbookModal(false);
+            setBooksState((prev) => ({
+              ...prev,
+              showSuccessModal: true,
+              message: res.message,
+            }));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
         createBookRecord(values)
           .then((res) => {
             setIsOpenEbookModal(false);
+            setBooksState((prev) => ({
+              ...prev,
+              showSuccessModal: true,
+              message: res.message,
+            }));
           })
           .catch((err) => {
             console.log(err);
@@ -169,6 +184,16 @@ const EbookModal = ({
         console.log(errors);
       });
   }, []);
+
+  useEffect(() => {
+    if (isEditableRecord?.bookImage) {
+      fetchImageAsFile(isEditableRecord?.bookImage).then((res) => {
+        if (res) {
+          formik.setFieldValue("bookImage", res);
+        }
+      });
+    }
+  }, [isEditableRecord?.bookImage]);
 
   return (
     <Modal
@@ -504,7 +529,7 @@ const EbookModal = ({
                 variant="contained"
                 color="primary"
               >
-                Submit
+                {isEditableRecord ? "Update" : "Submit"}
               </Button>
             </Box>
           </form>

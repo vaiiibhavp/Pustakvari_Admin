@@ -2,8 +2,8 @@ import instance from "../Axios/Instance";
 
 const UseUserApis = () => {
   const getUsers = async ({ user }) => {
-
-    const Response = await instance.get(`/userList`);
+    console.log(user, "user====");
+    const Response = await instance.get(user ? `/userList?is_instituteUser=${true}` : `/userList`);
     return Response;
   };
 

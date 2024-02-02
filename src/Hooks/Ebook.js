@@ -23,10 +23,10 @@ const useEbookApis = () => {
     return response.data;
   };
 
-  const updateBookRecord = async (body, id) => {
+  const updateBookRecord = async ({ id, body }) => {
     const response = await instance.put(`/updateEbook/${id}`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;

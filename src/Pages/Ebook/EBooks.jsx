@@ -24,6 +24,7 @@ import CategoryPopover from "./CategoryPopover";
 import CategoryModal from "./CategoryModal";
 import Searchbar from "../../Component/Searchbar";
 import useEbookApis from "../../Hooks/Ebook";
+import ShowsMessageModal from "../../Component/ShowMessageModal";
 
 const EBooks = () => {
     const theme = useTheme();
@@ -69,7 +70,7 @@ const EBooks = () => {
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
+    }, [setIsOpenEbookModal]);
 
     let { bookList } = booksState;
 
@@ -185,7 +186,7 @@ const EBooks = () => {
                                                 <TableCell align="center">
                                                     <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                                                         <Box>
-                                                            <img src={bookImage} alt="" style={{ width: "50px", height: "50px" }} />
+                                                            <img src={bookImage ? bookImage : "https://tse3.mm.bing.net/th?id=OIP.M-oyJjMArCOCU2z4bjLkjgAAAA&pid=Api&P=0&h=180"} alt="" style={{ width: "40px", height: "40px" }} />
                                                         </Box>
                                                         {bookName}
                                                     </Box></TableCell>
@@ -285,6 +286,7 @@ const EBooks = () => {
             <EbookModal
                 isOpenEbookModal={isOpenEbookModal}
                 setIsOpenEbookModal={setIsOpenEbookModal}
+                setBooksState={setBooksState}
                 isEditableRecord={isEditable}
             />
 
@@ -309,6 +311,8 @@ const EBooks = () => {
                 setIsOpenCategoryModal={setIsCategoryModalOpen}
                 isEditableRecord={isCategoryEditRecord}
             />
+            <ShowsMessageModal isOpen={booksState.showSuccessModal} setIsOpen={setBooksState} message={booksState?.message} />
+
         </Container>
     );
 };

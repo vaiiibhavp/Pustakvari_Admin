@@ -55,9 +55,9 @@ const Users = () => {
 
   const getUserList = () => {
 
-    let isIntitute = user?.instituteIfo
+    let isIntitute = user?.instituteInfo
     try {
-      getUsers({ user: user?.instituteIfo }).then((res) => {
+      getUsers({ user: user?.instituteInfo }).then((res) => {
         const data = res?.data?.data?.map((ele, idx) => {
           return {
             ...ele,
