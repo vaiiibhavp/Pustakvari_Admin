@@ -11,6 +11,7 @@ import {
   Avatar,
   IconButton,
   Popover,
+  useTheme,
 } from "@mui/material";
 // mocks_
 // import account from "../../../_mock/account";
@@ -20,9 +21,10 @@ import {
 
 const MENU_OPTIONS = [
   {
-    label: "Home",
+    label: "Profile",
     icon: "eva:home-fill",
   },
+
   // {
   //   label: 'Profile',
   //   icon: 'eva:person-fill',
@@ -37,6 +39,8 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+
+  const theme = useTheme();
 
   const navigate = useNavigate();
 
@@ -62,7 +66,7 @@ export default function AccountPopover() {
   return (
     <>
       <IconButton
-        // onClick={handleOpen}
+        onClick={handleOpen}
         sx={{
           p: 0,
           ...(open && {
@@ -99,9 +103,10 @@ export default function AccountPopover() {
             mt: 1.5,
             ml: 0.75,
             width: 180,
+            borderRadius: "20px",
             "& .MuiMenuItem-root": {
               typography: "body2",
-              borderRadius: 0.75,
+              borderRadius: 0.25,
             },
           },
         }}
@@ -111,7 +116,7 @@ export default function AccountPopover() {
             <MenuItem
               key={option.label}
               onClick={() => {
-                navigate("/dashboard/app");
+                // navigate("/dashboard/app");
                 setOpen(null);
               }}
             >
@@ -122,7 +127,10 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
-        <MenuItem onClick={() => handleLogout()} sx={{ m: 1 }}>
+        <MenuItem
+          sx={{ color: theme.palette.primary.main, m: 1 }}
+          onClick={() => handleLogout()}
+        >
           Logout
         </MenuItem>
       </Popover>
