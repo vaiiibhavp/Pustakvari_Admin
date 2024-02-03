@@ -58,7 +58,6 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
   let { user } = useSelector((state) => state.AuthUser)
   const theme = useTheme();
 
-  console.log(user, "user");
 
   const handleClose = () => setUserModalOpen(false);
   const initialValues = {
@@ -87,14 +86,15 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
     if (isEdit) {
       updateUser(value, isEditableRecord?._id)
         .then((res) => {
-          console.log(res, "res is updating");
-          setUserDataState((prev) => ({
-            ...prev,
-            showSuccessModal: true,
-            message: res?.data.message,
-          }));
-          resetForm();
-          setUserModalOpen(false);
+          if (res.status === 200) {
+            setUserDataState((prev) => ({
+              ...prev,
+              showSuccessModal: true,
+              message: res?.data.message,
+            }));
+            resetForm();
+            setUserModalOpen(false);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -110,14 +110,15 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
       };
       createUser(data)
         .then((res) => {
-
-          setUserDataState((prev) => ({
-            ...prev,
-            showSuccessModal: true,
-            message: res?.data.message,
-          }));
-          resetForm();
-          setUserModalOpen(false);
+          if (res.data.status === 201) {
+            setUserDataState((prev) => ({
+              ...prev,
+              showSuccessModal: true,
+              message: res?.data.message,
+            }));
+            resetForm();
+            setUserModalOpen(false);
+          }
         })
         .catch((err) => {
           console.log(err);

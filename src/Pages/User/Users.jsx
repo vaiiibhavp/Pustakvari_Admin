@@ -86,16 +86,16 @@ const Users = () => {
     }
   };
 
-  // const onRemoveHandler = (id) => {
-  //   deleteUserInfo(id).then((res) => {
-  //     let filternewData = userData?.filter((item) => {
-  //       return item._id !== id
-  //     })
-  //     setUserData(filternewData)
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   })
-  // }
+  const onRemoveHandler = (id) => {
+    deleteUserInfo(id).then((res) => {
+      let filternewData = userData?.filter((item) => {
+        return item._id !== id
+      })
+      setUserData(filternewData)
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
 
   const handleCheckStatus = (e, status) => {
     let statusValue = status === true ? false : status === false ? true : true
@@ -113,6 +113,7 @@ const Users = () => {
   useEffect(() => {
     getUserList();
     setUserDataState((prev) => ({
+      ...prev,
       render: false
     }))
   }, [isUserModalOpen, userDataState?.render]);
@@ -245,7 +246,7 @@ const Users = () => {
                           >
                             <BorderColorOutlinedIcon size="medium" />
                           </Button>
-                          {/* <Button
+                          <Button
                             sx={{
                               margin: " 0 10px",
                               background: theme.palette?.secondary?.lighter,
@@ -257,7 +258,7 @@ const Users = () => {
                               },
                             }}
                             onClick={() => onRemoveHandler(row._id)}
-                          > <DeleteOutlineOutlinedIcon size="medium" /></Button> */}
+                          > <DeleteOutlineOutlinedIcon size="medium" /></Button>
                         </Box>
                       </TableCell>
                     </TableRow>
@@ -294,7 +295,8 @@ const Users = () => {
         userDataState={userDataState}
         isEditableRecord={isEditable}
       />
-
+      {console.log(userDataState, "jsdhfhskuwekbknjehecjahsdkjh")
+      }
       <ShowsMessageModal isOpen={userDataState.showSuccessModal} setIsOpen={setUserDataState} message={userDataState?.message} />
     </Container>
   );
