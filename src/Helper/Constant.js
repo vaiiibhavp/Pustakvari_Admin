@@ -184,6 +184,8 @@ export const AppStrings = {
   Total_users: "Total User",
 
   no_data_available: "No data available",
+  multiple_choice: "Multiple Choice",
+  checkbox: "Checkbox",
 };
 
 export const colorCodes = {

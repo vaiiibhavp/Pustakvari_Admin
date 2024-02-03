@@ -14,11 +14,17 @@ const CreateQuiz = () => {
     const [questionName, setQuestionName] = useState('');
     const [questionType, setQuestionType] = useState('radio');
     const [options, setOptions] = useState([{ id: 1, value: 'Option 1' }]);
+    const [questions, setQuestions] = useState([{ id: 1 }])
     const theme = useTheme()
 
     const navigate = useNavigate();
 
     const [isAnswerkey, setIsAsnwerKey] = useState(false)
+
+    const handleAddQuestion = () => {
+        const newQuestions = [...questions, { id: questions.length + 1, value: `Option ${options.length + 1}` }];
+        setQuestions(newQuestions)
+    }
 
     const handleAddOption = () => {
         const newOptions = [...options, { id: options.length + 1, value: `Option ${options.length + 1}` }];
@@ -65,7 +71,7 @@ const CreateQuiz = () => {
 
 
             </Box>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} >
                 <Grid item xs={12} md={6} lg={6}>
                     <Box>
                         <Typography>
@@ -118,132 +124,134 @@ const CreateQuiz = () => {
                 </Grid>
 
                 <Grid item xs={12} md={12} lg={12}>
-                    <Card p={3}>
-                        {/* <Box p={3} sx={{ display: "flex", gap: 3 }}>
-                            <TextField
-                                fullWidth
-                                id="email"
-                                name="email"
-                                // label="Email"
-                                sx={{ marginTop: "0px", width: "70%", }}
-                                size='small'
-                                placeholder={"Questions"}
-                                variant="outlined"
-                                margin="normal"
-                                type="email"
-                            // value={formik.values.email}
-                            // onChange={formik.handleChange}
-                            // onBlur={formik.handleBlur}
-                            // error={formik.touched.email && Boolean(formik.errors.email)}
-                            // helperText={formik.touched.email && formik.errors.email}
-                            />
-                            <TextField
-                                fullWidth
-                                id="email"
-                                name="email"
-                                // label="Email"
-                                sx={{ marginTop: "0px", width: "30%" }}
-                                size='small'
-                                placeholder={"type"}
-                                variant="outlined"
-                                margin="normal"
-                                type="email"
-                            // value={formik.values.email}
-                            // onChange={formik.handleChange}
-                            // onBlur={formik.handleBlur}
-                            // error={formik.touched.email && Boolean(formik.errors.email)}
-                            // helperText={formik.touched.email && formik.errors.email}
-                            />
-                        </Box> */}
-
-                        <form style={{ padding: "10px" }}>
-                            <Box p={2} sx={{ display: "flex", gap: 3 }}>
-
+                    {questions.map((question) => {
+                        return (
+                            <Card p={3} sx={{ marginBottom: "10px" }} key={question?.id}>
+                                {/* <Box p={3} sx={{ display: "flex", gap: 3 }}>
                                 <TextField
-                                    sx={{ width: "70%" }}
-                                    label="Question Name"
-                                    variant="outlined"
                                     fullWidth
-                                    value={questionName}
-                                    onChange={handleQuestionNameChange}
-                                    style={{ marginBottom: '10px' }}
+                                    id="email"
+                                    name="email"
+                                    // label="Email"
+                                    sx={{ marginTop: "0px", width: "70%", }}
+                                    size='small'
+                                    placeholder={"Questions"}
+                                    variant="outlined"
+                                    margin="normal"
+                                    type="email"
+                                // value={formik.values.email}
+                                // onChange={formik.handleChange}
+                                // onBlur={formik.handleBlur}
+                                // error={formik.touched.email && Boolean(formik.errors.email)}
+                                // helperText={formik.touched.email && formik.errors.email}
                                 />
+                                <TextField
+                                    fullWidth
+                                    id="email"
+                                    name="email"
+                                    // label="Email"
+                                    sx={{ marginTop: "0px", width: "30%" }}
+                                    size='small'
+                                    placeholder={"type"}
+                                    variant="outlined"
+                                    margin="normal"
+                                    type="email"
+                                // value={formik.values.email}
+                                // onChange={formik.handleChange}
+                                // onBlur={formik.handleBlur}
+                                // error={formik.touched.email && Boolean(formik.errors.email)}
+                                // helperText={formik.touched.email && formik.errors.email}
+                                />
+                            </Box> */}
 
-                                <FormControl sx={{ width: "30%" }} fullWidth variant="outlined" style={{ marginBottom: '10px' }}>
-                                    <InputLabel>Question Type</InputLabel>
-                                    <Select
-                                        value={questionType}
-                                        onChange={handleQuestionTypeChange}
-                                        label="Question Type"
-                                    >
-                                        <MenuItem value="text">Text</MenuItem>
-                                        <MenuItem value="radio">Radio</MenuItem>
-                                        {/* Add more question types as needed */}
-                                    </Select>
-                                </FormControl>
-                            </Box>
+                                <form style={{ padding: "10px" }}>
+                                    <Box p={2} sx={{ display: "flex", gap: 3 }}>
 
-                            {questionType === 'radio' && (
-                                <div style={{ padding: "0 20px" }} >
-                                    <InputLabel>Options</InputLabel>
-                                    <RadioGroup>
-                                        {options.map((option, index) => (
-                                            <div key={index} style={{ width: "100%", display: 'flex', alignItems: 'center' }}>
-                                                <FormControlLabel
-                                                    value={option.value}
-                                                    control={<Radio />}
-                                                    sx={{ width: "100%", position: "relative" }}
-                                                    label={
-                                                        option.editing ? (
-                                                            <TextField
-                                                                variant="outlined"
-                                                                size="small"
-                                                                value={option.value}
-                                                                onChange={(event) => handleOptionChange(index, event)}
-                                                            />
-                                                        ) : (
-                                                            <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
+                                        <TextField
+                                            sx={{ width: "70%" }}
+                                            // label="Question Name"
+                                            variant="outlined"
+                                            fullWidth
+                                            value={questionName}
+                                            onChange={handleQuestionNameChange}
+                                            style={{ marginBottom: '10px' }}
+                                        />
 
-                                                                {option.value}
-                                                                <Box sx={{ position: "absolute", right: 0 }}>
+                                        <FormControl sx={{ width: "30%" }} fullWidth variant="outlined" style={{ marginBottom: '10px' }}>
+                                            {/* <InputLabel>Question Type</InputLabel> */}
+                                            <Select
+                                                value={questionType}
+                                                onChange={handleQuestionTypeChange}
+                                            // label="Question Type"
+                                            >
+                                                <MenuItem value="text">{AppStrings?.multiple_choice || "Multiple Choice"}</MenuItem>
+                                                <MenuItem value="Checkbox">{AppStrings?.checkbox || "Checkbox"}</MenuItem>
+                                                {/* Add more question types as needed */}
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
 
-                                                                    <IconButton type="button" onClick={() => handleEditOption(index)}>
-                                                                        <BorderColorOutlinedIcon fontSize="small" />
-                                                                    </IconButton>
-                                                                    <IconButton type="button" onClick={() => handleDeleteOption(index)}>
-                                                                        <DeleteOutlineOutlinedIcon fontSize="small" />
-                                                                    </IconButton>
-                                                                </Box>
+                                    {questionType === 'Checkbox' && (
+                                        <div style={{ padding: "0 20px" }} >
+                                            <InputLabel>Options</InputLabel>
+                                            <RadioGroup>
+                                                {options.map((option, index) => (
+                                                    <div key={index} style={{ width: "100%", display: 'flex', alignItems: 'center' }}>
+                                                        <FormControlLabel
+                                                            value={option.value}
+                                                            control={<Radio />}
+                                                            sx={{ width: "100%", position: "relative" }}
+                                                            label={
+                                                                option.editing ? (
+                                                                    <TextField
+                                                                        variant="outlined"
+                                                                        size="small"
+                                                                        value={option.value}
+                                                                        onChange={(event) => handleOptionChange(index, event)}
+                                                                    />
+                                                                ) : (
+                                                                    <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
+
+                                                                        {option.value}
+                                                                        <Box sx={{ position: "absolute", right: 0 }}>
+
+                                                                            <IconButton type="button" onClick={() => handleEditOption(index)}>
+                                                                                <BorderColorOutlinedIcon fontSize="small" />
+                                                                            </IconButton>
+                                                                            <IconButton type="button" onClick={() => handleDeleteOption(index)}>
+                                                                                <DeleteOutlineOutlinedIcon fontSize="small" />
+                                                                            </IconButton>
+                                                                        </Box>
+                                                                    </Box>
+                                                                )
+                                                            }
+                                                            style={{ marginRight: '20px' }}
+                                                        />
+                                                        {option.editing && (
+                                                            <Box sx={{ marginRight: "20px" }}>
+                                                                <IconButton onClick={() => handleSaveOption(index)}>
+                                                                    <SaveOutlinedIcon fontSize="small" />
+                                                                </IconButton>
                                                             </Box>
-                                                        )
-                                                    }
-                                                    style={{ marginRight: '20px' }}
-                                                />
-                                                {option.editing && (
-                                                    <Box sx={{ marginRight: "20px" }}>
-                                                        <IconButton onClick={() => handleSaveOption(index)}>
-                                                            <SaveOutlinedIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </Box>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </RadioGroup>
-                                    <Button type="button" variant="outlined" onClick={handleAddOption} style={{ marginTop: '10px' }}>
-                                        + Add Option
-                                    </Button>
-                                </div>
-                            )}
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </RadioGroup>
+                                            <Button type="button" variant="outlined" onClick={handleAddOption} style={{ marginTop: '10px' }}>
+                                                + Add Option
+                                            </Button>
+                                        </div>
+                                    )}
 
 
-                        </form>
-                        <Divider />
-                        <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%", padding: "5px 20px" }}>
-                            <Button color='secondary' onClick={() => setIsAsnwerKey(true)}>Answer key</Button>
-                            <Button variant='primary'>Delete</Button>
+                                </form>
+                                <Divider />
+                                <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%", padding: "5px 20px" }}>
+                                    <Button color='secondary' onClick={() => setIsAsnwerKey(true)}>Answer key</Button>
+                                    <Button variant='primary'>Delete</Button>
 
 
-                        </Box>
+                                </Box>
 
 
 
@@ -251,9 +259,12 @@ const CreateQuiz = () => {
 
 
 
-                    </Card>
+                            </Card>
+                        )
+                    })}
+
                     <Box sx={{ display: "flex", justifyContent: "end", width: "100%" }}>
-                        <Button type="submit" variant="contained" style={{ marginTop: '10px', background: theme.palette.grey[300], color: theme.palette.grey[600] }}>
+                        <Button type="submit" onClick={handleAddQuestion} variant="contained" style={{ marginTop: '10px', background: theme.palette.grey[300], color: theme.palette.grey[600] }}>
                             + Add Question
                         </Button>
                     </Box>
