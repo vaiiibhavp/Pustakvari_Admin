@@ -26,6 +26,7 @@ import UseUserApis from "../../Hooks/User";
 import moment from "moment";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
 import { useSelector } from "react-redux";
+import PaginationComponent from "../../Component/Pagination/Paginations";
 
 const Users = () => {
 
@@ -277,6 +278,7 @@ const Users = () => {
             </TableBody>
           </Table>
         </TableContainer>
+
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
