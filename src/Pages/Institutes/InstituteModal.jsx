@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import AddIcon from "@mui/icons-material/Add";
@@ -22,6 +22,7 @@ import { ModalCSSStyle } from '../../Helper/utils/ModalCss';
 import useInstitues from '../../Hooks/Institutes';
 
 import { AppStrings } from '../../Helper/Constant';
+import useFileGenrator from '../../Hooks/ImageFileConverter';
 
 
 const style = {
@@ -62,6 +63,9 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         updateInstituteRecord
     } = useInstitues()
 
+    const { fetchImageAsFile } = useFileGenrator();
+
+
     const handleClose = () => {
         setDetroyExistRecord({});
         setIsInstituteModalOpen(false)
@@ -96,17 +100,17 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                 updateInstituteRecord(values, isEditableRecord?._id).then((res) => {
                     if (res.status === 200) {
                         setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res.data.message }))
-                        setIsInstituteModalOpen(false)
                         setDetroyExistRecord({});
                     }
+                    setIsInstituteModalOpen(false)
                 })
             } else {
                 delete values.confirmPassword;
                 createInstituteRecord(values).then((res) => {
                     if (res.status === 201) {
                         setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res?.data.message }))
-                        setIsInstituteModalOpen(false)
                     }
+                    setIsInstituteModalOpen(false)
                 }).catch((errr) => {
                     console.log(
                         errr, "errro"
@@ -133,7 +137,17 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
 
     let { values, errors } = formik;
 
-    console.log(errors, values, values?.confirmPassword, "error");
+    console.log(errors, isEditableRecord, values, values?.confirmPassword, "error");
+
+    useEffect(() => {
+        if (isEditableRecord?.instituteImage) {
+            fetchImageAsFile(isEditableRecord?.instituteImage).then((res) => {
+                if (res) {
+                    formik.setFieldValue("instituteImage", res);
+                }
+            });
+        }
+    }, [isEditableRecord?.instituteImage]);
 
     return (
         <Modal

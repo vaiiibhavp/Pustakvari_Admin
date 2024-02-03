@@ -93,8 +93,8 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
               message: res?.data.message,
             }));
             resetForm();
-            setUserModalOpen(false);
           }
+          setUserModalOpen(false);
         })
         .catch((err) => {
           console.log(err);
@@ -117,8 +117,8 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
               message: res?.data.message,
             }));
             resetForm();
-            setUserModalOpen(false);
           }
+          setUserModalOpen(false);
         })
         .catch((err) => {
           console.log(err);
