@@ -41,6 +41,17 @@ const Institutes = () => {
         render: false
     });
     const [isEditable, setIsEditable] = useState({});
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    }
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -157,7 +168,7 @@ const Institutes = () => {
                         <TableBody>
                             {dataState?.instituteList?.length > 0 ? (
                                 dataState?.instituteList
-                                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((institute, idx) => {
                                         let {
                                             _id,
@@ -263,15 +274,15 @@ const Institutes = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {/* <TablePagination
+                <TablePagination
                     rowsPerPageOptions={[10, 25, 100]}
                     component="div"
-                    count={subscriptionData?.subscriptionList?.length}
+                    count={dataState?.instituteList?.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
-                /> */}
+                />
             </Paper>
 
             <InstituteModal

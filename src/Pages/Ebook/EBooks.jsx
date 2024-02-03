@@ -8,6 +8,7 @@ import {
     TableCell,
     TableContainer,
     TableHead,
+    TablePagination,
     TableRow,
     Typography,
     useTheme,
@@ -44,6 +45,17 @@ const EBooks = () => {
     const [isEditable, setIsEditable] = useState({});
 
     const [isPopOver, setIsPopOver] = useState(null);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
 
     const handleOpenCategory = (event) => {
         setIsPopOver(event.currentTarget);
@@ -164,7 +176,7 @@ const EBooks = () => {
                         <TableBody>
                             {bookList?.length > 0 ? (
                                 bookList
-                                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, idx) => {
                                         let {
                                             authorName,
@@ -272,15 +284,15 @@ const EBooks = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {/* <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={userData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        /> */}
+                <TablePagination
+                    rowsPerPageOptions={[10, 25, 100]}
+                    component="div"
+                    count={bookList.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
             </Paper>
 
             <EbookModal

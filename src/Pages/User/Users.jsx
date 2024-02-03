@@ -151,7 +151,6 @@ const Users = () => {
       <Paper sx={{ width: "100%" }}>
 
         {user?.instituteInfo ?
-
           <InsitiuteUserTable userData={userData} page={page} rowsPerPage={rowsPerPage} setIsUserModalOpen={setIsUserModalOpen} setIsEditable={setIsEditable} handleCheckStatus={handleCheckStatus} /> :
           <SuperAdminTable userData={userData} page={page} rowsPerPage={rowsPerPage} setIsUserModalOpen={setIsUserModalOpen} setIsEditable={setIsEditable} handleCheckStatus={handleCheckStatus} />
         }
