@@ -17,9 +17,9 @@ import {
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import React, { useEffect, useState } from "react";
 import { AppStrings } from "../../Helper/Constant";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import UserModal from "./UserModal";
 import Searchbar from "../../Component/Searchbar";
 import UseUserApis from "../../Hooks/User";
@@ -27,6 +27,8 @@ import moment from "moment";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
 import { useSelector } from "react-redux";
 import PaginationComponent from "../../Component/Pagination/Paginations";
+import InsitiuteUserTable from "./InsitiuteUserTable";
+import SuperAdminTable from "./SuperAdminTable";
 
 const Users = () => {
 
@@ -147,7 +149,7 @@ const Users = () => {
       </Box>
 
       <Paper sx={{ width: "100%" }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+        {/* <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -277,7 +279,12 @@ const Users = () => {
                 </TableRow>}
             </TableBody>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
+        {user?.instituteInfo ?
+
+          <InsitiuteUserTable userData={userData} page={page} rowsPerPage={rowsPerPage} setIsUserModalOpen={setIsUserModalOpen} setIsEditable={setIsEditable} handleCheckStatus={handleCheckStatus} /> :
+          <SuperAdminTable userData={userData} page={page} rowsPerPage={rowsPerPage} setIsUserModalOpen={setIsUserModalOpen} setIsEditable={setIsEditable} handleCheckStatus={handleCheckStatus} />
+        }
 
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
@@ -289,6 +296,8 @@ const Users = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+
+
 
       <UserModal
         isUserModalOpen={isUserModalOpen}
