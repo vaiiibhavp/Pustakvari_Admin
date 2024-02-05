@@ -1,6 +1,7 @@
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from '@mui/material';
 import React from 'react'
 import { AppStrings } from '../../Helper/Constant';
+import { accoundCreatedDate } from '../../Helper/utils/formatTime';
 
 const InstitutesUsers = ({ InstituteUserData }) => {
     const theme = useTheme()
@@ -43,7 +44,7 @@ const InstitutesUsers = ({ InstituteUserData }) => {
                                         <TableCell align="right">{row?.mobileNo}</TableCell>
 
                                         <TableCell align="right">{row?.emailId}</TableCell>
-                                        <TableCell align="right">{row?.created_at}</TableCell>
+                                        <TableCell align="right">{accoundCreatedDate(row?.created_at)}</TableCell>
                                         <TableCell align="right">
                                             <Button
                                                 sx={{

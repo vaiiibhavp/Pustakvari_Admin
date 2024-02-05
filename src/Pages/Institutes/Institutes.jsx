@@ -26,6 +26,7 @@ import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"; // Import the icon you want to use
 import moment from "moment";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
+import { accoundCreatedDate } from "../../Helper/utils/formatTime";
 const label = { inputProps: { "aria-label": "Color switch demo" } };
 
 const Institutes = () => {
@@ -194,7 +195,7 @@ const Institutes = () => {
                                                 <TableCell align="left">{mobileNo}</TableCell>
                                                 <TableCell align="center">{emailId}</TableCell>
                                                 <TableCell align="center">
-                                                    {moment(created_at).format("yyyy-MM-DD")}
+                                                    {accoundCreatedDate(created_at)}
                                                 </TableCell>
 
                                                 <TableCell align="center">

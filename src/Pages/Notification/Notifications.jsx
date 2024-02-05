@@ -13,37 +13,63 @@ import React, { useEffect, useState } from "react";
 import { AppStrings, colorCodes } from "../../Helper/Constant";
 import PaginationComponent from "../../Component/Pagination/Paginations";
 import CreateNotificationModal from "./CreateNotificationModal";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
 import useNotifiaction from "../../Hooks/Notifiaction";
+import { useSelector } from "react-redux";
+import moment from "moment";
+import { fNotifiactionDate } from "../../Helper/utils/formatTime";
 
 const Notifications = () => {
+    const {
+        AuthUser: { user },
+    } = useSelector((state) => state);
     const [page, setPage] = React.useState(2);
     const [notificationState, setNotificationState] = useState({
-        selectedTab: 1
-    })
+        selectedTab: 1,
+        allNotification: [],
+        globalAllNotifactions: [],
+        render: false,
+    });
     const navigate = useNavigate();
 
     const { getNotifiactionList } = useNotifiaction();
     const theme = useTheme();
+
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [isOpenNotifiactionModal, setIsOpenNotifiactionModal] =
         React.useState(false);
 
     const onSelectTab = (id) => {
-        setNotificationState((prev) => ({ ...prev, selectedTab: id }))
-    }
+        setNotificationState((prev) => ({ ...prev, selectedTab: id }));
+    };
 
     useEffect(() => {
-        getNotifiactionList().then((res) => {
-            console.log(res, "ress");
-        }).catch((err) => {
-            console.log(err, "err");
-        })
-    }, [])
+        let hasInstituteUser = user?.instituteInfo
+            ? "Institutes"
+            : user?.instituteInfo
+                ? "Users"
+                : "All";
+        console.log(hasInstituteUser, "hassssssss");
+        getNotifiactionList(user)
+            .then((res) => {
+                if (res?.status === 200) {
+                    setNotificationState((prev) => ({
+                        ...prev,
+                        allNotification: res.data || [],
+                        globalAllNotifactions: res.data || [],
+                        render: false,
+                    }));
+                }
+            })
+            .catch((err) => {
+                console.log(err, "err");
+            });
+    }, [notificationState?.render]);
 
+    let { allNotification } = notificationState;
 
     return (
         <Container maxWidth="xl">
@@ -58,27 +84,42 @@ const Notifications = () => {
                     }}
                     onClick={() => navigate(-1)}
                 >
-                    <IconButton sx={{ margin: "0px" }}><ArrowBackIosIcon size="small" color={theme?.palette?.grey[800]} sx={{ fontSize: "14px", color: theme?.palette?.grey[800] }} /></IconButton>
+                    <IconButton sx={{ margin: "0px" }}>
+                        <ArrowBackIosIcon
+                            size="small"
+                            color={theme?.palette?.grey[800]}
+                            sx={{ fontSize: "14px", color: theme?.palette?.grey[800] }}
+                        />
+                    </IconButton>
                     Back
                 </Button>
             </Box>{" "}
             <Box display={"flex"} sx={{ justifyContent: "space-between" }}>
-                <Box display={"flex"} gap={1} >
-                    {[{ id: 1, title: AppStrings?.all_notification }, { id: 2, title: AppStrings?.created_notification }].map((btn, index) => {
+                <Box display={"flex"} gap={1}>
+                    {[
+                        { id: 1, title: AppStrings?.all_notification },
+                        { id: 2, title: AppStrings?.created_notification },
+                    ].map((btn, index) => {
                         return (
                             <Button
                                 border={1}
                                 boxShadow={1}
                                 sx={{
-                                    bgcolor: notificationState?.selectedTab === btn.id ? theme.palette.secondary.main : theme.palette?.grey[400],
-                                    color: notificationState?.selectedTab === btn.id ? theme.palette.secondary.contrastText : theme.palette?.grey[700]
+                                    bgcolor:
+                                        notificationState?.selectedTab === btn.id
+                                            ? theme.palette.secondary.main
+                                            : theme.palette?.grey[400],
+                                    color:
+                                        notificationState?.selectedTab === btn.id
+                                            ? theme.palette.secondary.contrastText
+                                            : theme.palette?.grey[700],
                                 }}
                                 key={btn.id}
                                 onClick={() => onSelectTab(btn.id)}
                             >
                                 {btn?.title}
                             </Button>
-                        )
+                        );
                     })}
                     {/* <Button
                         sx={{
@@ -102,138 +143,172 @@ const Notifications = () => {
                             setIsOpenNotifiactionModal(true);
                         }}
                     >
-
                         + {AppStrings?.create_notification}
                     </Button>
                 </Box>
             </Box>
             <Box pb={3} pt={2}>
-                {notificationState?.selectedTab === 1 ? <List>
-
-
-                    {/* This is ui all notifiaction */}
-                    <ListItem
-                        sx={{
-                            background: "#ffffff",
-                            borderLeft: `4px solid ${colorCodes.SECONDARY_COLOR_300}`,
-                            borderRadius: "15px",
-                            boxShadow: (theme) => theme.customShadows.z1,
-                            marginBottom: "5px",
-                        }}
-                    >
-                        <Box
+                {notificationState?.selectedTab === 1 ? (
+                    <List>
+                        {allNotification?.length > 0
+                            ? allNotification.map((notification) => {
+                                let {
+                                    _id,
+                                    notificationTitle,
+                                    message,
+                                    notificationType,
+                                    userType,
+                                    created_at,
+                                } = notification;
+                                return (
+                                    <ListItem
+                                        key={_id}
+                                        sx={{
+                                            background: "#ffffff",
+                                            borderLeft: `4px solid ${colorCodes.SECONDARY_COLOR_300}`,
+                                            borderRadius: "15px",
+                                            boxShadow: (theme) => theme.customShadows.z1,
+                                            marginBottom: "5px",
+                                        }}
+                                    >
+                                        <Box
+                                            sx={{
+                                                width: "100%",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "space-between",
+                                            }}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    padding: "12px",
+                                                    marginRight: "12px",
+                                                }}
+                                            >
+                                                <img
+                                                    src="https://static.vecteezy.com/system/resources/previews/000/442/087/original/notification-vector-icon.jpg"
+                                                    alt=""
+                                                    style={{
+                                                        width: "50px",
+                                                        height: "50px",
+                                                        background: "gray",
+                                                        borderRadius: "50%",
+                                                        marginRight: "20px",
+                                                    }}
+                                                />
+                                                <Box>
+                                                    <Typography
+                                                        variant="h6"
+                                                        color={theme?.palette.grey[700]}
+                                                    >
+                                                        {notificationTitle}
+                                                    </Typography>
+                                                    <Typography
+                                                        variant="body1"
+                                                        color={theme?.palette.grey[500]}
+                                                    >
+                                                        {message}
+                                                    </Typography>
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="textSecondary"
+                                                        sx={{ display: "flex", flexDirection: "column" }}
+                                                    >
+                                                        2 min ago
+                                                    </Typography>
+                                                </Box>
+                                            </Box>
+                                            <Typography
+                                                color={colorCodes?.GRAY_SHAD_200}
+                                                sx={{
+                                                    background: theme?.palette.grey[200],
+                                                    p: 1,
+                                                    borderRadius: 1,
+                                                }}
+                                            >
+                                                {fNotifiactionDate(created_at)}
+                                            </Typography>
+                                        </Box>
+                                    </ListItem>
+                                );
+                            })
+                            : ""}
+                    </List>
+                ) : (
+                    <List>
+                        {/* This is ui created notifiaction */}
+                        <ListItem
                             sx={{
-                                width: "100%",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
+                                background: "#ffffff",
+                                borderLeft: `4px solid ${colorCodes.SECONDARY_COLOR_300}`,
+                                borderRadius: "15px",
+                                boxShadow: (theme) => theme.customShadows.z1,
+                                marginBottom: "5px",
                             }}
                         >
                             <Box
                                 sx={{
+                                    width: "100%",
                                     display: "flex",
                                     alignItems: "center",
-                                    padding: "12px",
-                                    marginRight: "12px",
+                                    justifyContent: "space-between",
                                 }}
                             >
-                                <img
-                                    src="https://static.vecteezy.com/system/resources/previews/000/442/087/original/notification-vector-icon.jpg"
-                                    alt=""
-                                    style={{
-                                        width: "50px",
-                                        height: "50px",
-                                        background: "gray",
-                                        borderRadius: "50%",
-                                        marginRight: "20px",
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        padding: "12px",
+                                        marginRight: "12px",
                                     }}
-                                />
-                                <Box>
-                                    <Typography variant="h6" color={theme?.palette.grey[700]}>
-                                        Title NAme
-                                    </Typography>
-                                    <Typography variant="body1" color={theme?.palette.grey[500]}>
-                                        BPHE society institute made an account
-                                    </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                        sx={{ display: "flex", flexDirection: "column" }}
-                                    >
-                                        2 min ago
-                                    </Typography>
+                                >
+                                    <img
+                                        src="https://static.vecteezy.com/system/resources/previews/000/442/087/original/notification-vector-icon.jpg"
+                                        alt=""
+                                        style={{
+                                            width: "50px",
+                                            height: "50px",
+                                            background: "gray",
+                                            borderRadius: "50%",
+                                            marginRight: "20px",
+                                        }}
+                                    />
+                                    <Box>
+                                        <Typography variant="h6" color={theme?.palette.grey[700]}>
+                                            Title NAme
+                                        </Typography>
+                                        <Typography
+                                            variant="body1"
+                                            color={theme?.palette.grey[500]}
+                                        >
+                                            BPHE society institute made an account
+                                        </Typography>
+                                        <Typography
+                                            variant="body2"
+                                            color="textSecondary"
+                                            sx={{ display: "flex", flexDirection: "column" }}
+                                        >
+                                            {" "}
+                                            User Type All <span>Notification type Push</span>
+                                        </Typography>
+                                    </Box>
                                 </Box>
-                            </Box>
-                            <Typography color={colorCodes?.GRAY_SHAD_200} sx={{ background: theme?.palette.grey[200], p: 1, borderRadius: 1 }}>
-                                25, sept 2023
-                            </Typography>
-                        </Box>
-                    </ListItem>
-                </List> : <List>
-                    {/* This is ui created notifiaction */}
-                    <ListItem
-                        sx={{
-                            background: "#ffffff",
-                            borderLeft: `4px solid ${colorCodes.SECONDARY_COLOR_300}`,
-                            borderRadius: "15px",
-                            boxShadow: (theme) => theme.customShadows.z1,
-                            marginBottom: "5px",
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                width: "100%",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    padding: "12px",
-                                    marginRight: "12px",
-                                }}
-                            >
-                                <img
-                                    src="https://static.vecteezy.com/system/resources/previews/000/442/087/original/notification-vector-icon.jpg"
-                                    alt=""
-                                    style={{
-                                        width: "50px",
-                                        height: "50px",
-                                        background: "gray",
-                                        borderRadius: "50%",
-                                        marginRight: "20px",
+                                <Typography
+                                    color={colorCodes?.GRAY_SHAD_200}
+                                    sx={{
+                                        background: theme?.palette.grey[200],
+                                        p: 1,
+                                        borderRadius: 1,
                                     }}
-                                />
-                                <Box>
-                                    <Typography variant="h6" color={theme?.palette.grey[700]}>
-                                        Title NAme
-                                    </Typography>
-                                    <Typography variant="body1" color={theme?.palette.grey[500]}>
-                                        BPHE society institute made an account
-                                    </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                        sx={{ display: "flex", flexDirection: "column" }}
-                                    >
-                                        {" "}
-                                        User Type All <span>Notification type Push</span>
-                                    </Typography>
-                                </Box>
+                                >
+                                    25, sept 2023
+                                </Typography>
                             </Box>
-                            <Typography color={colorCodes?.GRAY_SHAD_200} sx={{ background: theme?.palette.grey[200], p: 1, borderRadius: 1 }}>
-                                25, sept 2023
-                            </Typography>
-                        </Box>
-                    </ListItem>
-
-                </List>
-
-                }
-
+                        </ListItem>
+                    </List>
+                )}
 
                 <PaginationComponent
                     count={50}

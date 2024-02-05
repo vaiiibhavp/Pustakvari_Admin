@@ -18,6 +18,7 @@ import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { accoundCreatedDate } from "../../Helper/utils/formatTime";
 
 const InsitiuteUserTable = ({
   userData,
@@ -77,7 +78,9 @@ const InsitiuteUserTable = ({
                       {row?.is_instituteUser}
                     </TableCell> */}
                     <TableCell align="center">{row?.emailId}</TableCell>
-                    <TableCell align="center">{row?.created_at}</TableCell>
+                    <TableCell align="center">
+                      {accoundCreatedDate(row?.created_at)}
+                    </TableCell>
                     <TableCell align="center">{row?.created_at}</TableCell>
                     {/* <TableCell align="center">{row?.Last_Login}</TableCell> */}
                     <TableCell align="center">
