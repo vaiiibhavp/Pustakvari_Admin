@@ -132,7 +132,10 @@ export default function NotificationsPopover() {
               background: colorCodes?.PRIMARY_COLOR_200,
               color: colorCodes?.PRIMARY_COLOR,
             }}
-            onClick={() => navigate("/notifications")}
+            onClick={() => {
+              setOpen(null);
+              navigate("/notifications");
+            }}
           >
             View All
           </Button>

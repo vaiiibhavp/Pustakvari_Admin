@@ -49,14 +49,13 @@ export default function AccountPopover({ profile, setProfile }) {
   };
 
   const handleLogout = () => {
-    // setOpen(null);
+    setOpen(null);
     // authLogOut().then((res) => {
-    //   if (res.status === 200) {
-    //     navigate("/");
-    //     localStorage.clear();
-    //   }
+    // if (res.status === 200) {
+    navigate("/");
+    localStorage.clear();
+    // }
     // });
-    // navigate('/login');
   };
 
   const handleClose = () => {

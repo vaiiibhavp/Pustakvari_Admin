@@ -1,9 +1,12 @@
+import instance from "../Axios/Instance";
 const useNotifiaction = () => {
-  const getNotifiactionType = async () => {
-    let res = await instance.get();
+  const getNotifiactionList = async () => {
+    let res = await instance.get("/getNotificationList");
+    return res.data;
   };
   return {
-    getNotifiactionType,
     getNotifiactionList,
   };
 };
+
+export default useNotifiaction;

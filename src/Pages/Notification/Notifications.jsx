@@ -9,7 +9,7 @@ import {
     Typography,
     useTheme,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AppStrings, colorCodes } from "../../Helper/Constant";
 import PaginationComponent from "../../Component/Pagination/Paginations";
 import CreateNotificationModal from "./CreateNotificationModal";
@@ -17,6 +17,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
+import useNotifiaction from "../../Hooks/Notifiaction";
 
 const Notifications = () => {
     const [page, setPage] = React.useState(2);
@@ -24,6 +25,8 @@ const Notifications = () => {
         selectedTab: 1
     })
     const navigate = useNavigate();
+
+    const { getNotifiactionList } = useNotifiaction();
     const theme = useTheme();
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [isOpenNotifiactionModal, setIsOpenNotifiactionModal] =
@@ -33,7 +36,14 @@ const Notifications = () => {
         setNotificationState((prev) => ({ ...prev, selectedTab: id }))
     }
 
-    console.log(notificationState?.selectedTab, "theme.palette.secondary", theme.palette.secondary);
+    useEffect(() => {
+        getNotifiactionList().then((res) => {
+            console.log(res, "ress");
+        }).catch((err) => {
+            console.log(err, "err");
+        })
+    }, [])
+
 
     return (
         <Container maxWidth="xl">
