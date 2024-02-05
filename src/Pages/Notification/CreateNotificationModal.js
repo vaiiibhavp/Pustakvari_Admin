@@ -10,34 +10,77 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 
 import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
+import useNotifiaction from "../../Hooks/Notifiaction";
 
 const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
   const theme = useTheme();
 
+  const [notificaionModal, setNotificationModal] = useState({
+    userNotificationTypes: [],
+    notificaiontypes: [],
+  });
+
+  const {
+    getNotifiactionUserTypeList,
+    getNotifiactionTypeList,
+    createNotifiacation,
+  } = useNotifiaction();
+
   const validationSchema = Yup.object().shape({
-    notification_title: Yup.string().required("Notification title is required"),
+    notificationTitle: Yup.string().required("Notification title is required"),
     message: Yup.string().required("Message is required"),
-    notification_type: Yup.string().required("Notification type is required"),
-    user_type: Yup.string().required("User type is required"),
+    notificationType: Yup.string().required("Notification type is required"),
+    userType: Yup.string().required("User type is required"),
   });
 
   const initialValues = {
-    notification_title: "",
+    notificationTitle: "",
     message: "",
-    notification_type: "",
-    user_type: "",
+    notificationType: "",
+    userType: "",
   };
 
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
+    createNotifiacation(values)
+      .then((res) => {
+        handleClose();
+        console.log(res, "added notifiaction");
+      })
+      .catch((err) => {
+        console.log(err, "err");
+      });
     resetForm();
   };
+
+  useEffect(() => {
+    let fetchUserType = getNotifiactionUserTypeList();
+    let fetchType = getNotifiactionTypeList();
+
+    Promise.all([fetchUserType, fetchType])
+      .then(([userTypeRes, notificationTypeRes]) => {
+        setNotificationModal((prev) => ({
+          ...prev,
+          userNotificationTypes: userTypeRes.data || [],
+          notificaiontypes: notificationTypeRes.data || [],
+        }));
+      })
+      .catch((errors) => {
+        // Handle errors
+        console.log(errors);
+      });
+    //  Promise.all(([fetchUserType , fetchType]).then(()))
+  }, []);
+
+  console.log(notificaionModal, "modal data");
+
+  let { userNotificationTypes, notificaiontypes } = notificaionModal;
 
   return (
     <Modal
@@ -72,15 +115,16 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
             <Box mt={2}>
               <Typography>Notification Title </Typography>
               <Field
-                name="notification_title"
+                name="notificationTitle"
                 as={TextField}
                 fullWidth
+                sx={{ marginTop: "0px" }}
                 size="small"
                 variant="outlined"
                 margin="normal"
               />
               <ErrorMessage
-                name="notification_title"
+                name="notificationTitle"
                 style={{
                   color: theme?.palette.error.main,
                 }}
@@ -91,6 +135,7 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
               <Field
                 name="message"
                 as={TextField}
+                sx={{ marginTop: "0px" }}
                 fullWidth
                 size="small"
                 multiline
@@ -107,19 +152,27 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
               />
 
               <Typography>Notification Type</Typography>
-              <FormControl fullWidth variant="outlined" margin="normal">
+              <FormControl
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                sx={{ marginTop: "0px" }}
+              >
                 <Field
-                  name="notification_type"
+                  name="notificationType"
                   as={Select}
                   size="small"
                   variant="outlined"
                   margin="normal"
                 >
-                  <MenuItem value="type1">Type 1</MenuItem>
-                  <MenuItem value="type2">Type 2</MenuItem>
+                  {notificaiontypes?.map((type) => (
+                    <MenuItem key={type?._id} value={type?._id}>
+                      {type.type}
+                    </MenuItem>
+                  ))}
                 </Field>
                 <ErrorMessage
-                  name="notification_type"
+                  name="notificationType"
                   style={{
                     color: theme?.palette.error.main,
                   }}
@@ -128,19 +181,27 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
               </FormControl>
 
               <Typography>User Type</Typography>
-              <FormControl fullWidth variant="outlined" margin="normal">
+              <FormControl
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                sx={{ marginTop: "0px" }}
+              >
                 <Field
-                  name="user_type"
+                  name="userType"
                   as={Select}
                   size="small"
                   variant="outlined"
                   margin="normal"
                 >
-                  <MenuItem value="user1">User 1</MenuItem>
-                  <MenuItem value="user2">User 2</MenuItem>
+                  {userNotificationTypes?.map((user) => (
+                    <MenuItem key={user?._id} value={user?._id}>
+                      {user.userType}
+                    </MenuItem>
+                  ))}
                 </Field>
                 <ErrorMessage
-                  name="user_type"
+                  name="userType"
                   style={{
                     color: theme?.palette.error.main,
                   }}

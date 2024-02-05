@@ -215,15 +215,7 @@ const Notifications = () => {
                                     </Button>
                                 );
                             })}
-                            {/* <Button
-                        sx={{
-                            background: "#fffffff",
-                            border: `1px solid ${colorCodes?.GRAY_SHAD_400}`,
-                            color: colorCodes?.GRAY_SHAD_400,
-                        }}
-                    >
-                        {AppStrings?.created_notification}
-                    </Button> */}
+
                         </Box>
                         <Box sx={{ display: "flex", gap: 1 }}>
                             {/* <Searchbar onSearch={(e) => console.log("hello", e)} /> */}
