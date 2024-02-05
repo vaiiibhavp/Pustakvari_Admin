@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuthApis from '../../Hooks/Auth';
 import { useDispatch } from 'react-redux';
 import { LogIn } from '../../Store/Slice/AuthSlice';
+import { toast } from 'react-toastify';
 
 
 
@@ -38,14 +39,23 @@ const LoginForm = () => {
         onSubmit: (values) => {
             // You can handle form submission here
             userLogin(values).then((res) => {
+                console.log(res, "res login");
                 if (res.status === 200) {
-
                     localStorage.setItem('user_token', res?.body?.token)
                     localStorage.setItem('user', JSON.stringify(res?.body))
                     dispatch(LogIn(res.body))
                     navigate("/Dashboard")
+
+                    toast.dismiss();
+                    toast.success(res.message, { autoClose: 2000 })
+
+                } else {
+                    toast.dismiss();
+                    toast.warning(res.message, { autoClose: 2000 })
                 }
+
             }).catch((error) => {
+                toast.success("Login in Successfully 2")
                 console.log(error);
             })
 
