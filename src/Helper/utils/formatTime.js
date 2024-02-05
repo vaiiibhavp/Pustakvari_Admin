@@ -12,7 +12,7 @@ export function accoundCreatedDate(date, newFormat) {
 export function fNotifiactionDate(date, newFormat) {
   const dateFormat = newFormat || "DD, MMM yyyy";
 
-  return date ? moment(date).format(dateFormat) : ""; //
+  return date ? moment(date).format(dateFormat) : ""; // 25, jan 2024
 }
 
 export function fromAgoDate(date) {
