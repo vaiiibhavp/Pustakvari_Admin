@@ -37,7 +37,7 @@ const MENU_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function AccountPopover() {
+export default function AccountPopover({ profile, setProfile }) {
   const [open, setOpen] = useState(null);
 
   const theme = useTheme();
@@ -117,6 +117,7 @@ export default function AccountPopover() {
               key={option.label}
               onClick={() => {
                 // navigate("/dashboard/app");
+                setProfile(true);
                 setOpen(null);
               }}
             >

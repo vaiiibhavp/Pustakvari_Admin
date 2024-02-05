@@ -24,6 +24,6 @@ export const ModalCSSStyle = {
     backgroundColor: "#f1f1f1",
     borderRadius: "10px",
   },
-  scrollbarWidth: "thin",
+  scrollbarWidth: "none",
   scrollbarColor: "#888 #f1f1f1", // For Firefox
 };

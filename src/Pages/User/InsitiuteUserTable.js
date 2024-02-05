@@ -47,7 +47,7 @@ const InsitiuteUserTable = ({
             <TableCell align="center" style={{ minWidth: "200px" }}>
               {AppStrings?.Account_created_on}
             </TableCell>
-            <TableCell align="center" style={{ minWidth: "180px" }}>
+            <TableCell align="center" style={{ minWidth: "240px" }}>
               {AppStrings?.CurrentSubscription || "Current Subscription plan"}
             </TableCell>
             <TableCell align="center" style={{ minWidth: "100px" }}>
@@ -73,13 +73,13 @@ const InsitiuteUserTable = ({
                     </TableCell>
                     <TableCell align="center">{row?.fullName}</TableCell>
                     <TableCell align="center">{row?.mobileNo}</TableCell>
-                    <TableCell align="center">
+                    {/* <TableCell align="center">
                       {row?.is_instituteUser}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell align="center">{row?.emailId}</TableCell>
                     <TableCell align="center">{row?.created_at}</TableCell>
                     <TableCell align="center">{row?.created_at}</TableCell>
-                    <TableCell align="center">{row?.Last_Login}</TableCell>
+                    {/* <TableCell align="center">{row?.Last_Login}</TableCell> */}
                     <TableCell align="center">
                       <Button
                         sx={{
@@ -109,7 +109,7 @@ const InsitiuteUserTable = ({
                         }}
                       />
                     </TableCell>
-                    <TableCell align="right" style={{ minWidth: "200px" }}>
+                    <TableCell align="center" style={{ minWidth: "200px" }}>
                       <Box>
                         <Button
                           sx={{
