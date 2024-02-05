@@ -33,8 +33,8 @@ const LoginForm = () => {
             password: '',
         },
         validationSchema: Yup.object({
-            emailId: Yup.string().email('Invalid email address').required('Required'),
-            password: Yup.string().required('Required'),
+            emailId: Yup.string().email('Invalid email address').required('Email Id is required'),
+            password: Yup.string().required('Password is required'),
         }),
         onSubmit: (values) => {
             // You can handle form submission here
