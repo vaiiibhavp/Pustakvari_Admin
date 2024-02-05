@@ -102,7 +102,6 @@ const ProfileModal = ({ profile, setProfile }) => {
     };
 
 
-    console.log(user, "name");
 
 
     return (
