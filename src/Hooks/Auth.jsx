@@ -30,11 +30,13 @@ const useAuthApis = () => {
   };
 
   const forgotPassword = async (body) => {
-    let res = await instance.post(`/forgotPassword`, body, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    let res = await instance.put(`/forgotPassword`, body
+      //  {
+      // headers: {
+      //   "Content-Type": "multipart/form-data",
+      // },
+      // }
+    );
 
     return res.data;
   };

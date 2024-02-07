@@ -2,17 +2,17 @@
 
 import moment from "moment/moment";
 
-export function fDate(date, newFormat) {
-  const dateFormat = newFormat || "dd/MM/yyyy";
+export function accoundCreatedDate(date, newFormat) {
+  const dateFormat = newFormat || "DD/MM/yyyy";
 
   return date ? moment(date).format(dateFormat) : ""; // 12/12/2023
 }
 
 //
 export function fNotifiactionDate(date, newFormat) {
-  const dateFormat = newFormat || "DD MMM yyyy";
+  const dateFormat = newFormat || "DD, MMM yyyy";
 
-  return date ? moment(date).format(dateFormat) : ""; //
+  return date ? moment(date).format(dateFormat) : ""; // 25, jan 2024
 }
 
 export function fromAgoDate(date) {

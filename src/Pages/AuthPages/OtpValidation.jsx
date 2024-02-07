@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Box, Button, Container, CssBaseline, Grid, TextField, Typography } from "@mui/material"
+import { Box, Button, Container, CssBaseline, Grid, TextField, Typography, useTheme } from "@mui/material"
 import { AppStrings, colorCodes } from '../../Helper/Constant';
+import { useLocation } from 'react-router-dom';
 
 
 
 const OtpValidation = () => {
-
+    const { state } = useLocation();
     const [otp, setOtp] = useState(['', '', '', '']);
+    let theme = useTheme()
 
     const handleOtpChange = (value, index) => {
         const newOtp = [...otp];
@@ -23,7 +25,7 @@ const OtpValidation = () => {
                     {AppStrings?.Enter_OTP}
                 </Typography>
                 <Typography color={colorCodes?.GRAY_SHAD_200} textAlign={"center"} pb={3}>
-                    {AppStrings?.otp_statement} lakhannemane@gmail.com
+                    {AppStrings?.otp_statement} <span style={{ color: theme?.palette?.secondary?.light }}>{state && state}</span>
                 </Typography>
                 <Grid container spacing={1} mx={2} pb={2} >
                     {otp.map((digit, index) => (

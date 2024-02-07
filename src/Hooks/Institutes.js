@@ -8,7 +8,7 @@ const useInstitues = () => {
   const createInstituteRecord = async (body) => {
     const response = await instance.post(`/createInstitute`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
@@ -17,7 +17,7 @@ const useInstitues = () => {
   const updateInstituteRecord = async (body, id) => {
     const response = await instance.put(`/updateInstitute/${id}`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;

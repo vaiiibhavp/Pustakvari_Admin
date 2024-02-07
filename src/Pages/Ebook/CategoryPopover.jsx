@@ -72,7 +72,7 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
                             <ListItem key={category?._id}>
                                 <ListItemText primary={categoryName} />
                                 <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                                    <Button onClick={onEditHandler} sx={{
+                                    <Button onClick={() => onEditHandler(category)} sx={{
                                         borderRadius: "50%",
                                         width: "30px",
                                         height: "30px",

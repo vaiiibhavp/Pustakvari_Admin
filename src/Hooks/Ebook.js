@@ -9,19 +9,24 @@ const useEbookApis = () => {
     return Response.data;
   };
 
+  const getLangaugeBookList = async () => {
+    const Response = await instance.get(`/ebooklanguageList`);
+    return Response.data;
+  };
+
   const createBookRecord = async (body) => {
     const response = await instance.post(`/createEbook`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
   };
 
-  const updateBookRecord = async (body, id) => {
+  const updateBookRecord = async ({ id, body }) => {
     const response = await instance.put(`/updateEbook/${id}`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
@@ -44,6 +49,7 @@ const useEbookApis = () => {
     updateBookRecord,
     getBookRecordDetail,
     deleteBookRecord,
+    getLangaugeBookList,
   };
 };
 

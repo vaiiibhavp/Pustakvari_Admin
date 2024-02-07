@@ -10,6 +10,7 @@ import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/mater
 import { adminMenus, superAdminMenus } from '../../Helper/Constant';
 import NavSection from './SidebarNav';
 import logoImage from "../../Assets/Images/logo.svg"
+import { useSelector } from 'react-redux';
 // mock
 
 // hooks
@@ -38,8 +39,8 @@ const StyledAccount = styled('div')(({ theme }) => ({
 export default function Sidebar() {
     const { pathname } = useLocation();
 
+    const { user } = useSelector((state) => state?.AuthUser);
 
-    const isAdmin = true
 
     // const isDesktop = useResponsive('up', 'lg');
 
@@ -58,7 +59,7 @@ export default function Sidebar() {
             </Box>
 
 
-            <NavSection data={isAdmin ? superAdminMenus : adminMenus} />
+            <NavSection data={user?.instituteInfo ? adminMenus : superAdminMenus} />
 
             <Box sx={{ flexGrow: 1 }} />
 

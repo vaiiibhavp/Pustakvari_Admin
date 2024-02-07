@@ -1,13 +1,14 @@
 import instance from "../Axios/Instance";
 
 const UseUserApis = () => {
-  const getUsers = async () => {
-    const Response = await instance.get(`/userList`);
+  const getUsers = async ({ user }) => {
+    console.log(user, "user====");
+    const Response = await instance.get(user ? `/userList?is_instituteUser=${true}` : `/userList`);
     return Response;
   };
 
   const createUser = async (body) => {
-    const response = await instance.post(`/createUser`, body, {
+    const response = await instance.post(`/userSingup`, body, {
       headers: {
         "Content-Type": "application/json",
       },

@@ -22,6 +22,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
 import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 import useCategoryApis from "../../Hooks/Category";
+import useFileGenrator from "../../Hooks/ImageFileConverter";
+import { useEffect } from "react";
 
 const style = {
     position: "absolute",
@@ -62,12 +64,15 @@ const CategoryModal = ({
     const theme = useTheme();
     let isEditable = isEditableRecord?.id ? true : false;
 
-    let { createCategory } = useCategoryApis();
+    const { fetchImageAsFile } = useFileGenrator();
+
+
+    let { createCategory, updateCategoryRecord } = useCategoryApis();
 
     const handleClose = () => setIsOpenCategoryModal(false);
     const validationSchema = Yup.object({
         categoryName: Yup.string().required("Category name is required"),
-        files: Yup.mixed()
+        file: Yup.mixed()
             .required("Image is required")
             .test(
                 "fileSize",
@@ -84,23 +89,48 @@ const CategoryModal = ({
 
     const formik = useFormik({
         initialValues: {
-            categoryName: "",
-            files: null,
+            categoryName: isEditableRecord?.categoryName || "",
+            file: null,
         },
         validationSchema,
+        enableReinitialize: true,
         onSubmit: (values) => {
+            if (isEditableRecord) {
+                updateCategoryRecord({ id: isEditableRecord?._id, body: values }).then((res) => {
+                    setIsOpenCategoryModal(false)
+                }).catch((err) => {
+                    console.log(err);
+                })
+            } else {
+                createCategory(values).then((res) => {
+                    setIsOpenCategoryModal(false)
+                }).catch((err) => {
+                    console.log(err);
+                })
+            }
 
-            createCategory(values).then((res) => {
-                setIsOpenCategoryModal(false)
-            }).catch((err) => {
-                console.log(err);
-            })
         },
     });
 
     const handleImageChange = (event) => {
-        formik.setFieldValue("files", event.currentTarget.files[0]);
+        formik.setFieldValue("file", event.currentTarget.files[0]);
     };
+
+    useEffect(() => {
+        if (isEditableRecord?.categoryImage) {
+            fetchImageAsFile(isEditableRecord?.categoryImage).then((res) => {
+                if (res) {
+                    console.log(res, "ress");
+                    formik.setFieldValue("file", res);
+                }
+            });
+        }
+    }, [isEditableRecord?.categoryImage]);
+
+    console.log(isEditableRecord, "isRecord");
+    let { values } = formik;
+
+    console.log(values, "valuesss");
 
 
     return (
@@ -140,27 +170,46 @@ const CategoryModal = ({
                             }}
                         >
                             <Typography style={{ padding: "0 0 5px 0" }}>
-                                Book Image:
+                                Category Image:
                             </Typography>
 
                             <Box sx={{ display: "flex", alignItems: "start" }}>
-                                <label htmlFor="files">
-                                    <IconButton
-                                        component="span"
-                                        sx={{
-                                            width: 80,
-                                            height: 120,
-                                            borderRadius: "20px",
-                                            background: theme?.palette?.grey[300],
-                                        }}
-                                    >
-                                        <AddIcon sx={{ width: 40, height: 40 }} />
-                                    </IconButton>
+                                <label htmlFor="file">
+                                    {values?.file ? (
+                                        <img
+                                            src={URL.createObjectURL(values.file)}
+                                            alt="imageeCover"
+                                            style={{
+                                                width: "80px",
+                                                height: "120px",
+                                                borderRadius: "20px",
+                                                objectFit: "cover",
+                                            }}
+                                        />
+                                    ) : (
+                                        <IconButton
+                                            component="span"
+                                            sx={{
+                                                width: 80,
+                                                height: 120,
+                                                borderRadius: "20px",
+                                                background: theme?.palette?.grey[200],
+                                            }}
+                                        >
+                                            <AddIcon
+                                                sx={{
+                                                    width: 40,
+                                                    height: 40,
+                                                    color: theme.palette.grey[400],
+                                                }}
+                                            />
+                                        </IconButton>
+                                    )}
                                 </label>
                                 <input
                                     type="file"
-                                    id="files"
-                                    name="files"
+                                    id="file"
+                                    name="file"
                                     accept="image/*"
                                     style={{ display: "none" }}
                                     onChange={handleImageChange}

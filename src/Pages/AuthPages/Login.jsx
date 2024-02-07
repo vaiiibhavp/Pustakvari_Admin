@@ -14,12 +14,16 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import useAuthApis from '../../Hooks/Auth';
+import { useDispatch } from 'react-redux';
+import { LogIn } from '../../Store/Slice/AuthSlice';
+import { toast } from 'react-toastify';
 
 
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { userLogin } = useAuthApis();
+    const dispatch = useDispatch();
 
     const navigate = useNavigate()
 
@@ -29,15 +33,30 @@ const LoginForm = () => {
             password: '',
         },
         validationSchema: Yup.object({
-            emailId: Yup.string().email('Invalid email address').required('Required'),
-            password: Yup.string().required('Required'),
+            emailId: Yup.string().email('Invalid email address').required('Email Id is required'),
+            password: Yup.string().required('Password is required'),
         }),
         onSubmit: (values) => {
             // You can handle form submission here
             userLogin(values).then((res) => {
-                localStorage.setItem('user_token', res?.body?.token)
-                navigate("/Dashboard")
+                console.log(res, "res login");
+                if (res.status === 200) {
+                    localStorage.setItem('user_token', res?.body?.token)
+                    localStorage.setItem('user', JSON.stringify(res?.body))
+                    dispatch(LogIn(res.body))
+                    navigate("/Dashboard")
+
+                    toast.dismiss();
+                    toast.success(res.message, { autoClose: 2000 })
+
+                } else {
+                    toast.dismiss();
+                    toast.warning(res.message, { autoClose: 2000 })
+                }
+
             }).catch((error) => {
+                toast.dismiss();
+                toast.warning("Something went wrong", { autoClose: 2000 })
                 console.log(error);
             })
 

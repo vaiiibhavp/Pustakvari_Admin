@@ -10,3 +10,28 @@ body {
   path {
   fill: #fe6b01;
 }
+
+.input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.input-wrapper input[type="file"] {
+  display: none;
+}
+
+.input-wrapper label {
+  display: block;
+  cursor: pointer;
+}
+
+.input-wrapper img {
+  width: 27px;
+  height: 28px;
+}

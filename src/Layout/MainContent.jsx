@@ -8,13 +8,9 @@ import Sidebar from './Sidebar/Sidebar'
 const MainContent = () => {
 
 
-    // const navigate = useNavigate();
-    // const isUser = false;
-    // useEffect(() => {
-    //     if (isUser) {
-    //         navigate("/login");
-    //     }
-    // }, []);
+
+
+
     return (
         <Box sx={{ display: "flex" }}>
             <Sidebar />

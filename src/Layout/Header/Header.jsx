@@ -9,6 +9,8 @@ import { bgBlur } from '../../Theme/utils/cssStyles';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';
+import { useState } from 'react';
+import ProfileModal from './ProfileModal';
 
 // ----------------------------------------------------------------------
 
@@ -39,12 +41,14 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 
 export default function Header() {
+
+    const [profile, setProfile] = useState(false)
     return (
         <StyledRoot>
             <StyledToolbar shadow={1}>
 
 
-                <SearchIcon size="small" sx={{color:"#000000"}} />
+                <SearchIcon size="small" sx={{ color: "#000000" }} />
                 <Box sx={{ flexGrow: 1, }} />
 
                 <Stack
@@ -57,7 +61,8 @@ export default function Header() {
                 >
 
                     <NotificationsPopover />
-                    <AccountPopover />
+                    <AccountPopover profile={profile} setProfile={setProfile} />
+                    <ProfileModal profile={profile} setProfile={setProfile} />
                 </Stack>
             </StyledToolbar>
         </StyledRoot>

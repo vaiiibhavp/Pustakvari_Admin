@@ -1,6 +1,6 @@
 import { NavLink as RouterLink } from "react-router-dom";
 // @mui
-import { Box, List, ListItemText } from "@mui/material";
+import { Box, List, ListItemText, useTheme } from "@mui/material";
 //
 import { StyledNavItem, StyledNavItemIcon } from "./Style";
 import { colorCodes } from "../../Helper/Constant";
@@ -23,6 +23,7 @@ export default function NavSection({ data = [], ...other }) {
 
 function NavItem({ item }) {
   const { title, path, icon, info } = item;
+  let theme = useTheme();
 
   return (
     <StyledNavItem
@@ -31,7 +32,7 @@ function NavItem({ item }) {
       // onClick={() => alert("title", title)}
       sx={{
         "&.active": {
-          color: colorCodes.PRIMARY_COLOR,
+          color: theme.palette.primary.main,
           bgcolor: "action.selected",
           fontWeight: "fontWeightBold",
           "& $icon": {

@@ -26,6 +26,7 @@ import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"; // Import the icon you want to use
 import moment from "moment";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
+import { accoundCreatedDate } from "../../Helper/utils/formatTime";
 const label = { inputProps: { "aria-label": "Color switch demo" } };
 
 const Institutes = () => {
@@ -41,6 +42,17 @@ const Institutes = () => {
         render: false
     });
     const [isEditable, setIsEditable] = useState({});
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    }
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -157,13 +169,14 @@ const Institutes = () => {
                         <TableBody>
                             {dataState?.instituteList?.length > 0 ? (
                                 dataState?.instituteList
-                                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((institute, idx) => {
                                         let {
                                             _id,
                                             emailId,
                                             instituteName,
                                             is_active,
+                                            instituteImage,
                                             mobileNo,
                                             created_at,
                                             studentCount,
@@ -173,11 +186,16 @@ const Institutes = () => {
                                                 <TableCell component="th" scope="row">
                                                     {idx + 1}
                                                 </TableCell>
-                                                <TableCell align="left" onClick={() => navigate(`/institute/${_id}`, { state: institute })}>{instituteName}</TableCell>
+                                                <TableCell align="left" onClick={() => navigate(`/institute/${_id}`, { state: institute })}> <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                                                    <Box>
+                                                        <img src={instituteImage ? instituteImage : "https://tse3.mm.bing.net/th?id=OIP.nzmvYPuJavbTzDLL4AGaFgAAAA&pid=Api&P=0&h=180"} alt="" style={{ width: "40px", height: "40px" }} />
+                                                    </Box>
+                                                    {instituteName}
+                                                </Box></TableCell>
                                                 <TableCell align="left">{mobileNo}</TableCell>
                                                 <TableCell align="center">{emailId}</TableCell>
                                                 <TableCell align="center">
-                                                    {moment(created_at).format("yyyy-MM-DD")}
+                                                    {accoundCreatedDate(created_at)}
                                                 </TableCell>
 
                                                 <TableCell align="center">
@@ -257,15 +275,15 @@ const Institutes = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {/* <TablePagination
+                <TablePagination
                     rowsPerPageOptions={[10, 25, 100]}
                     component="div"
-                    count={subscriptionData?.subscriptionList?.length}
+                    count={dataState?.instituteList?.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
-                /> */}
+                />
             </Paper>
 
             <InstituteModal

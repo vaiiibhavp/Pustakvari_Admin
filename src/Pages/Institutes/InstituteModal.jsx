@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import AddIcon from "@mui/icons-material/Add";
 import {
     TextField,
     Button,
@@ -21,6 +22,7 @@ import { ModalCSSStyle } from '../../Helper/utils/ModalCss';
 import useInstitues from '../../Hooks/Institutes';
 
 import { AppStrings } from '../../Helper/Constant';
+import useFileGenrator from '../../Hooks/ImageFileConverter';
 
 
 const style = {
@@ -61,6 +63,9 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         updateInstituteRecord
     } = useInstitues()
 
+    const { fetchImageAsFile } = useFileGenrator();
+
+
     const handleClose = () => {
         setDetroyExistRecord({});
         setIsInstituteModalOpen(false)
@@ -71,6 +76,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         mobileNo: isEditableRecord?.mobileNo || '',
         password: '',
         confirmPassword: '',
+        instituteImage: ""
     };
 
     const validationSchema = Yup.object().shape({
@@ -94,17 +100,17 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                 updateInstituteRecord(values, isEditableRecord?._id).then((res) => {
                     if (res.status === 200) {
                         setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res.data.message }))
-                        setIsInstituteModalOpen(false)
                         setDetroyExistRecord({});
                     }
+                    setIsInstituteModalOpen(false)
                 })
             } else {
                 delete values.confirmPassword;
                 createInstituteRecord(values).then((res) => {
-                    if (res.status === 200) {
+                    if (res.status === 201) {
                         setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res?.data.message }))
-                        setIsInstituteModalOpen(false)
                     }
+                    setIsInstituteModalOpen(false)
                 }).catch((errr) => {
                     console.log(
                         errr, "errro"
@@ -125,6 +131,23 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+    const handleImageChange = (event) => {
+        formik.setFieldValue("instituteImage", event.currentTarget.files[0]);
+    };
+
+    let { values, errors } = formik;
+
+    console.log(errors, isEditableRecord, values, values?.confirmPassword, "error");
+
+    useEffect(() => {
+        if (isEditableRecord?.instituteImage) {
+            fetchImageAsFile(isEditableRecord?.instituteImage).then((res) => {
+                if (res) {
+                    formik.setFieldValue("instituteImage", res);
+                }
+            });
+        }
+    }, [isEditableRecord?.instituteImage]);
 
     return (
         <Modal
@@ -152,6 +175,61 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                     </span>
                 </Typography>
                 <form onSubmit={formik.handleSubmit} style={{ padding: "10px 0" }}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "start",
+                            marginBottom: "16px",
+                        }}
+                    >
+                        <Typography style={{ padding: "0 0 5px 0" }}>
+                            Institute Image:
+                        </Typography>
+
+                        <Box sx={{ display: "flex", alignItems: "start" }}>
+                            <label htmlFor="instituteImage">
+                                {values?.instituteImage ? (
+                                    <img
+                                        src={URL.createObjectURL(values.instituteImage)}
+                                        alt="imageeCover"
+                                        style={{
+                                            width: "80px",
+                                            height: "120px",
+                                            borderRadius: "20px",
+                                            objectFit: "cover",
+                                        }}
+                                    />
+                                ) : (
+                                    <IconButton
+                                        component="span"
+                                        sx={{
+                                            width: 80,
+                                            height: 120,
+                                            borderRadius: "20px",
+                                            background: theme?.palette?.grey[200],
+                                        }}
+                                    >
+                                        <AddIcon
+                                            sx={{
+                                                width: 40,
+                                                height: 40,
+                                                color: theme.palette.grey[400],
+                                            }}
+                                        />
+                                    </IconButton>
+                                )}
+                            </label>
+                            <input
+                                type="file"
+                                id="instituteImage"
+                                name="instituteImage"
+                                accept="image/*"
+                                style={{ display: "none" }}
+                                onChange={handleImageChange}
+                            />
+                        </Box>
+                    </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
                         <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.institute_name}:</Typography>

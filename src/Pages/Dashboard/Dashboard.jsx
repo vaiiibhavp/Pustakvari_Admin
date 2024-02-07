@@ -4,10 +4,14 @@ import AppWidgetSummary from '../../Component/app/AppWidgetSummary'
 import { AppStrings, colorCodes, dashboardWidgetData } from '../../Helper/Constant'
 import AppWebsiteVisits from '../../Component/app/AppWebSiteVisitor'
 import waveHandIcon from "../../Assets/Images/waving-hand.svg"
+import { useSelector } from 'react-redux'
 
 
 
 const Dashboard = () => {
+
+    const { user } = useSelector((state) => state?.AuthUser);
+
 
 
     return (
@@ -31,43 +35,47 @@ const Dashboard = () => {
 
 
 
-                <Grid item xs={12} md={8} lg={8}>
-                    <AppWebsiteVisits
-                        title="Users"
-                        subheader=""
-                        type="bar"
-                        legendPosition={false}
-                        widthlarge="true"
-                        subtext={AppStrings?.Add_new_subscription_plans || "Newly Added Users (+43%) than last year"}
-                        Colors={[colorCodes?.SECONDARY_COLOR_300, colorCodes?.SECONDARY_COLOR_500, colorCodes?.SECONDARY_COLOR_100]}
-                        chartLabels={Array.from({ length: 12 }, (_, i) => `0${i + 1}/01/2023`)}
-                        chartData={[
-                            {
-                                name: "Users",
-                                data: [44, 55, 41, 67, 22, 43, 21, 49, 14, 12, 32, 100],
-                            },
+                {!user?.instituteInfo &&
+                    <Grid item xs={12} md={8} lg={8}>
+                        <AppWebsiteVisits
+                            title="Users"
+                            subheader=""
+                            type="bar"
+                            legendPosition={false}
+                            widthlarge="true"
+                            subtext={AppStrings?.Add_new_subscription_plans || "Newly Added Users (+43%) than last year"}
+                            Colors={[colorCodes?.SECONDARY_COLOR_300, colorCodes?.SECONDARY_COLOR_500, colorCodes?.SECONDARY_COLOR_100]}
+                            chartLabels={Array.from({ length: 12 }, (_, i) => `0${i + 1}/01/2023`)}
+                            chartData={[
+                                {
+                                    name: "Users",
+                                    data: [44, 55, 41, 67, 22, 43, 21, 49, 14, 12, 32, 100],
+                                },
 
-                        ]}
-                    />
-                </Grid>
+                            ]}
+                        />
+                    </Grid>
+                }
 
-                <Grid item xs={12} md={4} lg={4}>
-                    <AppWebsiteVisits
-                        title="Top 5 categories"
-                        subheader=""
-                        garphLable={false}
-                        legendPosition={false}
-                        subtext={"Users reading this categories books most"}
-                        type="pie"
-                        Colors={["#52cc91", "#ff5630", "#ffab00", "#1877f2", "#00b8d9"]}
-                        chartLabels={[AppStrings?.topCategoriesOverviewLabel_1,
-                        AppStrings?.topCategoriesOverviewLabel_2,
-                        AppStrings?.topCategoriesOverviewLabel_3,
-                        AppStrings?.topCategoriesOverviewLabel_4,
-                        AppStrings?.topCategoriesOverviewLabel_5,]}
-                        chartData={[44, 55, 13, 43, 22]}
-                    />
-                </Grid>
+                {!user?.instituteInfo &&
+                    <Grid item xs={12} md={4} lg={4}>
+                        <AppWebsiteVisits
+                            title="Top 5 categories"
+                            subheader=""
+                            garphLable={false}
+                            legendPosition={false}
+                            subtext={"Users reading this categories books most"}
+                            type="pie"
+                            Colors={["#52cc91", "#ff5630", "#ffab00", "#1877f2", "#00b8d9"]}
+                            chartLabels={[AppStrings?.topCategoriesOverviewLabel_1,
+                            AppStrings?.topCategoriesOverviewLabel_2,
+                            AppStrings?.topCategoriesOverviewLabel_3,
+                            AppStrings?.topCategoriesOverviewLabel_4,
+                            AppStrings?.topCategoriesOverviewLabel_5,]}
+                            chartData={[44, 55, 13, 43, 22]}
+                        />
+                    </Grid>
+                }
 
                 <Grid item xs={12} md={4} lg={4}>
                     <AppWebsiteVisits

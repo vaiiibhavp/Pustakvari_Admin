@@ -9,20 +9,32 @@ import { TextField, Button, Typography, Container, CssBaseline, Grid } from '@mu
 // Contants
 import { AppStrings, colorCodes } from '../../Helper/Constant';
 import useAuthApis from '../../Hooks/Auth';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPasswordForm = () => {
-   const {forgotPassword} = useAuthApis()
+    const { forgotPassword } = useAuthApis()
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             emailId: '',
         },
         validationSchema: Yup.object({
-            emailId: Yup.string().email('Invalid email address').required('Required'),
+            emailId: Yup.string().email('Invalid email address').required('Email ID is Required'),
         }),
         onSubmit: (values) => {
-            forgotPassword(values).then((res)=> {
-            console.log(res,"response")
-            }).catch((err)=> {
+            forgotPassword(values).then((res) => {
+                if (res.status === 200) {
+                    toast.dismiss();
+                    toast.success(res.message, { autoClose: 2000 })
+                    setTimeout(() => {
+                        navigate("/otpValidation", { state: values?.emailId })
+                    }, 1000);
+                } else {
+                    toast.dismiss();
+                    toast.warning(res.message, { autoClose: 2000 })
+                }
+            }).catch((err) => {
                 console.error(err)
             })
             // You can handle forgot password submission here
