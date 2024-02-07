@@ -52,11 +52,7 @@ const Quiz = () => {
     }
 
 
-    const data = [
-        { S: 1, Quiz_Name: 'John Doe', No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
-        { S: 2, Quiz_Name: 'lakhan dev', No_Of_questIon: "500 ebooks", Solved_by_No_of_users: "500", Duration: "Monthly" },
-        // Add more rows as needed
-    ];
+
 
 
     useEffect(() => {

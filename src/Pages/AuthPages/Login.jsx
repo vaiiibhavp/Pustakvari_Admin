@@ -55,7 +55,8 @@ const LoginForm = () => {
                 }
 
             }).catch((error) => {
-                toast.success("Login in Successfully 2")
+                toast.dismiss();
+                toast.warning("Something went wrong", { autoClose: 2000 })
                 console.log(error);
             })
 
