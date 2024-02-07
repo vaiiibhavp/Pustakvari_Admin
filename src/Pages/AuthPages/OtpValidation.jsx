@@ -1,33 +1,52 @@
-import React, { useState } from 'react';
-import { Box, Button, Container, CssBaseline, Grid, TextField, Typography, useTheme } from "@mui/material"
-import { AppStrings, colorCodes } from '../../Helper/Constant';
-import { useLocation } from 'react-router-dom';
-
-
+import React, { useState } from "react";
+import {
+    Box,
+    Button,
+    Container,
+    CssBaseline,
+    Grid,
+    TextField,
+    Typography,
+    useTheme,
+} from "@mui/material";
+import { AppStrings, colorCodes } from "../../Helper/Constant";
+import { useLocation } from "react-router-dom";
 
 const OtpValidation = () => {
     const { state } = useLocation();
-    const [otp, setOtp] = useState(['', '', '', '']);
-    let theme = useTheme()
+    const [otp, setOtp] = useState(["", "", "", ""]);
+    let theme = useTheme();
 
     const handleOtpChange = (value, index) => {
         const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
     };
-    // 
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div>
-                <Typography color={colorCodes?.GRAY_SHAD_500} fontWeight={600} component="h1" variant="h5" textAlign={"center"}>
+                <Typography
+                    color={colorCodes?.GRAY_SHAD_500}
+                    fontWeight={600}
+                    component="h1"
+                    variant="h5"
+                    textAlign={"center"}
+                >
                     {AppStrings?.Enter_OTP}
                 </Typography>
-                <Typography color={colorCodes?.GRAY_SHAD_200} textAlign={"center"} pb={3}>
-                    {AppStrings?.otp_statement} <span style={{ color: theme?.palette?.secondary?.light }}>{state && state}</span>
+                <Typography
+                    color={colorCodes?.GRAY_SHAD_200}
+                    textAlign={"center"}
+                    pb={3}
+                >
+                    {AppStrings?.otp_statement}{" "}
+                    <span style={{ color: theme?.palette?.secondary?.light }}>
+                        {state && state}
+                    </span>
                 </Typography>
-                <Grid container spacing={1} mx={2} pb={2} >
+                <Grid container spacing={1} mx={2} pb={2}>
                     {otp.map((digit, index) => (
                         <Box key={index} mx={2}>
                             <TextField
@@ -38,30 +57,40 @@ const OtpValidation = () => {
                                 inputProps={{
                                     maxLength: 1,
                                     style: {
-                                        textAlign: 'center',
-                                        width: "25px"
+                                        textAlign: "center",
+                                        width: "25px",
                                     },
                                 }}
                             />
                         </Box>
                     ))}
                 </Grid>
-                <Typography color={colorCodes?.SECONDARY_COLOR} textAlign={"center"} pb={3}>
+                <Typography
+                    color={colorCodes?.SECONDARY_COLOR}
+                    textAlign={"center"}
+                    pb={3}
+                >
                     {AppStrings?.resend_otp}
                 </Typography>
-                <Button sx={{
-                    background: colorCodes.PRIMARY_COLOR, '&:hover': {
-                        background: colorCodes.PRIMARY_COLOR_400,
-                    },
-                    '&:active': {
-                        background: colorCodes.PRIMARY_COLOR_400,
-                    },
-                }} type="submit" fullWidth variant="contained" color="primary">
+                <Button
+                    sx={{
+                        background: colorCodes.PRIMARY_COLOR,
+                        "&:hover": {
+                            background: colorCodes.PRIMARY_COLOR_400,
+                        },
+                        "&:active": {
+                            background: colorCodes.PRIMARY_COLOR_400,
+                        },
+                    }}
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                >
                     {AppStrings?.send_OTP}
                 </Button>
             </div>
         </Container>
-
     );
 };
 
