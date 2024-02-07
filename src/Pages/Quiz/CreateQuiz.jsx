@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppStrings, colorCodes } from "../../Helper/Constant";
 import {
@@ -19,84 +19,103 @@ import {
     IconButton,
     Divider,
     useTheme,
+    Tooltip,
 } from "@mui/material";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { answerKeySvg } from "../../Assets/AnswerKey";
+import useQuiz from "../../Hooks/Quiz";
+import ShowsMessageModal from "../../Component/ShowMessageModal";
 
 const CreateQuiz = () => {
     const [quizName, setQuizName] = useState("");
     const [description, setDescription] = useState("");
-    const [questions, setQuestions] = useState([
-        { id: 1, name: "", type: "Checkbox", options: [{ id: 1, value: "Option 1" }], questionAnswer: "" },
+    const [typeList, setTypeList] = useState([])
+
+    const [modalData, setModalData] = useState({
+        showSuccessModal: false,
+        message: "",
+    })
+    let { getQuizTypeList, createQuizRecord } = useQuiz();
+
+
+    const [questionText, setQuestions] = useState([
     ]);
     const [answerkey, setAnswerkey] = useState(null);
     const theme = useTheme();
     const navigate = useNavigate();
 
-    console.log(questions, "questions");
 
     const handleAddQuestion = () => {
         const newQuestion = {
-            id: questions.length + 1,
-            name: "",
+            id: questionText.length + 1,
+            question: "",
             type: "text",
-            options: [{ id: 1, value: "Option 1" }],
+            option: [{ id: 1, value: "Option 1" }],
         };
-        setQuestions([...questions, newQuestion]);
+        setQuestions([...questionText, newQuestion]);
     };
 
     const handleAddOption = (questionIndex) => {
         const newOptions = [
-            ...questions[questionIndex].options,
+            ...questionText[questionIndex].option,
             {
-                id: questions[questionIndex].options.length + 1,
-                value: `Option ${questions[questionIndex].options.length + 1}`,
+                id: questionText[questionIndex].option.length + 1,
+                value: `Option ${questionText[questionIndex].option.length + 1}`,
             },
         ];
-        const updatedQuestions = [...questions];
-        updatedQuestions[questionIndex].options = newOptions;
+        const updatedQuestions = [...questionText];
+        updatedQuestions[questionIndex].option = newOptions;
         setQuestions(updatedQuestions);
     };
 
     const handleEditOption = (questionIndex, optionIndex) => {
-        const updatedQuestions = [...questions];
-        updatedQuestions[questionIndex].options[optionIndex].editing = true;
+        const updatedQuestions = [...questionText];
+        updatedQuestions[questionIndex].option[optionIndex].editing = true;
         setQuestions(updatedQuestions);
     };
 
     const handleSaveOption = (questionIndex, optionIndex) => {
-        const updatedQuestions = [...questions];
-        updatedQuestions[questionIndex].options[optionIndex].editing = false;
+        const updatedQuestions = [...questionText];
+        updatedQuestions[questionIndex].option[optionIndex].editing = false;
         setQuestions(updatedQuestions);
     };
 
     const handleDeleteOption = (questionIndex, optionIndex) => {
-        const updatedQuestions = [...questions];
-        updatedQuestions[questionIndex].options = updatedQuestions[
+        const updatedQuestions = [...questionText];
+        updatedQuestions[questionIndex].option = updatedQuestions[
             questionIndex
-        ].options.filter((_, i) => i !== optionIndex);
+        ].option.filter((_, i) => i !== optionIndex);
         setQuestions(updatedQuestions);
     };
 
     const handleQuestionNameChange = (index, event) => {
-        const updatedQuestions = [...questions];
-        updatedQuestions[index].name = event.target.value;
+        const updatedQuestions = [...questionText];
+        updatedQuestions[index].question = event.target.value;
         setQuestions(updatedQuestions);
     };
 
     const handleQuestionTypeChange = (index, event) => {
-        const updatedQuestions = [...questions];
+        const updatedQuestions = [...questionText];
+
+
         updatedQuestions[index].type = event.target.value;
         setQuestions(updatedQuestions);
     };
 
     const handleOptionChange = (questionIndex, optionIndex, event) => {
-        const updatedQuestions = [...questions];
-        updatedQuestions[questionIndex].questionAnswer = event.target.value;
-        updatedQuestions[questionIndex].options[optionIndex].value = event.target.value;
+        const updatedQuestions = [...questionText];
+
+        updatedQuestions[questionIndex].option[optionIndex].value = event.target.value;
+        setQuestions(updatedQuestions);
+    };
+
+    // save question answer
+    const handleSaveAnswer = (questionIndex, event) => {
+        const updatedQuestions = [...questionText];
+        updatedQuestions[questionIndex].answer = event.target.value;
         setQuestions(updatedQuestions);
     };
 
@@ -105,37 +124,124 @@ const CreateQuiz = () => {
         setAnswerkey(questionIndex);
     };
 
+
+
+
+    const createQuiz = () => {
+        delete questionText?.id;
+        let error = false;
+        // Validation for empty quiz name, description, and question text
+        if (!quizName || !description || !questionText || questionText.length === 0) {
+            console.error("Quiz name, description, and at least one question are required.");
+            return error = true;// Exit function if validation fails
+        } else {
+            error = false
+        }
+
+        // Validation for empty question, type, and answer in each question
+        for (const question of questionText) {
+            if (!question.question || !question.type || !question.answer) {
+                console.error("Question, type, and answer are required for each question.");
+                return error = true; // Exit function if validation fails
+            } else {
+                error = false
+            }
+        }
+
+
+
+
+
+        if (!error) {
+
+            let data = {
+                quizName: quizName,
+                description: description,
+                questionText: questionText.map((item) => {
+                    return {
+                        question: item.question,
+                        option: item.option.map((optionText) => optionText.value),
+                        questionType: item.type,
+                        answer: item.answer
+                    }
+                })
+            }
+
+            createQuizRecord(data).then((res) => {
+                if (res.status === 201) {
+                    setModalData((prev) => ({ ...prev, showSuccessModal: true, message: res.message }))
+                    setTimeout(() => {
+                        navigate("/Quiz")
+                    }, 2000);
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+
+
+        }
+
+
+
+    }
+
+
+
+
+    useEffect(() => {
+        getQuizTypeList().then((res) => {
+            if (res.status === 200) {
+
+                setTypeList(res.data || [])
+            }
+
+        }).catch((err) => {
+            console.log(err);
+        })
+    }, [])
+
+
+
+
     return (
         <Container maxWidth="xl" sx={{ position: "relative" }}>
-            <Button
-                boxShadow={2}
-                sx={{
-                    background: "#fff",
-                    color: "black",
-                    borderRadius: "15px",
-                    padding: "5px 20px 5px 12px",
-                }}
-                onClick={() => navigate(-1)}
-            >
-                {" "}
-                <IconButton sx={{ margin: "0px" }}>
-                    <ArrowBackIosIcon
-                        size="small"
-                        color={theme?.palette?.grey[800]}
-                        sx={{ fontSize: "14px", color: theme?.palette?.grey[800] }}
-                    />
-                </IconButton>
-                {AppStrings?.back}
-            </Button>
-            <Box
-                pb={2}
-                sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                }}
-            >
-                <Typography variant="h5">{"Create new quiz"}</Typography>
+            <Box display={"flex"} pb={3} sx={{ alignItems: "center" }}>
+
+                <Button
+                    boxShadow={2}
+                    sx={{
+                        // background: "#fff",
+                        // color: "black",
+                        borderRadius: "50%",
+                        padding: 0,
+
+                        "&:hover": {
+                            background: "none"
+                        }
+
+                        // padding: "5px 20px 5px 12px",
+                    }}
+                    onClick={() => navigate(-1)}
+                >
+                    <IconButton sx={{ margin: "0px" }}>
+                        <ArrowBackIosIcon
+                            size="small"
+                            color={theme?.palette?.grey[800]}
+                            sx={{ fontSize: "16px", color: theme?.palette?.grey[800] }}
+                        />
+                    </IconButton>
+                    {/* {AppStrings?.back} */}
+                </Button>
+                <Box
+                    // pb={2}
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
+                >
+                    <Typography variant="h5">{"Create new quiz"}</Typography>
+                </Box>
             </Box>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={6} lg={6}>
@@ -167,7 +273,7 @@ const CreateQuiz = () => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={12} lg={12}>
-                    {questions.map((question, index) => {
+                    {questionText.map((question, index) => {
                         return (
                             <Card sx={{ marginBottom: "10px" }} key={question.id}>
                                 <form style={{ padding: "0px" }}>
@@ -175,14 +281,14 @@ const CreateQuiz = () => {
                                     {index === answerkey && <Divider />}
                                     <Box p={2} sx={{ display: "flex", gap: 3 }}>
                                         {index === answerkey ? (
-                                            <>{`${answerkey + 1}. ${questions[answerkey].name}`}</>
+                                            <>{`${answerkey + 1}. ${questionText[answerkey].question}`}</>
                                         ) : (
                                             <TextField
                                                 sx={{ width: "70%" }}
                                                 variant="outlined"
                                                 fullWidth
                                                 size="small"
-                                                value={question.name}
+                                                value={question.question}
                                                 onChange={(e) => handleQuestionNameChange(index, e)}
                                                 style={{ marginBottom: "10px" }}
                                             />
@@ -200,33 +306,39 @@ const CreateQuiz = () => {
                                                     onChange={(e) => handleQuestionTypeChange(index, e)}
                                                     size="small"
                                                 >
-                                                    <MenuItem value="text">
-                                                        {AppStrings?.multiple_choice || "Multiple Choice"}
-                                                    </MenuItem>
-                                                    <MenuItem value="Checkbox">
+                                                    {typeList.map((type) => {
+                                                        return (
+                                                            <MenuItem key={type._id} value={type?._id}>
+                                                                {type.pattern || "Multiple Choice"}
+                                                            </MenuItem>
+                                                        )
+                                                    })}
+
+                                                    {/* <MenuItem value="Checkbox">
                                                         {AppStrings?.checkbox || "Checkbox"}
-                                                    </MenuItem>
+                                                    </MenuItem> */}
                                                 </Select>
                                             </FormControl>
                                         )}
                                     </Box>
-                                    {question.type === "Checkbox" && (
-                                        <div style={{ padding: "0 20px" }}>
+                                    {question.type === "65bc956e471d1efeff9367db" && (
+                                        <div style={{ padding: "0 20px 10px 15px" }}>
                                             <InputLabel>Options</InputLabel>
                                             <RadioGroup>
-                                                {question.options.map((option, optionIndex) => (
+                                                {question.option.map((option, optionIndex) => (
                                                     <div
                                                         key={option.id}
                                                         style={{
                                                             width: "100%",
                                                             display: "flex",
+                                                            mb: 1,
                                                             alignItems: "center",
                                                         }}
                                                     >
                                                         <FormControlLabel
                                                             value={option.value}
                                                             control={<Radio />}
-
+                                                            onChange={(event) => handleSaveAnswer(index, event)}
                                                             disabled={index === answerkey ? false : true}
                                                             label={
                                                                 option.editing ? (
@@ -252,7 +364,9 @@ const CreateQuiz = () => {
                                                                         }}
                                                                     >
                                                                         {option.value}
-                                                                        <Box
+
+
+                                                                        {index !== answerkey && <Box
                                                                             sx={{ position: "absolute", right: 0 }}
                                                                         >
                                                                             <IconButton
@@ -271,7 +385,8 @@ const CreateQuiz = () => {
                                                                             >
                                                                                 <DeleteOutlineOutlinedIcon fontSize="small" />
                                                                             </IconButton>
-                                                                        </Box>
+                                                                        </Box>}
+
                                                                     </Box>
                                                                 )
                                                             }
@@ -284,14 +399,16 @@ const CreateQuiz = () => {
                                                                         handleSaveOption(index, optionIndex)
                                                                     }
                                                                 >
-                                                                    <SaveOutlinedIcon fontSize="small" />
+                                                                    <Tooltip title={"Save"}>
+                                                                        <SaveOutlinedIcon fontSize="small" sx={{ color: theme.palette.secondary.main }} />
+                                                                    </Tooltip>
                                                                 </IconButton>
                                                             </Box>
                                                         )}
                                                     </div>
                                                 ))}
                                             </RadioGroup>
-                                            <Button
+                                            {index !== answerkey && <Button
                                                 type="button"
                                                 sx={{
                                                     padding: "6px 10px",
@@ -304,7 +421,8 @@ const CreateQuiz = () => {
                                                 style={{ marginTop: "10px", marginBottom: "10px" }}
                                             >
                                                 + Add Option
-                                            </Button>
+                                            </Button>}
+
                                         </div>
                                     )}
                                 </form>
@@ -384,9 +502,12 @@ const CreateQuiz = () => {
                 variant="contained"
                 color="primary"
                 style={{ marginTop: "10px" }}
+                onClick={createQuiz}
             >
                 Submit
             </Button>
+
+            <ShowsMessageModal isOpen={modalData.showSuccessModal} setIsOpen={setModalData} message={modalData?.message} />
         </Container>
     );
 };
