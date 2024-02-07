@@ -72,16 +72,18 @@ const InsitiuteUserTable = ({
                     <TableCell component="th" scope="row">
                       {idx + 1}
                     </TableCell>
-                    <TableCell align="center">{row?.fullName}</TableCell>
+                    <TableCell align="left">{row?.fullName}</TableCell>
                     <TableCell align="center">{row?.mobileNo}</TableCell>
                     {/* <TableCell align="center">
                       {row?.is_instituteUser}
                     </TableCell> */}
-                    <TableCell align="center">{row?.emailId}</TableCell>
+                    <TableCell align="left">{row?.emailId}</TableCell>
                     <TableCell align="center">
                       {accoundCreatedDate(row?.created_at)}
                     </TableCell>
-                    <TableCell align="center">{row?.created_at}</TableCell>
+                    <TableCell align="center">
+                      {accoundCreatedDate(row?.created_at)}
+                    </TableCell>
                     {/* <TableCell align="center">{row?.Last_Login}</TableCell> */}
                     <TableCell align="center">
                       <Button
@@ -101,7 +103,7 @@ const InsitiuteUserTable = ({
                         {row?.activeStatus ? "Active" : "Inactive"}
                       </Button>
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       <Switch
                         value={row?._id}
                         // checked={}

@@ -71,14 +71,14 @@ const SuperAdminTable = ({ userData,
                                     <TableCell component="th" scope="row">
                                         {idx + 1}
                                     </TableCell>
-                                    <TableCell align="center">{row?.fullName}</TableCell>
+                                    <TableCell align="left">{row?.fullName}</TableCell>
                                     <TableCell align="center">{row?.mobileNo}</TableCell>
                                     <TableCell align="center">
                                         {row?.is_instituteUser}
                                     </TableCell>
-                                    <TableCell align="center">{row?.emailId}</TableCell>
+                                    <TableCell align="left">{row?.emailId}</TableCell>
                                     <TableCell align="center">{accoundCreatedDate(row?.created_at)}</TableCell>
-                                    <TableCell align="center">{row?.Last_Login}</TableCell>
+                                    <TableCell align="center">{accoundCreatedDate(row?.Last_Login)}</TableCell>
                                     <TableCell align="center">
                                         <Button
                                             sx={{
@@ -97,7 +97,7 @@ const SuperAdminTable = ({ userData,
                                             {row?.activeStatus ? "Active" : "Inactive"}
                                         </Button>
                                     </TableCell>
-                                    <TableCell align="right">
+                                    <TableCell align="center">
                                         <Switch
                                             value={row?._id}
                                             // checked={}
@@ -109,7 +109,7 @@ const SuperAdminTable = ({ userData,
                                             }}
                                         />
                                     </TableCell>
-                                    <TableCell align="right" style={{ minWidth: "200px" }}>
+                                    <TableCell align="center" style={{ minWidth: "200px" }}>
                                         <Box>
                                             <Button
                                                 sx={{

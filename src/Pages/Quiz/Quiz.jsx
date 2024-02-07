@@ -130,7 +130,6 @@ const Quiz = () => {
                                                     {idx + 1}
                                                 </TableCell>
                                                 <TableCell align="left" >
-
                                                     {quizName}
                                                 </TableCell>
                                                 {/* <TableCell align="left">{""}</TableCell> */}

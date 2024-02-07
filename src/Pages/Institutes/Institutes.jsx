@@ -193,7 +193,7 @@ const Institutes = () => {
                                                     {instituteName}
                                                 </Box></TableCell>
                                                 <TableCell align="left">{mobileNo}</TableCell>
-                                                <TableCell align="center">{emailId}</TableCell>
+                                                <TableCell align="left">{emailId}</TableCell>
                                                 <TableCell align="center">
                                                     {accoundCreatedDate(created_at)}
                                                 </TableCell>

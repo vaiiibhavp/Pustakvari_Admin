@@ -202,9 +202,9 @@ const EBooks = () => {
                                                         </Box>
                                                         {bookName}
                                                     </Box></TableCell>
-                                                <TableCell align="center">{category?.categoryName}</TableCell>
+                                                <TableCell align="left">{category?.categoryName}</TableCell>
 
-                                                <TableCell align="center">{authorName}</TableCell>
+                                                <TableCell align="left">{authorName}</TableCell>
 
                                                 <TableCell align="center">
                                                     {bookType?.ebookType}
