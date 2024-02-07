@@ -78,8 +78,6 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
     //  Promise.all(([fetchUserType , fetchType]).then(()))
   }, []);
 
-  console.log(notificaionModal, "modal data");
-
   let { userNotificationTypes, notificaiontypes } = notificaionModal;
 
   return (

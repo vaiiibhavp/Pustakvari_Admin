@@ -75,9 +75,10 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
     emailId: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-    mobileNo: Yup.string().required("Contact number is required"),
-    password: Yup.string().required("Password is required"),
-    confirmPassword: Yup.string()
+    mobileNo: Yup.string().matches(/^[0-9]{10}$/, "Contact number must be 10 digits")
+      .required("Contact number is required"),
+    password: !isEditableRecord && Yup.string().required("Password is required"),
+    confirmPassword: !isEditableRecord && Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Confirm password is required"),
   });
