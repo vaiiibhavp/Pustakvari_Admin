@@ -26,6 +26,7 @@ import CategoryModal from "./CategoryModal";
 import Searchbar from "../../Component/Searchbar";
 import useEbookApis from "../../Hooks/Ebook";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
+import DeleteModal from "../../Component/DeleteModal";
 
 const EBooks = () => {
     const theme = useTheme();
@@ -50,6 +51,8 @@ const EBooks = () => {
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
+    const [takeDeleteConfirmationOpen, setTakeDeleteConfirmation] = useState(false)
+    const [deletionRecord, setDeletionRecord] = useState({})
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
@@ -86,15 +89,18 @@ const EBooks = () => {
 
     let { bookList } = booksState;
 
-    const onRemoveHandler = (id) => {
-        deleteBookRecord(id).then((res) => {
-            let filternewData = bookList?.filter((item) => {
-                return item._id !== id
+    const onRemoveHandler = () => {
+        if (deletionRecord?._id) {
+            deleteBookRecord(deletionRecord?._id).then((res) => {
+                let filternewData = bookList?.filter((item) => {
+                    return item._id !== deletionRecord?._id
+                })
+                setTakeDeleteConfirmation(false);
+                setBooksState((prev) => ({ ...prev, bookList: filternewData }))
+            }).catch((error) => {
+                console.log(error);
             })
-            setBooksState((prev) => ({ ...prev, bookList: filternewData }))
-        }).catch((error) => {
-            console.log(error);
-        })
+        }
     }
 
     return (
@@ -258,7 +264,10 @@ const EBooks = () => {
                                                                     fontWeight: "fontWeightBold",
                                                                 },
                                                             }}
-                                                            onClick={() => onRemoveHandler(_id)}
+                                                            onClick={() => {
+                                                                setTakeDeleteConfirmation(true)
+                                                                setDeletionRecord(row)
+                                                            }}
                                                         > <DeleteOutlineOutlinedIcon size="medium" /></Button>
                                                     </Box>
                                                 </TableCell>
@@ -326,6 +335,18 @@ const EBooks = () => {
             />
             <ShowsMessageModal isOpen={booksState.showSuccessModal} setIsOpen={setBooksState} message={booksState?.message} />
 
+
+            <DeleteModal
+                message={"Are you sure  you want to delete the E-book?"}
+                onCancelDeleteHandler={() => {
+                    setTakeDeleteConfirmation(false);
+                    setDeletionRecord({});
+                }}
+                onDeleteHandler={() => {
+                    onRemoveHandler();
+                    setDeletionRecord({});
+                }}
+                open={takeDeleteConfirmationOpen} setIsOpen={setTakeDeleteConfirmation} />
         </Container>
     );
 };

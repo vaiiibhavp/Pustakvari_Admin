@@ -27,6 +27,7 @@ import { useEffect } from 'react'
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import { accoundCreatedDate } from '../../Helper/utils/formatTime'
+import DeleteModal from "../../Component/DeleteModal";
 
 
 const Quiz = () => {
@@ -35,6 +36,9 @@ const Quiz = () => {
         allQuizRecords: [],
         globalQuizRecords: []
     });
+
+    const [takeDeleteConfirmationOpen, setTakeDeleteConfirmation] = useState(false)
+    const [deletionRecord, setDeletionRecord] = useState({})
 
     let theme = useTheme();
     const { getAllQuizes, deleteQuizRecord } = useQuiz();
@@ -65,15 +69,18 @@ const Quiz = () => {
 
     let { allQuizRecords } = quizDataState;
 
-    const onRemoveHandler = (id) => {
-        deleteQuizRecord(id).then((res) => {
-            let filternewData = allQuizRecords?.filter((item) => {
-                return item._id !== id
+    const onRemoveHandler = () => {
+        if (deletionRecord?._id) {
+            deleteQuizRecord(deletionRecord?._id).then((res) => {
+                let filternewData = allQuizRecords?.filter((item) => {
+                    return item._id !== deletionRecord?._id
+                })
+                setQuizDataState((prev) => ({ ...prev, allQuizRecords: filternewData }))
+                setTakeDeleteConfirmation(false)
+            }).catch((error) => {
+                console.log(error);
             })
-            setQuizDataState((prev) => ({ ...prev, allQuizRecords: filternewData }))
-        }).catch((error) => {
-            console.log(error);
-        })
+        }
     }
 
 
@@ -116,14 +123,14 @@ const Quiz = () => {
                             {allQuizRecords?.length > 0 ? (
                                 allQuizRecords
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((QuizName, idx) => {
+                                    .map((QuizNames, idx) => {
                                         let {
                                             _id,
                                             quizName,
                                             description,
                                             solveByUser,
                                             questionCount
-                                        } = QuizName;
+                                        } = QuizNames;
                                         return (
                                             <TableRow key={_id}>
                                                 <TableCell component="th" scope="row">
@@ -151,7 +158,10 @@ const Quiz = () => {
                                                                     fontWeight: "fontWeightBold",
                                                                 },
                                                             }}
-                                                            onClick={() => onRemoveHandler(_id)}
+                                                            onClick={() => {
+                                                                setTakeDeleteConfirmation(true)
+                                                                setDeletionRecord(QuizNames)
+                                                            }}
                                                         > <DeleteOutlineOutlinedIcon size="medium" /></Button>
                                                     </Box>
                                                 </TableCell>
@@ -190,6 +200,18 @@ const Quiz = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
+
+            <DeleteModal
+                message={"Are you sure do you want to delete this quiz?"}
+                onCancelDeleteHandler={() => {
+                    setTakeDeleteConfirmation(false);
+                    setDeletionRecord({});
+                }}
+                onDeleteHandler={() => {
+                    onRemoveHandler();
+                    setDeletionRecord({});
+                }}
+                open={takeDeleteConfirmationOpen} setIsOpen={setTakeDeleteConfirmation} />
 
         </Container>
     )

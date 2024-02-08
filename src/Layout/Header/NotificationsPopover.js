@@ -35,7 +35,7 @@ const NOTIFICATIONS = [
     time: "2 min ago",
     type: "order_placed",
     // createdAt: set(new Date(), { hours: 10, minutes: 30 }),
-    isUnRead: true,
+    isUnRead: false,
   },
 ];
 
