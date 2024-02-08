@@ -64,7 +64,6 @@ const CategoryModal = ({
 }) => {
     const theme = useTheme();
 
-    console.log(isEditableRecord, "isrecord ");
     let isEditable = isEditableRecord?.id ? true : false;
 
     const { fetchImageAsFile } = useFileGenrator();
@@ -140,10 +139,10 @@ const CategoryModal = ({
         }
     }, [isEditableRecord?.categoryImage]);
 
-    console.log(isEditableRecord, "isRecord");
+
     let { values } = formik;
 
-    console.log(values, "valuesss");
+
 
 
     return (

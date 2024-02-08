@@ -98,8 +98,9 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
             if (isEditableRecord?._id) {
                 delete values.confirmPassword;
                 updateInstituteRecord(values, isEditableRecord?._id).then((res) => {
+
                     if (res.status === 200) {
-                        setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res.data.message }))
+                        setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res.message }))
                         setDetroyExistRecord({});
                     }
                     setIsInstituteModalOpen(false)
@@ -137,7 +138,6 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
 
     let { values, errors } = formik;
 
-    console.log(errors, isEditableRecord, values, values?.confirmPassword, "error");
 
     useEffect(() => {
         if (isEditableRecord?.instituteImage) {

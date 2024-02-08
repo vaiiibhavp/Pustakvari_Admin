@@ -223,7 +223,6 @@ const Institutes = () => {
                                                 <TableCell align="center">{studentCount}</TableCell>
                                                 <TableCell align="center">
                                                     <Switch value={_id} defaultChecked={is_active} onChange={(e) => {
-                                                        console.log("hello", e.target.value);
                                                         handleCheckStatus(e.target.value, is_active)
                                                     }} color="secondary" />
                                                 </TableCell>

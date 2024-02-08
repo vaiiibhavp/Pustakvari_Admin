@@ -124,7 +124,6 @@ const EbookModal = ({
     // validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(values, "valuesssssss");
       if (isEditableRecord) {
         delete values.bookPdf;
         delete values.bookImage;
@@ -169,8 +168,6 @@ const EbookModal = ({
   };
 
   let { values } = formik;
-
-  console.log(values, "valess");
 
   useEffect(() => {
     const fetchCategoryList = getCateogoryList();
