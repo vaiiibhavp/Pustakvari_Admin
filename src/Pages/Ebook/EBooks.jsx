@@ -321,6 +321,7 @@ const EBooks = () => {
             <CategoryModal
                 isOpenCategoryModal={isCatgoryModalOpen}
                 setIsOpenCategoryModal={setIsCategoryModalOpen}
+                setBooksState={setBooksState}
                 isEditableRecord={isCategoryEditRecord}
             />
             <ShowsMessageModal isOpen={booksState.showSuccessModal} setIsOpen={setBooksState} message={booksState?.message} />

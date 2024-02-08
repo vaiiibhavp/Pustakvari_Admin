@@ -59,9 +59,12 @@ let types = ["Type1", "Type2", "Type3"];
 const CategoryModal = ({
     isOpenCategoryModal,
     setIsOpenCategoryModal,
+    setBooksState,
     isEditableRecord,
 }) => {
     const theme = useTheme();
+
+    console.log(isEditableRecord, "isrecord ");
     let isEditable = isEditableRecord?.id ? true : false;
 
     const { fetchImageAsFile } = useFileGenrator();
@@ -95,15 +98,25 @@ const CategoryModal = ({
         validationSchema,
         enableReinitialize: true,
         onSubmit: (values) => {
-            if (isEditableRecord) {
+            if (isEditableRecord?._id) {
                 updateCategoryRecord({ id: isEditableRecord?._id, body: values }).then((res) => {
-                    setIsOpenCategoryModal(false)
+                    setIsOpenCategoryModal(false);
+                    setBooksState((prev) => ({
+                        ...prev,
+                        showSuccessModal: true,
+                        message: res.message,
+                    }));
                 }).catch((err) => {
                     console.log(err);
                 })
             } else {
                 createCategory(values).then((res) => {
                     setIsOpenCategoryModal(false)
+                    setBooksState((prev) => ({
+                        ...prev,
+                        showSuccessModal: true,
+                        message: res.message,
+                    }));
                 }).catch((err) => {
                     console.log(err);
                 })
@@ -120,7 +133,7 @@ const CategoryModal = ({
         if (isEditableRecord?.categoryImage) {
             fetchImageAsFile(isEditableRecord?.categoryImage).then((res) => {
                 if (res) {
-                    console.log(res, "ress");
+
                     formik.setFieldValue("file", res);
                 }
             });

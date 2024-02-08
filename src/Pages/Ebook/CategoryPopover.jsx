@@ -13,7 +13,7 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
         dataList: []
     })
 
-    let { getCateogoryList } = useCategoryApis();
+    let { getCateogoryList, deleteCategoryRecord } = useCategoryApis();
 
     useEffect(() => {
         getCateogoryList().then((res) => {
@@ -22,9 +22,20 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
         }).catch((error) => {
             console.log(error)
         })
-    }, [])
+    }, [open])
 
     let { dataList } = categoryData;
+
+    const onRemoveHandler = (id) => {
+        deleteCategoryRecord(id).then((res) => {
+            let filternewData = dataList?.filter((item) => {
+                return item._id !== id
+            })
+            setCategoryData((prev) => ({ ...prev, dataList: filternewData }))
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
 
 
     return (
@@ -84,18 +95,20 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
                                             fontWeight: 'fontWeightBold',
                                         },
                                     }}  ><BorderColorOutlinedIcon sx={{ fontSize: "16px" }} /></Button>
-                                    <Button sx={{
-                                        borderRadius: "50%",
-                                        width: "30px",
-                                        height: "30px",
-                                        background: theme.palette?.secondary?.lighter,
-                                        color: theme.palette?.secondary.main,
-                                        '&.active': {
-                                            color: 'text.primary',
-                                            bgcolor: 'action.selected',
-                                            fontWeight: 'fontWeightBold',
-                                        },
-                                    }} ><DeleteOutlineOutlinedIcon sx={{ fontSize: "16px" }} /></Button>
+                                    <Button
+                                        onClick={() => onRemoveHandler(_id)}
+                                        sx={{
+                                            borderRadius: "50%",
+                                            width: "30px",
+                                            height: "30px",
+                                            background: theme.palette?.secondary?.lighter,
+                                            color: theme.palette?.secondary.main,
+                                            '&.active': {
+                                                color: 'text.primary',
+                                                bgcolor: 'action.selected',
+                                                fontWeight: 'fontWeightBold',
+                                            },
+                                        }} ><DeleteOutlineOutlinedIcon sx={{ fontSize: "16px" }} /></Button>
                                 </Box>
                             </ListItem>
                         )
