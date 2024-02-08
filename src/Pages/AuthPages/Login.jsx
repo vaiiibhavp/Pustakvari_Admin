@@ -45,7 +45,6 @@ const LoginForm = () => {
                     localStorage.setItem('user', JSON.stringify(res?.body))
                     dispatch(LogIn(res.body))
                     navigate("/Dashboard")
-
                     toast.dismiss();
                     toast.success(res.message, { autoClose: 2000 })
 
@@ -53,13 +52,11 @@ const LoginForm = () => {
                     toast.dismiss();
                     toast.warning(res.message, { autoClose: 2000 })
                 }
-
             }).catch((error) => {
                 toast.dismiss();
                 toast.warning("Something went wrong", { autoClose: 2000 })
                 console.log(error);
             })
-
         },
     });
 
