@@ -83,28 +83,25 @@ const EbookModal = ({
 
   const handleClose = () => setIsOpenEbookModal(false);
 
-  // const validationSchema = Yup.object({
-  //   bookName: Yup.string().required("Book name is required"),
-  //   authorName: Yup.string().required("Author name is required"),
-  //   category: Yup.string().required("Category is required"),
-  //   type: Yup.string().required("Type is required"),
-  //   // videoLink: Yup.string()
-  //   //   .url("Invalid URL")
-  //   //   .required("Video link is required"),
-  //   bookImage: Yup.mixed()
-  //     .required("Image is required")
-  //     .test(
-  //       "fileSize",
-  //       "File size is too large",
-  //       (value) => value && value.size <= 2000000
-  //     ) // 2MB limit
-  //     .test(
-  //       "fileType",
-  //       "Invalid file type",
-  //       (value) =>
-  //         value && ["image/jpeg", "image/png", "image/gif"].includes(value.type)
-  //     ),
-  // });
+  const validationSchema = Yup.object({
+    bookName: Yup.string().required("Book name is required"),
+    authorName: Yup.string().required("Author name is required"),
+    category: Yup.string().required("Category is required"),
+    type: Yup.string().required("Type is required"),
+    // videoLink: Yup.string()
+    //   .url("Invalid URL")
+    //   .required("Video link is required"),
+    bookImage: Yup.mixed()
+      .required("Image is required")
+      // 2MB limit
+      .test(
+        "fileType",
+        "Invalid file type",
+        (value) =>
+          value && ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+      ),
+    bookPdf: Yup.mixed().required("Image is required"),
+  });
 
   // bookName;
   // authorName;
@@ -127,6 +124,7 @@ const EbookModal = ({
     // validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
+      console.log(values, "valuesssssss");
       if (isEditableRecord) {
         delete values.bookPdf;
         delete values.bookImage;
@@ -160,10 +158,19 @@ const EbookModal = ({
   });
 
   const handleImageChange = (event, fieldName) => {
-    formik.setFieldValue(fieldName, event.currentTarget.files[0]);
+    if (
+      event.currentTarget.files[0].type === "application/pdf" &&
+      fieldName === "bookPdf"
+    ) {
+      formik.setFieldValue(fieldName, event.currentTarget.files[0]);
+    } else if (fieldName === "bookImage") {
+      formik.setFieldValue(fieldName, event.currentTarget.files[0]);
+    }
   };
 
   let { values } = formik;
+
+  console.log(values, "valess");
 
   useEffect(() => {
     const fetchCategoryList = getCateogoryList();
