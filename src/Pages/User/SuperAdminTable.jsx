@@ -68,7 +68,7 @@ const SuperAdminTable = ({ userData,
                         .map((row, idx) => {
                             return (
                                 <TableRow key={row?.id}>
-                                    <TableCell component="th" scope="row">
+                                    <TableCell align="center" component="th" scope="row">
                                         {idx + 1}
                                     </TableCell>
                                     <TableCell align="left">{row?.fullName}</TableCell>

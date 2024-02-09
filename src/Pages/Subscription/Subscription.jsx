@@ -131,7 +131,7 @@ const Subscription = () => {
                                         let { _id, duration, features, rate, subscriptionName, created_at, updated_at } = subscription;
                                         return (
                                             <TableRow key={_id}>
-                                                <TableCell component="th" scope="row">
+                                                <TableCell align="center" component="th" scope="row">
                                                     {idx + 1}
                                                 </TableCell>
                                                 <TableCell align="left">{subscriptionName}</TableCell>

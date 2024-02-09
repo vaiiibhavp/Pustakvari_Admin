@@ -183,7 +183,7 @@ const Institutes = () => {
                                         } = institute;
                                         return (
                                             <TableRow key={_id}>
-                                                <TableCell component="th" scope="row">
+                                                <TableCell component="th" align="center" scope="row">
                                                     {idx + 1}
                                                 </TableCell>
                                                 <TableCell align="left" onClick={() => navigate(`/institute/${_id}`, { state: institute })}> <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
