@@ -25,7 +25,7 @@ const useAuthApis = () => {
   };
 
   const resetPassword = async (paramsBody) => {
-    let res = await instance.post(`/forgotPassword`, paramsBody);
+    let res = await instance.put(`/forgotPassword`, paramsBody);
     return res.data;
   };
 
@@ -41,11 +41,10 @@ const useAuthApis = () => {
     return res.data;
   };
   const verifyOtp = async (body) => {
-    let res = await instance.put(`/verifyOTP`, body, {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    });
+    let res = await instance.put(`/verifyOTP`, body
+    );
+
+    return res.data
   };
 
   const getUserProfile = async () => {

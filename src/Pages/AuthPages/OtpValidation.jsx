@@ -10,18 +10,66 @@ import {
     useTheme,
 } from "@mui/material";
 import { AppStrings, colorCodes } from "../../Helper/Constant";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAuthApis from "../../Hooks/Auth";
+import { toast } from "react-toastify";
 
 const OtpValidation = () => {
     const { state } = useLocation();
     const [otp, setOtp] = useState(["", "", "", ""]);
     let theme = useTheme();
+    const navigate = useNavigate();
+
+    const { verifyOtp, forgotPassword } = useAuthApis();
 
     const handleOtpChange = (value, index) => {
         const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
     };
+
+    const handleValidateOtp = () => {
+        if (otp) {
+            let data = {
+                emailId: state,
+                otp: otp.join('')
+            }
+            verifyOtp(data).then((res) => {
+                if (res.status === 200) {
+                    toast.dismiss();
+                    toast.success(res.message, { autoClose: 2000 })
+                    setTimeout(() => {
+                        navigate('/reset', { state: state })
+                    }, 1000);
+                } else {
+                    toast.dismiss();
+                    toast.warning("Something went wrong", { autoClose: 2000 })
+                }
+
+            }).catch((err) => {
+                console.log(err);
+            })
+            console.log("data", data);
+        }
+    }
+
+    const resendOtp = () => {
+
+        forgotPassword({ emailId: state }).then((res) => {
+            if (res.status === 200) {
+                toast.dismiss();
+                toast.success(res.message, { autoClose: 2000 })
+
+            } else {
+                toast.dismiss();
+                toast.warning(res.message, { autoClose: 2000 })
+            }
+        }).catch((err) => {
+            console.error(err)
+        })
+    }
+
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -66,13 +114,16 @@ const OtpValidation = () => {
                     ))}
                 </Grid>
                 <Typography
+                    onClick={resendOtp}
                     color={colorCodes?.SECONDARY_COLOR}
+                    sx={{ cursor: "pointer" }}
                     textAlign={"center"}
                     pb={3}
                 >
                     {AppStrings?.resend_otp}
                 </Typography>
                 <Button
+                    onClick={handleValidateOtp}
                     sx={{
                         background: colorCodes.PRIMARY_COLOR,
                         "&:hover": {

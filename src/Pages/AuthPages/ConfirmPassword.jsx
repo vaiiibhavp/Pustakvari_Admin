@@ -9,12 +9,20 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 // Contants
 import { AppStrings, colorCodes } from '../../Helper/Constant';
+import useAuthApis from '../../Hooks/Auth';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 
 const ResetPasswordForm = () => {
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const { resetPassword } = useAuthApis();
+
+    const { state } = useLocation();
+    const navigate = useNavigate()
+
 
     const formik = useFormik({
         initialValues: {
@@ -29,8 +37,28 @@ const ResetPasswordForm = () => {
         }),
         onSubmit: (values) => {
             // You can handle reset password submission here
-            console.log('Form values:', values);
-        },
+            if (values.password) {
+
+                let data = {
+                    "emailId": state,
+                    "password": values?.password
+                }
+                resetPassword(data).then((res) => {
+                    if (res.status === 200) {
+                        toast.dismiss();
+                        toast.success(res.message, { autoClose: 2000 })
+                        setTimeout(() => {
+                            navigate("/")
+                        }, 100);
+                    } else {
+                        toast.dismiss();
+                        toast.warning("Something went wrong!", { autoClose: 2000 })
+                    }
+                })
+            }
+
+
+        }
     });
 
     const handleToggleNewPassword = () => {
