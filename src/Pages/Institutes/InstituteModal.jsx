@@ -23,6 +23,7 @@ import useInstitues from '../../Hooks/Institutes';
 
 import { AppStrings } from '../../Helper/Constant';
 import useFileGenrator from '../../Hooks/ImageFileConverter';
+import { generatePassword } from '../../Helper/utils/Common';
 
 
 const style = {
@@ -75,18 +76,17 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         emailId: isEditableRecord?.emailId || '',
         mobileNo: isEditableRecord?.mobileNo || '',
         password: '',
-        confirmPassword: '',
         instituteImage: ""
     };
 
     const validationSchema = Yup.object().shape({
         instituteName: Yup.string().required('Full name is required'),
-        emailId: Yup.string().email('Invalid email address').required('Email is required'),
+        emailId: Yup.string().matches(/^[^\s@]+@[^\s@]+\.(?:com)$/, 'Invalid email address').required('Email is required'),
         mobileNo: Yup.string().matches(/^[0-9]{10}$/, "Contact number must be 10 digits").required('Contact number is required'),
-        password: !isEditableRecord && Yup.string().required('Password is required'),
-        confirmPassword: !isEditableRecord && Yup.string()
-            .oneOf([Yup.ref('password'), null], 'Passwords must match')
-            .required('Confirm password is required'),
+        // password: !isEditableRecord && Yup.string().required('Password is required'),
+        // confirmPassword: !isEditableRecord && Yup.string()
+        //     .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        //     .required('Confirm password is required'),
     });
 
     const formik = useFormik({
@@ -148,6 +148,14 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
             });
         }
     }, [isEditableRecord?.instituteImage]);
+
+
+    useEffect(() => {
+        let newPassword = generatePassword();
+        formik.setFieldValue("password", newPassword)
+    }, [isInstituteModalOpen])
+
+    console.log(values, "institute modal");
 
     return (
         <Modal
@@ -295,7 +303,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                         />
                     </Box>
 
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
+                    {/* <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
                         <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.password}:</Typography>
 
@@ -358,7 +366,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                                 size="small"
                             />
                         </FormControl>
-                    </Box>
+                    </Box> */}
 
                     <Box px={3}>
 

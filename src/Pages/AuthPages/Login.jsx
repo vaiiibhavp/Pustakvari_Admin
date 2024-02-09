@@ -33,7 +33,7 @@ const LoginForm = () => {
             password: '',
         },
         validationSchema: Yup.object({
-            emailId: Yup.string().email('Invalid email address').required('Email Id is required'),
+            emailId: Yup.string().matches(/^[^\s@]+@[^\s@]+\.(?:com)$/, 'Invalid email address').required('Email Id is required'),
             password: Yup.string().required('Password is required'),
         }),
         onSubmit: (values) => {
