@@ -54,6 +54,7 @@ const SubscriptionModal = ({
   subscriptionData,
   setSubscriptionData,
   isEditRecord,
+  setIsEditRecord,
 }) => {
   let isEditable = isEditRecord?.id ? true : false;
   const [editable, setEditable] = useState(false);

@@ -26,18 +26,7 @@ import { Navigate, useNavigate } from "react-router";
 
 // ----------------------------------------------------------------------
 
-const NOTIFICATIONS = [
-  {
-    id: 1,
-    title: "BPHE society institute made an account",
-    description: "waiting for shipping",
-    avatar: null,
-    time: "2 min ago",
-    type: "order_placed",
-    // createdAt: set(new Date(), { hours: 10, minutes: 30 }),
-    isUnRead: false,
-  },
-];
+const NOTIFICATIONS = [];
 
 export default function NotificationsPopover() {
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
@@ -50,7 +39,11 @@ export default function NotificationsPopover() {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
-    setOpen(event.currentTarget);
+    if (notifications?.length === 0) {
+      navigate("/notifications");
+    } else {
+      setOpen(event.currentTarget);
+    }
   };
 
   const handleClose = () => {

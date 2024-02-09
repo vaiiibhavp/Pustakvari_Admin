@@ -205,7 +205,7 @@ const Subscription = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            <SubscriptionModal isModalOpen={isOpenSunscriptionPlanModal} subscriptionData={subscriptionData} setSubscriptionData={setSubscriptionData} setIsModalOpen={setIsOpenSubscriptionPlanModal} isEditRecord={isEditRecord} />
+            <SubscriptionModal isModalOpen={isOpenSunscriptionPlanModal} subscriptionData={subscriptionData} setSubscriptionData={setSubscriptionData} setIsModalOpen={setIsOpenSubscriptionPlanModal} isEditRecord={isEditRecord} setIsEditRecord={setIsEditRecord} />
             <ShowsMessageModal isOpen={subscriptionData.showSuccessModal} setIsOpen={setSubscriptionData} message={subscriptionData?.message} />
 
             <DeleteModal
