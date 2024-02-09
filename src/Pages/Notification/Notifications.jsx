@@ -203,11 +203,15 @@ const Notifications = () => {
                                             bgcolor:
                                                 notificationState?.selectedTab === btn.id
                                                     ? theme.palette.secondary.main
-                                                    : theme.palette?.grey[400],
+                                                    : "#fff",
                                             color:
                                                 notificationState?.selectedTab === btn.id
                                                     ? theme.palette.secondary.contrastText
-                                                    : theme.palette?.grey[700],
+                                                    : "#000",
+                                            border: notificationState?.selectedTab === btn.id
+                                                ? `1px solid ${theme.palette.secondary.main}`
+                                                : `1px solid ${theme.palette.grey[400]}`
+
                                         }}
                                         key={btn.id}
                                         onClick={() => onSelectTab(btn.id)}
