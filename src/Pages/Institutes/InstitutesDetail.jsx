@@ -70,7 +70,7 @@ const InstitutesDetail = () => {
 
                     <Box boxShadow={1} px={2} py={3} borderRadius={1} sx={{ background: theme.palette.grey[300] }}>
                         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                            <Typography>Detail</Typography>
+                            <Typography sx={{ fontWeight: "600" }}>Details</Typography>
                             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                                 <Button
 
