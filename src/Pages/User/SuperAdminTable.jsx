@@ -33,12 +33,12 @@ const SuperAdminTable = ({ userData,
             <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                     <TableRow>
-                        <TableCell style={{ minWidth: "80px" }}>Sr No</TableCell>
+                        <TableCell align="center" style={{ minWidth: "70px" }}>Sr No</TableCell>
                         <TableCell align="center" style={{ minWidth: "150px" }}>
                             {AppStrings?.user_Name}
                         </TableCell>
                         <TableCell align="center" style={{ minWidth: "100px" }}>
-                            {AppStrings?.Contact}
+                            {AppStrings?.contact_no}
                         </TableCell>
                         <TableCell align="center" style={{ minWidth: "150px" }}>
                             {AppStrings?.institute_user}

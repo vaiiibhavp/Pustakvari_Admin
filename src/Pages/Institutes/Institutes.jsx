@@ -136,14 +136,14 @@ const Institutes = () => {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead sx={{ background: theme.palette.grey[700] }}>
                             <TableRow sx={{ background: "gray" }}>
-                                <TableCell style={{ minWidth: "80px" }}>
+                                <TableCell align="center" style={{ minWidth: "80px" }}>
                                     {AppStrings?.sNo}
                                 </TableCell>
-                                <TableCell align="keft" style={{ minWidth: "150px" }}>
+                                <TableCell align="center" style={{ minWidth: "150px" }}>
                                     {AppStrings?.institute_name}
                                 </TableCell>
-                                <TableCell align="left" style={{ minWidth: "100px" }}>
-                                    {AppStrings?.Contact}
+                                <TableCell align="center" style={{ minWidth: "100px" }}>
+                                    {AppStrings?.contact_no}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "180px" }}>
                                     {AppStrings?.email}{" "}

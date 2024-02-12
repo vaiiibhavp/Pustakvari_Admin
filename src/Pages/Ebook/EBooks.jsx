@@ -180,15 +180,15 @@ const EBooks = () => {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                <TableCell style={{ minWidth: "60px" }}>Sr No</TableCell>
-                                <TableCell align="center" style={{ minWidth: "150px" }}>
+                                <TableCell align="center" style={{ minWidth: "60px" }}>Sr No</TableCell>
+                                <TableCell align="left" style={{ minWidth: "150px" }}>
                                     {AppStrings?.e_books}
                                 </TableCell>
-                                <TableCell align="center" style={{ minWidth: "100px" }}>
+                                <TableCell align="left" style={{ minWidth: "100px" }}>
                                     {AppStrings?.Category}
                                 </TableCell>
 
-                                <TableCell align="center" style={{ minWidth: "120px" }}>
+                                <TableCell align="left" style={{ minWidth: "120px" }}>
                                     {AppStrings?.author_Name}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "180px" }}>

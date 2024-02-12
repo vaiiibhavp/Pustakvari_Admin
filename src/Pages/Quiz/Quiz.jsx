@@ -113,13 +113,13 @@ const Quiz = () => {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead sx={{ background: theme.palette.grey[700] }}>
                             <TableRow sx={{ background: "gray" }}>
-                                <TableCell style={{ minWidth: "80px" }}>
+                                <TableCell align="center" style={{ minWidth: "70px" }}>
                                     {AppStrings?.sNo}
                                 </TableCell>
-                                <TableCell align="keft" style={{ minWidth: "150px" }}>
+                                <TableCell align="center" style={{ minWidth: "150px" }}>
                                     {AppStrings?.QuizName || "Quiz Name"}
                                 </TableCell>
-                                <TableCell align="left" style={{ minWidth: "100px" }}>
+                                <TableCell align="center" style={{ minWidth: "100px" }}>
                                     {AppStrings?.No_Of_questIon || "NO of Question"}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "180px" }}>
@@ -145,7 +145,7 @@ const Quiz = () => {
                                         } = QuizNames;
                                         return (
                                             <TableRow key={_id}>
-                                                <TableCell component="th" scope="row">
+                                                <TableCell align="center" component="th" scope="row">
                                                     {idx + 1}
                                                 </TableCell>
                                                 <TableCell align="left" >

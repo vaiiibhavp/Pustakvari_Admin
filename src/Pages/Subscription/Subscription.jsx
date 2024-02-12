@@ -106,11 +106,11 @@ const Subscription = () => {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead sx={{ background: theme.palette.grey[700] }}>
                             <TableRow sx={{ background: "gray" }}>
-                                <TableCell style={{ minWidth: "80px" }}>{AppStrings?.sNo}</TableCell>
-                                <TableCell align="keft" style={{ minWidth: "150px" }}>
+                                <TableCell align="center" style={{ minWidth: "70px" }}>{AppStrings?.sNo}</TableCell>
+                                <TableCell align="center" style={{ minWidth: "150px" }}>
                                     {AppStrings?.subscription_Name}
                                 </TableCell>
-                                <TableCell align="left" style={{ minWidth: "100px" }}>
+                                <TableCell align="center" style={{ minWidth: "100px" }}>
                                     {AppStrings?.Duration}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "150px" }}>
