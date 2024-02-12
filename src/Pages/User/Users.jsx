@@ -175,8 +175,7 @@ const Users = () => {
         userDataState={userDataState}
         isEditableRecord={isEditable}
       />
-      {console.log(userDataState, "jsdhfhskuwekbknjehecjahsdkjh")
-      }
+
       <ShowsMessageModal isOpen={userDataState.showSuccessModal} setIsOpen={setUserDataState} message={userDataState?.message} />
     </Container>
   );

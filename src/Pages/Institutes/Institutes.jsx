@@ -203,7 +203,7 @@ const Institutes = () => {
                                                         sx={{
                                                             margin: "0 10px",
                                                             px: 3,
-                                                            borderRadius: 4,
+                                                            borderRadius: "8px",
                                                             background: is_active
                                                                 ? theme.palette?.secondary?.lighter
                                                                 : theme.palette?.grey[300],

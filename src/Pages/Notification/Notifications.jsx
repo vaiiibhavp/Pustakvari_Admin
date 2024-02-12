@@ -21,6 +21,7 @@ import useNotifiaction from "../../Hooks/Notifiaction";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { fNotifiactionDate, fromAgoDate } from "../../Helper/utils/formatTime";
+import ShowsMessageModal from "../../Component/ShowMessageModal";
 
 const Notifications = () => {
     const {
@@ -32,6 +33,10 @@ const Notifications = () => {
         allNotification: [],
         globalAllNotifactions: [],
         render: false,
+        showSuccessModal: false,
+        message: "",
+
+
     });
     const navigate = useNavigate();
 
@@ -448,9 +453,14 @@ const Notifications = () => {
                         handleClose={() => {
                             setIsOpenNotifiactionModal(false);
                         }}
+                        setNotificationState={setNotificationState}
+                        notificationState={notificationState}
                     />
                 </>
             }
+
+            <ShowsMessageModal isOpen={notificationState.showSuccessModal} setIsOpen={setNotificationState} message={notificationState?.message} />
+
 
         </Container>
     );

@@ -18,7 +18,12 @@ import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 import useNotifiaction from "../../Hooks/Notifiaction";
 
-const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
+const CreateNotificationModal = ({
+  isOpenNotifiactionModal,
+  handleClose,
+  setNotificationState,
+  notificationState,
+}) => {
   const theme = useTheme();
 
   const [notificaionModal, setNotificationModal] = useState({
@@ -50,6 +55,12 @@ const CreateNotificationModal = ({ isOpenNotifiactionModal, handleClose }) => {
     console.log(values);
     createNotifiacation(values)
       .then((res) => {
+        setNotificationState((prev) => ({
+          ...prev,
+          showSuccessModal: true,
+          message: res?.message,
+        }));
+        resetForm();
         handleClose();
         console.log(res, "added notifiaction");
       })
