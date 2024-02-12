@@ -13,6 +13,8 @@ import InstitutesUsers from './InstitutesUsers';
 import InstituteModal from './InstituteModal';
 import ShowsMessageModal from '../../Component/ShowMessageModal';
 import { accoundCreatedDate } from '../../Helper/utils/formatTime';
+import DeleteModal from '../../Component/DeleteModal';
+import { toast } from 'react-toastify';
 
 const InstitutesDetail = () => {
     const [isInstituteModalOpen, setIsInstituteModalOpen] = useState(false);
@@ -20,6 +22,8 @@ const InstitutesDetail = () => {
     const [instiDetail, setInstiDetail] = useState({
         detail: {}
     })
+
+    const [takeDeleteConfirmationOpen, setTakeDeleteConfirmation] = useState(false)
     const [dataState, setDataState] = useState({
         showSuccessModal: false,
         message: "",
@@ -28,7 +32,7 @@ const InstitutesDetail = () => {
     const navigate = useNavigate();
     const theme = useTheme()
 
-    const { getInstituteRecordDetail } = useInstitues();
+    const { getInstituteRecordDetail, deleteInstituteRecord } = useInstitues();
 
     const { state } = useLocation();
     console.log(state, "data ");
@@ -50,6 +54,28 @@ const InstitutesDetail = () => {
 
 
 
+    const onRemoveHandler = () => {
+        if (instituteDetail?._id) {
+            deleteInstituteRecord(instituteDetail?._id).then((res) => {
+                if (res.status === 200) {
+                    console.log(res);
+                    toast.dismiss();
+                    toast.success(res.message, { autoClose: 1000 })
+                    setTakeDeleteConfirmation(false);
+                    setTimeout(() => {
+                        navigate("/Institute")
+                    }, 2000);
+                }
+
+            }).catch((error) => {
+                console.log(error);
+            })
+        }
+    }
+
+
+
+
     return (
         <Container maxWidth="xl" >
             <Box mb={3}>
@@ -58,8 +84,8 @@ const InstitutesDetail = () => {
 
             <Grid container spacing={3}>
                 <Grid item xs={12} md={3} lg={3}>
-                    <Box pb={3}>
-                        <Card sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "20px 10px" }}>
+                    <Box pb={2} >
+                        <Card boxShadow={2} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "20px 10px" }}>
                             <img src={instituteDetail?.instituteImage ? instituteDetail?.instituteImage : "https://www.orchidfoundation.info/sites/default/files/2020-08/Jaipur-National-University-.jpg"} alt="" style={{ width: "150px", height: "150px", borderRadius: "50%", marginBottom: "10px" }} />
                             <Typography>
                                 {instituteDetail?.instituteName}
@@ -68,7 +94,7 @@ const InstitutesDetail = () => {
                     </Box>
 
 
-                    <Box boxShadow={1} px={2} py={3} borderRadius={1} sx={{ background: theme.palette.grey[300] }}>
+                    <Box boxShadow={2} px={2} py={2} borderRadius={1} sx={{ background: "#fff" }}>
                         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                             <Typography sx={{ fontWeight: "600" }}>Details</Typography>
                             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
@@ -98,6 +124,8 @@ const InstitutesDetail = () => {
                                         bgcolor: 'action.selected',
                                         fontWeight: 'fontWeightBold',
                                     },
+                                }} onClick={() => {
+                                    setTakeDeleteConfirmation(true)
                                 }} ><DeleteOutlineOutlinedIcon sx={{ fontSize: "16px" }} /></Button>
                             </Box>
                         </Box>
@@ -136,7 +164,15 @@ const InstitutesDetail = () => {
 
             <ShowsMessageModal isOpen={dataState.showSuccessModal} setIsOpen={setDataState} message={dataState?.message} />
 
-
+            <DeleteModal
+                message={"Are you sure  you want to delete the institute record?"}
+                onCancelDeleteHandler={() => {
+                    setTakeDeleteConfirmation(false);
+                }}
+                onDeleteHandler={() => {
+                    onRemoveHandler();
+                }}
+                open={takeDeleteConfirmationOpen} setIsOpen={setTakeDeleteConfirmation} />
         </Container>
     )
 }

@@ -380,7 +380,7 @@ const EBooks = () => {
             />
 
             <DeleteModal
-                message={"Are you sure  you want to delete the E-book?"}
+                message={"Are you sure  you want to delete the e-book?"}
                 onCancelDeleteHandler={() => {
                     setTakeDeleteConfirmation(false);
                     setDeletionRecord({});

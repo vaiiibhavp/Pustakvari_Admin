@@ -37,11 +37,11 @@ const ResetPasswordForm = () => {
         }),
         onSubmit: (values) => {
             // You can handle reset password submission here
-            if (values.password) {
+            if (values.newPassword) {
 
                 let data = {
-                    "emailId": state,
-                    "password": values?.password
+                    emailId: state,
+                    password: values?.newPassword
                 }
                 resetPassword(data).then((res) => {
                     if (res.status === 200) {
