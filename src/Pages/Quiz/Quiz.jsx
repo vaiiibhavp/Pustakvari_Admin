@@ -116,7 +116,7 @@ const Quiz = () => {
                                 <TableCell align="center" style={{ minWidth: "70px" }}>
                                     {AppStrings?.sNo}
                                 </TableCell>
-                                <TableCell align="center" style={{ minWidth: "150px" }}>
+                                <TableCell align="left" style={{ minWidth: "150px" }}>
                                     {AppStrings?.QuizName || "Quiz Name"}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "100px" }}>

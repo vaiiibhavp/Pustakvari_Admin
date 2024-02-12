@@ -180,7 +180,7 @@ export const AppStrings = {
   last_login: "Last Login",
   status: "Status",
   No_Of_questIon: "No of questIon",
-  Solved_by_No_of_users: "Solved by No ofusers",
+  Solved_by_No_of_users: "Solved by No of users",
   Total_users: "Total User",
 
   no_data_available: "No data available",
