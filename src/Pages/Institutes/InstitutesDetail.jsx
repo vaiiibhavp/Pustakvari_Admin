@@ -83,11 +83,11 @@ const InstitutesDetail = () => {
             </Box>
 
             <Grid container spacing={3}>
-                <Grid item xs={12} md={3} lg={3}>
+                <Grid item xs={12} md={3} lg={3} pb={3}>
                     <Box pb={2} >
                         <Card boxShadow={2} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "20px 10px" }}>
                             <img src={instituteDetail?.instituteImage ? instituteDetail?.instituteImage : "https://www.orchidfoundation.info/sites/default/files/2020-08/Jaipur-National-University-.jpg"} alt="" style={{ width: "150px", height: "150px", borderRadius: "50%", marginBottom: "10px" }} />
-                            <Typography>
+                            <Typography sx={{ fontWeight: "600" }}>
                                 {instituteDetail?.instituteName}
                             </Typography>
                         </Card>
@@ -140,8 +140,9 @@ const InstitutesDetail = () => {
                                 width: "30%",
                                 textAlign: "center",
                                 borderRadius: "20px",
+                                fontSize: "13px",
                                 fontWeight: "bold",
-                                padding: "3px"
+                                padding: "3px 5px"
                             }}>{!instituteDetail?.is_active ? "Active" : " Deactive "}</span></Typography>
                             <Typography sx={{ display: "flex", flexDirection: "column", pb: 1 }}>{AppStrings?.total_user} : <span style={{ color: theme?.palette?.grey[500] }}>{instituteDetail?.studentCount}</span></Typography>
                         </Box>

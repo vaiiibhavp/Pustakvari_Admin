@@ -107,7 +107,7 @@ const Subscription = () => {
                         <TableHead sx={{ background: theme.palette.grey[700] }}>
                             <TableRow sx={{ background: "gray" }}>
                                 <TableCell align="center" style={{ minWidth: "70px" }}>{AppStrings?.sNo}</TableCell>
-                                <TableCell align="center" style={{ minWidth: "150px" }}>
+                                <TableCell align="left" style={{ minWidth: "150px" }}>
                                     {AppStrings?.subscription_Name}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "100px" }}>
@@ -115,7 +115,7 @@ const Subscription = () => {
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "150px" }}>
                                     {AppStrings?.rate}                                </TableCell>
-                                <TableCell align="center" style={{ minWidth: "120px" }}>
+                                <TableCell align="left" style={{ minWidth: "120px" }}>
                                     {AppStrings?.features}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "120px" }}>
@@ -135,12 +135,12 @@ const Subscription = () => {
                                                     {idx + 1}
                                                 </TableCell>
                                                 <TableCell align="left">{subscriptionName}</TableCell>
+                                                <TableCell align="center">{duration?.duration}</TableCell>
+                                                <TableCell align="center">{rate}</TableCell>
+
                                                 <TableCell align="left">
                                                     {features}
                                                 </TableCell>
-                                                <TableCell align="center">{rate}</TableCell>
-                                                <TableCell align="center">{duration?.duration}</TableCell>
-
                                                 <TableCell align="center" style={{ minWidth: "200px" }}>
                                                     <Box>
                                                         <Button
