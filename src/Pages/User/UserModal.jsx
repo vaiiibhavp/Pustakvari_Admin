@@ -156,7 +156,6 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
     setRandomPwd(newPassword);
   }, [isUserModalOpen])
 
-  console.log(randomPwd, "raaaaadnnnndddoooommmmmm");
 
   return (
     <Modal
