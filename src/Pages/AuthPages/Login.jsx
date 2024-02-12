@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 
 // Components
-import { TextField, Button, Typography, Container, CssBaseline, Grid, InputAdornment, IconButton } from '@mui/material';
+import { TextField, Button, Typography, Container, CssBaseline, Grid, InputAdornment, IconButton, useTheme } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 // Constants
@@ -24,6 +24,8 @@ const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
     const { userLogin } = useAuthApis();
     const dispatch = useDispatch();
+
+    const theme = useTheme();
 
     const navigate = useNavigate()
 
@@ -134,7 +136,7 @@ const LoginForm = () => {
                         </Grid>
                     </Grid>
 
-                    <Typography color={colorCodes?.SECONDARY_COLOR} pb={3} sx={{ cursor: "pointer" }} onClick={() => navigate("/forgot")}>
+                    <Typography sx={{ color: theme?.palette?.primary?.forgot, cursor: "pointer" }} pb={3} onClick={() => navigate("/forgot")}>
                         {AppStrings?.forgot_password}
                     </Typography>
                     <Button sx={{

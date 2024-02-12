@@ -90,11 +90,16 @@ const InsitiuteUserTable = ({
                     <TableCell align="center">
                       <Button
                         sx={{
-                          background: theme.palette?.grey[300],
-                          color: theme.palette?.grey[600],
+                          width: "100px",
+                          background: row?.activeStatus
+                            ? theme.palette?.secondary?.lighter
+                            : theme.palette?.grey[300],
+                          color: row?.activeStatus
+                            ? theme.palette?.secondary.main
+                            : theme.palette?.grey[600],
                           textDecoration: "none",
-                          borderRadius: "20px",
-                          padding: "0 16px",
+                          borderRadius: "8px",
+                          padding: "3px 16px",
                           "&.active": {
                             color: "text.primary",
                             bgcolor: "action.selected",

@@ -23,6 +23,7 @@ const PRIMARY = {
   main: "#fe6b01",
   dark: "#cb5601",
   darker: "#331500",
+  forgot:"#0034EB",
   contrastText: "#fff",
 };
 

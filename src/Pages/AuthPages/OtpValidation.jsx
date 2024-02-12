@@ -140,6 +140,29 @@ const OtpValidation = () => {
                 >
                     {AppStrings?.send_OTP}
                 </Button>
+                {/* 
+                <Button
+                    onClick={() => navigate("/")}
+                    sx={{
+                        mt: 1,
+                        background: theme?.palette?.grey[300],
+                        border: `1px solid ${theme?.palette?.grey[400]}`,
+                        color: theme.palette.grey[800],
+                        "&:hover": {
+                            background: theme?.palette?.grey[400],
+                            border: `1px solid ${theme?.palette?.grey[400]}`,
+                        },
+                        // "&:active": {
+                        //     background: colorCodes.PRIMARY_COLOR_400,
+                        // },
+                    }}
+                    type="button"
+                    fullWidth
+                    variant="outlined"
+                // color="primary"
+                >
+                    {AppStrings?.Cancel || "Back"}
+                </Button> */}
             </div>
         </Container>
     );

@@ -117,7 +117,7 @@ const Notifications = () => {
                                             background: "#ffffff",
                                             borderLeft: `4px solid ${colorCodes.SECONDARY_COLOR_300}`,
                                             borderRadius: "15px",
-                                            p: 0.6,
+                                            p: 0.1,
                                             boxShadow: (theme) => theme.customShadows.z1,
                                             marginBottom: "5px",
                                         }}
@@ -134,7 +134,7 @@ const Notifications = () => {
                                                 sx={{
                                                     display: "flex",
                                                     alignItems: "center",
-                                                    padding: "12px",
+                                                    padding: "6px",
                                                     marginRight: "12px",
                                                 }}
                                             >
@@ -142,8 +142,8 @@ const Notifications = () => {
                                                     src="https://static.vecteezy.com/system/resources/previews/000/442/087/original/notification-vector-icon.jpg"
                                                     alt=""
                                                     style={{
-                                                        width: "50px",
-                                                        height: "50px",
+                                                        width: "30px",
+                                                        height: "30px",
                                                         background: "gray",
                                                         borderRadius: "50%",
                                                         marginRight: "20px",
@@ -176,6 +176,7 @@ const Notifications = () => {
                                                 sx={{
                                                     background: theme?.palette.grey[200],
                                                     p: 1,
+                                                    mr: 1,
                                                     borderRadius: 1,
                                                 }}
                                             >
@@ -258,7 +259,7 @@ const Notifications = () => {
                                                     background: "#ffffff",
                                                     borderLeft: `4px solid ${colorCodes.SECONDARY_COLOR_300}`,
                                                     borderRadius: "15px",
-                                                    p: 0.6,
+                                                    p: 0.1,
                                                     boxShadow: (theme) => theme.customShadows.z1,
                                                     marginBottom: "5px",
                                                 }}
@@ -275,7 +276,7 @@ const Notifications = () => {
                                                         sx={{
                                                             display: "flex",
                                                             alignItems: "center",
-                                                            padding: "12px",
+                                                            padding: "6px",
                                                             marginRight: "12px",
                                                         }}
                                                     >
@@ -283,8 +284,8 @@ const Notifications = () => {
                                                             src="https://static.vecteezy.com/system/resources/previews/000/442/087/original/notification-vector-icon.jpg"
                                                             alt=""
                                                             style={{
-                                                                width: "50px",
-                                                                height: "50px",
+                                                                width: "30px",
+                                                                height: "30px",
                                                                 background: "gray",
                                                                 borderRadius: "50%",
                                                                 marginRight: "20px",
@@ -317,6 +318,7 @@ const Notifications = () => {
                                                         sx={{
                                                             background: theme?.palette.grey[200],
                                                             p: 1,
+                                                            mr: 1,
                                                             borderRadius: 1,
                                                         }}
                                                     >
@@ -347,7 +349,7 @@ const Notifications = () => {
                                                     background: "#ffffff",
                                                     borderLeft: `4px solid ${colorCodes.SECONDARY_COLOR_300}`,
                                                     borderRadius: "15px",
-                                                    p: 0.6,
+                                                    p: 0.1,
                                                     boxShadow: (theme) => theme.customShadows.z1,
                                                     marginBottom: "5px",
                                                 }}
@@ -364,7 +366,7 @@ const Notifications = () => {
                                                         sx={{
                                                             display: "flex",
                                                             alignItems: "center",
-                                                            padding: "12px",
+                                                            padding: "6px",
                                                             marginRight: "12px",
                                                         }}
                                                     >
@@ -372,8 +374,8 @@ const Notifications = () => {
                                                             src="https://static.vecteezy.com/system/resources/previews/000/442/087/original/notification-vector-icon.jpg"
                                                             alt=""
                                                             style={{
-                                                                width: "50px",
-                                                                height: "50px",
+                                                                width: "30px",
+                                                                height: "30px",
                                                                 background: "gray",
                                                                 borderRadius: "50%",
                                                                 marginRight: "20px",
@@ -414,6 +416,7 @@ const Notifications = () => {
                                                         sx={{
                                                             background: theme?.palette.grey[200],
                                                             p: 1,
+                                                            mr: 1,
                                                             borderRadius: 1,
                                                         }}
                                                     >
