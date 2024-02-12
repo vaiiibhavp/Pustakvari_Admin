@@ -72,9 +72,9 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         setIsInstituteModalOpen(false)
     };
     const initialValues = {
-        instituteName: isEditableRecord?.instituteName || '',
-        emailId: isEditableRecord?.emailId || '',
-        mobileNo: isEditableRecord?.mobileNo || '',
+        instituteName: isEditableRecord?.instituteName ?? '',
+        emailId: isEditableRecord?.emailId ?? '',
+        mobileNo: isEditableRecord?.mobileNo ?? '',
         password: '',
         instituteImage: ""
     };
@@ -93,7 +93,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         initialValues,
         validationSchema,
         enableReinitialize: true,
-        onSubmit: (values) => {
+        onSubmit: (values, { resetForm }) => {
 
             if (isEditableRecord?._id) {
                 delete values.confirmPassword;
@@ -110,8 +110,10 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                 createInstituteRecord(values).then((res) => {
                     if (res.status === 201) {
                         setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res?.data.message }))
+
                     }
                     setIsInstituteModalOpen(false)
+                    resetForm();
                 }).catch((errr) => {
                     console.log(
                         errr, "errro"

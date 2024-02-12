@@ -82,10 +82,10 @@ const SubscriptionModal = ({
       });
   }, []);
   const initialValues = {
-    subscriptionName: isEditRecord?.subscriptionName || "",
-    duration: isEditRecord?.duration?._id || "",
-    rate: isEditRecord?.rate || "",
-    features: isEditRecord?.features || "",
+    subscriptionName: isEditRecord?.subscriptionName ?? "",
+    duration: isEditRecord?.duration?._id ?? "",
+    rate: isEditRecord?.rate ?? "",
+    features: isEditRecord?.features ?? "",
   };
   const validationSchema = Yup.object({
     subscriptionName: Yup.string().required("Subscription Name is required"),
@@ -94,7 +94,7 @@ const SubscriptionModal = ({
     features: Yup.string().required("Features are required"),
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = (values, { resetForm }) => {
     if (isEditRecord?._id) {
       delete values.duration;
       updateSubscripton(values, isEditRecord?._id)
@@ -121,6 +121,9 @@ const SubscriptionModal = ({
               showSuccessModal: true,
               message: res?.data.message,
             }));
+            resetForm();
+          } else {
+            resetForm();
           }
         })
         .catch((error) => {

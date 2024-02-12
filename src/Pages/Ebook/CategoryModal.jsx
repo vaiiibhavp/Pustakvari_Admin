@@ -96,7 +96,7 @@ const CategoryModal = ({
         },
         validationSchema,
         enableReinitialize: true,
-        onSubmit: (values) => {
+        onSubmit: (values, { resetForm }) => {
             if (isEditableRecord?._id) {
                 updateCategoryRecord({ id: isEditableRecord?._id, body: values }).then((res) => {
                     setIsOpenCategoryModal(false);
@@ -116,6 +116,7 @@ const CategoryModal = ({
                         showSuccessModal: true,
                         message: res.message,
                     }));
+                    resetForm();
                 }).catch((err) => {
                     console.log(err);
                 })

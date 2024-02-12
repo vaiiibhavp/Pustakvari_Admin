@@ -112,18 +112,18 @@ const EbookModal = ({
 
   const formik = useFormik({
     initialValues: {
-      bookName: isEditableRecord?.bookName || "",
-      authorName: isEditableRecord?.bookName || "",
+      bookName: isEditableRecord?.bookName ?? "",
+      authorName: isEditableRecord?.bookName ?? "",
       bookPdf: null,
       bookImage: null,
-      category: isEditableRecord?.category?._id || "",
-      bookType: isEditableRecord?.bookType?._id || "",
-      bookLanguage: isEditableRecord?.bookLanguage?._id || "",
-      videoLink: isEditableRecord?.bookName || "",
+      category: isEditableRecord?.category?._id ?? "",
+      bookType: isEditableRecord?.bookType?._id ?? "",
+      bookLanguage: isEditableRecord?.bookLanguage?._id ?? "",
+      videoLink: isEditableRecord?.bookName ?? "",
     },
     // validationSchema,
     enableReinitialize: true,
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       if (isEditableRecord) {
         delete values.bookPdf;
         delete values.bookImage;
@@ -148,6 +148,7 @@ const EbookModal = ({
               showSuccessModal: true,
               message: res.message,
             }));
+            resetForm();
           })
           .catch((err) => {
             console.log(err);

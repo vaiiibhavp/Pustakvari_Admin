@@ -85,7 +85,7 @@ const EBooks = () => {
             .catch((err) => {
                 console.log(err);
             });
-    }, [setIsOpenEbookModal]);
+    }, [isOpenEbookModal]);
 
     let { bookList } = booksState;
 
