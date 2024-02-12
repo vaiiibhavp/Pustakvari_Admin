@@ -145,6 +145,8 @@ const CategoryModal = ({
 
 
 
+
+
     return (
         <Modal
             open={isOpenCategoryModal}

@@ -83,6 +83,18 @@ const Quiz = () => {
         }
     }
 
+    const handleSearch = (value) => {
+        if (value) {
+            const data = quizDataState?.globalQuizRecords?.filter((e) => {
+                return e?.quizName?.toLowerCase()?.includes(value?.toLowerCase());
+            });
+            setQuizDataState((prev) => ({ ...prev, allQuizRecords: data || [] }))
+        } else {
+            // getUserList();
+            setQuizDataState((prev) => ({ ...prev, allQuizRecords: quizDataState?.globalQuizRecords || [] }))
+        }
+    }
+
 
     return (
         <Container maxWidth="xl">
@@ -90,8 +102,8 @@ const Quiz = () => {
 
                 <Typography variant='h5'>{AppStrings?.Quiz}</Typography>
                 <Box sx={{ display: "flex", gap: 1 }}>
-                    <Searchbar onSearch={(e) => console.log("hello", e)} />
-                    <Button onClick={() => navigate("/createquize")} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+{AppStrings?.add_quize}</Button>
+                    <Searchbar onSearch={handleSearch} />
+                    <Button onClick={() => navigate("/createquize")} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+ {AppStrings?.add_quize}</Button>
                 </Box>
             </Box>
 

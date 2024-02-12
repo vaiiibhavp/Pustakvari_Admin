@@ -6,11 +6,13 @@ import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 
 import React, { useEffect, useState } from 'react'
 import useCategoryApis from '../../Hooks/Category';
+import Searchbar from '../../Component/Searchbar';
 
 const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryModal, onEditHandler }) => {
     const theme = useTheme();
     const [categoryData, setCategoryData] = useState({
-        dataList: []
+        dataList: [],
+        globalList: []
     })
 
     let { getCateogoryList, deleteCategoryRecord } = useCategoryApis();
@@ -18,7 +20,7 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
     useEffect(() => {
         getCateogoryList().then((res) => {
 
-            setCategoryData((prev) => ({ ...prev, dataList: res.data }))
+            setCategoryData((prev) => ({ ...prev, dataList: res.data, globalList: res.data }))
         }).catch((error) => {
             console.log(error)
         })
@@ -36,6 +38,21 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
             console.log(error);
         })
     }
+
+    const handleChange = (value) => {
+        if (value) {
+            const data = categoryData?.globalList?.filter((e) => {
+                return e?.categoryName?.toLowerCase()?.includes(value?.toLowerCase());
+            });
+            setCategoryData((prev) => ({ ...prev, dataList: data }))
+        } else {
+            // getUserList();
+            setCategoryData((prev) => ({
+                ...prev,
+                dataList: categoryData?.globalList || [],
+            }));
+        }
+    };
 
 
     return (
@@ -63,16 +80,15 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
             }}
         >
             <div style={{ padding: '10px', position: "relative" }}>
-                <Box sx={{ position: "sticky", top: "15px", background: "white" }}>
-
+                <Box sx={{ position: "sticky", top: "15px", background: "white", width: "100%" }}>
                     <TextField
-                        placeholder="Search"
-
-                        variant="outlined"
+                        // label="Search here ..."
                         fullWidth
+                        variant="outlined"
+                        placeholder='Search Here'
                         size='small'
-
-                        style={{ marginBottom: '10px' }}
+                        sx={{ border: "1px solid white" }}
+                        onChange={(e) => handleChange(e.target.value)}
                     />
                 </Box>
                 <List >

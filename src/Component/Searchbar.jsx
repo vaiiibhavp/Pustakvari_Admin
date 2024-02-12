@@ -1,14 +1,16 @@
 import { TextField } from '@mui/material'
 import React from 'react'
 
-const Searchbar = ({ onSearch }) => {
+const Searchbar = ({ onSearch, isFull }) => {
     const handleChange = (event) => {
         onSearch(event.target.value);
     };
 
+
     return (
         <TextField
             // label="Search here ..."
+            // fullWidth
             variant="outlined"
             placeholder='Search Here'
             size='small'
