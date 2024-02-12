@@ -90,7 +90,10 @@ const SubscriptionModal = ({
   const validationSchema = Yup.object({
     subscriptionName: Yup.string().required("Subscription Name is required"),
     duration: Yup.string().required("Duration is required"),
-    rate: Yup.string().required("Rate is required"),
+    rate: Yup.number()
+      .typeError("Rate must be a number")
+      .required("Rate is required")
+      .min(0, "Rate must be an positive number"),
     features: Yup.string().required("Features are required"),
   });
 
