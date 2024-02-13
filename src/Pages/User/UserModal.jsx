@@ -125,13 +125,14 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
               showSuccessModal: true,
               message: res?.data.message,
             }));
-            resetForm();
-            setUserModalOpen(false);
+
           } else {
             toast.dismiss();
             // formik.setFieldError("emailId", res.data.message)
             toast.warning(res.data.message, { autoClose: 2000 })
           }
+          resetForm();
+          setUserModalOpen(false);
 
         })
         .catch((err) => {

@@ -130,6 +130,10 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                         if (res.status === 201) {
                             setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res?.data.message }))
 
+                        } else {
+                            toast.dismiss();
+                            // formik.setFieldError("emailId", res.data.message)
+                            toast.warning(res.data.message, { autoClose: 2000 })
                         }
                         setIsInstituteModalOpen(false)
                         resetForm();
