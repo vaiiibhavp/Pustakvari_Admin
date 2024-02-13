@@ -9,3 +9,9 @@ export const generatePassword = () => {
   }
   return password;
 };
+
+export function matchIsNumeric(text) {
+  const isNumber = typeof text === "number";
+  // const isString = matchIsString(text);
+  return isNumber;
+}
