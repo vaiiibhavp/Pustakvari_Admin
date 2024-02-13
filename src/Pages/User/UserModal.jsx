@@ -22,6 +22,7 @@ import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 import UseUserApis from "../../Hooks/User";
 import { useSelector } from "react-redux";
 import { generatePassword } from "../../Helper/utils/Common";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -87,14 +88,20 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
     if (isEdit) {
       updateUser(value, isEditableRecord?._id)
         .then((res) => {
+          console.log(res, "userrrrr");
           if (res.status === 200) {
             setUserDataState((prev) => ({
               ...prev,
               showSuccessModal: true,
               message: res?.data.message,
             }));
-            resetForm();
+
+          } else {
+
+            toast.dismiss();
+            toast.warning(res.data.message, { autoClose: 2000 })
           }
+          resetForm();
           setUserModalOpen(false);
         })
         .catch((err) => {
@@ -112,14 +119,20 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
       createUser(data)
         .then((res) => {
           if (res.data.status === 201) {
+
             setUserDataState((prev) => ({
               ...prev,
               showSuccessModal: true,
               message: res?.data.message,
             }));
             resetForm();
+            setUserModalOpen(false);
+          } else {
+            toast.dismiss();
+            // formik.setFieldError("emailId", res.data.message)
+            toast.warning(res.data.message, { autoClose: 2000 })
           }
-          setUserModalOpen(false);
+
         })
         .catch((err) => {
           console.log(err);
