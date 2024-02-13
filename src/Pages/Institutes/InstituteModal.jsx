@@ -64,6 +64,8 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         updateInstituteRecord
     } = useInstitues()
 
+
+
     const { fetchImageAsFile } = useFileGenrator();
 
 
@@ -76,13 +78,26 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         emailId: isEditableRecord?.emailId ?? '',
         mobileNo: isEditableRecord?.mobileNo ?? '',
         password: '',
-        instituteImage: ""
+        instituteImage: null
     };
 
     const validationSchema = Yup.object().shape({
         instituteName: Yup.string().required('Full name is required'),
         emailId: Yup.string().matches(/^[^\s@]+@[^\s@]+\.(?:com)$/, 'Invalid email address').required('Email is required'),
         mobileNo: Yup.string().matches(/^[0-9]{10}$/, "Contact number must be 10 digits").required('Contact number is required'),
+        instituteImage: Yup.mixed()
+            .required("Institute image is required")
+            .test(
+                "fileSize",
+                "File size is too large",
+                (value) => value && value.size <= 2000000
+            ) // 2MB limit
+            .test(
+                "fileType",
+                "Invalid file type",
+                (value) =>
+                    value && value.type && value.type.startsWith("image/")
+            ),
         // password: !isEditableRecord && Yup.string().required('Password is required'),
         // confirmPassword: !isEditableRecord && Yup.string()
         //     .oneOf([Yup.ref('password'), null], 'Passwords must match')
@@ -106,22 +121,28 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                     setIsInstituteModalOpen(false)
                 })
             } else {
-                delete values.confirmPassword;
-                createInstituteRecord(values).then((res) => {
-                    if (res.status === 201) {
-                        setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res?.data.message }))
+                if (!values.instituteImage) {
+                    formik.setFieldError("instituteImage", "Intitute image is required")
+                } else {
 
-                    }
-                    setIsInstituteModalOpen(false)
-                    resetForm();
-                }).catch((errr) => {
-                    console.log(
-                        errr, "errro"
-                    );
-                })
+                    delete values.confirmPassword;
+                    createInstituteRecord(values).then((res) => {
+                        if (res.status === 201) {
+                            setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res?.data.message }))
+
+                        }
+                        setIsInstituteModalOpen(false)
+                        resetForm();
+                    }).catch((errr) => {
+                        console.log(
+                            errr, "errro"
+                        );
+                    })
+                }
             }
         },
     });
+
 
     const handleClickShowPassword = () => {
         formik.setFieldValue('passwordVisible', !formik.values.passwordVisible);
@@ -137,8 +158,9 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
     const handleImageChange = (event) => {
         formik.setFieldValue("instituteImage", event.currentTarget.files[0]);
     };
-
     let { values, errors } = formik;
+
+
 
 
     useEffect(() => {
@@ -157,7 +179,6 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         formik.setFieldValue("password", newPassword)
     }, [isInstituteModalOpen])
 
-    console.log(values, "institute modal");
 
     return (
         <Modal
@@ -238,7 +259,10 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                                 style={{ display: "none" }}
                                 onChange={handleImageChange}
                             />
+
                         </Box>
+                        {formik.touched.instituteImage && formik.errors.instituteImage && <Typography color="error" sx={{ fontSize: "12px", pl: 1 }}>{formik.errors.instituteImage}</Typography>}
+
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 

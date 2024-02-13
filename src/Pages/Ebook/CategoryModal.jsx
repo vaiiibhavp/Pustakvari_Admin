@@ -75,7 +75,7 @@ const CategoryModal = ({
     const validationSchema = Yup.object({
         categoryName: Yup.string().required("Category name is required"),
         file: Yup.mixed()
-            .required("Image is required")
+            .required("Category image is required")
             .test(
                 "fileSize",
                 "File size is too large",
@@ -85,7 +85,7 @@ const CategoryModal = ({
                 "fileType",
                 "Invalid file type",
                 (value) =>
-                    value && ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+                    value && value.type && value.type.startsWith("image/")
             ),
     });
 
@@ -230,6 +230,8 @@ const CategoryModal = ({
                                     onChange={handleImageChange}
                                 />
                             </Box>
+                            {formik.touched.file && formik.errors.file && <Typography color="error" sx={{ fontSize: "12px", pl: 1 }}>{formik.errors.file}</Typography>}
+
                         </Box>
                         <Box
                             sx={{

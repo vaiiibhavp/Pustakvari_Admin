@@ -87,7 +87,7 @@ const EbookModal = ({
     bookName: Yup.string().required("Book name is required"),
     authorName: Yup.string().required("Author name is required"),
     category: Yup.string().required("Category is required"),
-    type: Yup.string().required("Type is required"),
+    bookType: Yup.string().required("Type is required"),
     // videoLink: Yup.string()
     //   .url("Invalid URL")
     //   .required("Video link is required"),
@@ -97,10 +97,20 @@ const EbookModal = ({
       .test(
         "fileType",
         "Invalid file type",
-        (value) =>
-          value && ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+        (value) => value && value.type && value.type.startsWith("image/")
       ),
-    bookPdf: Yup.mixed().required("Image is required"),
+    bookPdf: Yup.mixed()
+      .required("File is required")
+      .test(
+        "fileSize",
+        "File size is too large",
+        (value) => value && value.size <= 2000000 // 2MB limit
+      )
+      .test(
+        "fileType",
+        "Invalid file type",
+        (value) => value && value.type === "application/pdf"
+      ),
   });
 
   // bookName;
@@ -121,7 +131,7 @@ const EbookModal = ({
       bookLanguage: isEditableRecord?.bookLanguage?._id ?? "",
       videoLink: isEditableRecord?.bookName ?? "",
     },
-    // validationSchema,
+    validationSchema,
     enableReinitialize: true,
     onSubmit: (values, { resetForm }) => {
       if (isEditableRecord) {
@@ -158,17 +168,17 @@ const EbookModal = ({
   });
 
   const handleImageChange = (event, fieldName) => {
-    if (
-      event.currentTarget.files[0].type === "application/pdf" &&
-      fieldName === "bookPdf"
-    ) {
-      formik.setFieldValue(fieldName, event.currentTarget.files[0]);
-    } else if (fieldName === "bookImage") {
-      formik.setFieldValue(fieldName, event.currentTarget.files[0]);
-    }
+    // if (
+    //   event.currentTarget.files[0].type === "application/pdf" &&
+    //   fieldName === "bookPdf"
+    // ) {
+    //   formik.setFieldValue(fieldName, event.currentTarget.files[0]);
+    // } else if (fieldName === "bookImage") {
+    formik.setFieldValue(fieldName, event.currentTarget.files[0]);
+    // }
   };
 
-  let { values } = formik;
+  let { values, errors } = formik;
 
   useEffect(() => {
     const fetchCategoryList = getCateogoryList();
@@ -199,6 +209,8 @@ const EbookModal = ({
       });
     }
   }, [isEditableRecord?.bookImage]);
+
+  console.log(errors, values, "error");
 
   return (
     <Modal
@@ -321,6 +333,11 @@ const EbookModal = ({
                     onChange={(e) => handleImageChange(e, "bookImage")}
                   />
                 </Box>
+                {formik.touched.bookImage && formik.errors.bookImage && (
+                  <Typography color="error" sx={{ fontSize: "12px", pl: 1 }}>
+                    {formik.errors.bookImage}
+                  </Typography>
+                )}
               </Box>
               <Box
                 fullWidth
@@ -347,11 +364,11 @@ const EbookModal = ({
                     {/* <AddIcon sx={{ width: 40, height: 40 }} /> */}
                     <Typography
                       sx={{
-                        fontSize: "14px",
+                        fontSize: "13px",
                         color: theme?.palette?.grey[400],
                       }}
                     >
-                      upload pdf
+                      {values.bookPdf ? values.bookPdf.name : "upload pdf"}
                     </Typography>
                   </IconButton>
                 </label>
@@ -363,6 +380,11 @@ const EbookModal = ({
                   style={{ display: "none" }}
                   onChange={(e) => handleImageChange(e, "bookPdf")}
                 />
+                {formik.touched.bookPdf && formik.errors.bookPdf && (
+                  <Typography color="error" sx={{ fontSize: "12px", pl: 1 }}>
+                    {formik.errors.bookPdf}
+                  </Typography>
+                )}
               </Box>
             </Box>
 
