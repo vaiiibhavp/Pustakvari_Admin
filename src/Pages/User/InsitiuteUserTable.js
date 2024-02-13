@@ -107,7 +107,7 @@ const InsitiuteUserTable = ({
                           },
                         }}
                       >
-                        {row?.activeStatus ? "Active" : "Inactive"}
+                        {row?.activeStatus ? "Active" : "Deactive"}
                       </Button>
                     </TableCell>
                     <TableCell align="center">

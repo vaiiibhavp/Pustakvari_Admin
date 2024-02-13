@@ -101,7 +101,7 @@ const SuperAdminTable = ({ userData,
                                                 },
                                             }}
                                         >
-                                            {row?.activeStatus ? "Active" : "Inactive"}
+                                            {row?.activeStatus ? "Active" : "Deactive"}
                                         </Button>
                                     </TableCell>
                                     <TableCell align="center">

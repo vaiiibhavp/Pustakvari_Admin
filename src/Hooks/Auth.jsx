@@ -25,7 +25,7 @@ const useAuthApis = () => {
   };
 
   const resetPassword = async (paramsBody) => {
-    let res = await instance.put(`/forgotPassword`, paramsBody);
+    let res = await instance.put(`/resetPassword`, paramsBody);
     return res.data;
   };
 

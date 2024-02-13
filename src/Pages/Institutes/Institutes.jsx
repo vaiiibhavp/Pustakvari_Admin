@@ -201,6 +201,7 @@ const Institutes = () => {
                                                 <TableCell align="center">
                                                     <Button
                                                         sx={{
+                                                            width: "100px",
                                                             margin: "0 10px",
                                                             px: 3,
                                                             borderRadius: "8px",

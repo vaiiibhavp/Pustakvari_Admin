@@ -123,7 +123,7 @@ const Quiz = () => {
                                     {AppStrings?.No_Of_questIon || "NO of Question"}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "180px" }}>
-                                    {AppStrings?.Solved_by_No_of_users || "Solved By No of users"}{" "}
+                                    {AppStrings?.Solved_by_No_of_users || "Solved By No of users"}
                                 </TableCell>
 
                                 <TableCell align="center" style={{ minWidth: "100px" }}>
