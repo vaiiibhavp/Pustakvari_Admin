@@ -91,12 +91,31 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
                         onChange={(e) => handleChange(e.target.value)}
                     />
                 </Box>
-                <List >
+                <List sx={{
+                    maxHeight: 250,
+                    overflowY: "auto",
+                    p: 2,
+                    my: 2,
+                    "&::-webkit-scrollbar": {
+                        width: "4px",
+                        padding: "10px 0",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                        backgroundColor: "#888",
+                        borderRadius: "6px",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                        backgroundColor: "#f1f1f1",
+                        borderRadius: "10px",
+                    },
+                    scrollbarWidth: "thin",
+                    scrollbarColor: "#888 #f1f1f1", // For Firefox
+                }} >
                     {dataList.length > 0 ? dataList?.map((category) => {
                         let { _id, categoryName } = category;
                         return (
 
-                            <ListItem key={category?._id}>
+                            <ListItem key={category?._id} sx={{ borderBottom: `1px solid ${theme.palette.grey[500]}` }}>
                                 <ListItemText primary={categoryName} />
                                 <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                                     <Button onClick={() => onEditHandler(category)} sx={{
@@ -128,7 +147,7 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
                                 </Box>
                             </ListItem>
                         )
-                    }) : "no catgory found"}
+                    }) : <ListItem sx={{ color: theme.palette.grey[400], width: "100%", display: "flex", justifyContent: "center" }}> Category Not found</ListItem>}
 
 
 

@@ -46,7 +46,7 @@ const OtpValidation = () => {
                     }, 1000);
                 } else {
                     toast.dismiss();
-                    toast.warning("Something went wrong", { autoClose: 2000 })
+                    toast.warning(res.message, { autoClose: 2000 })
                 }
             }).catch((err) => {
                 console.log(err);
@@ -56,6 +56,7 @@ const OtpValidation = () => {
     };
 
     const resendOtp = () => {
+        setOtp('')
         forgotPassword({ emailId: state })
             .then((res) => {
                 if (res.status === 200) {

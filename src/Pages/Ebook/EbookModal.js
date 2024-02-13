@@ -231,7 +231,7 @@ const EbookModal = ({
             alignItems: "center",
           }}
         >
-          {isEditable ? "Edit E-book" : AppStrings?.Add_new_e_book}
+          {isEditableRecord?._id ? "Edit E-book" : AppStrings?.Add_new_e_book}
 
           <span onClick={handleClose}>
             <CloseIcon sx={{ color: theme?.palette.grey[400] }} />

@@ -111,7 +111,7 @@ export const AppStrings = {
   add_institute: "Add Institute",
   Institutes: "Institutes",
   add_new_institute: "Add new institute",
-  Account_created_on: "Account Created on",
+  Account_created_on: "Account Created On",
   institute_users: "Institute users",
   subscribed: "Subscribed",
   unsubscribed: "Unsubscribed",
@@ -176,11 +176,11 @@ export const AppStrings = {
 
   user_Name: " User Name",
   Contact: "Contact",
-  institute_user: "Institute user",
+  institute_user: "Institute User",
   last_login: "Last Login",
   status: "Status",
-  No_Of_questIon: "No of questIon",
-  Solved_by_No_of_users: "Solved by No of users",
+  No_Of_questIon: "No of QuestIon",
+  Solved_by_No_of_users: "Solved by No of Users",
   Total_users: "Total User",
 
   no_data_available: "No data available",

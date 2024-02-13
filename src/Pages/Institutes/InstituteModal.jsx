@@ -24,6 +24,7 @@ import useInstitues from '../../Hooks/Institutes';
 import { AppStrings } from '../../Helper/Constant';
 import useFileGenrator from '../../Hooks/ImageFileConverter';
 import { generatePassword } from '../../Helper/utils/Common';
+import { toast } from 'react-toastify';
 
 
 const style = {
@@ -203,7 +204,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                         alignItems: "center",
                     }}
                 >
-                    {isEditable ? "Edit institute" : "Create New Institute"}
+                    {isEditableRecord?._id ? "Edit institute" : "Create New Institute"}
 
                     <span onClick={handleClose}>
                         <CloseIcon sx={{ color: theme.palette.grey[400] }} />
@@ -402,7 +403,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
 
 
                         <Button fullWidth type="submit" variant="contained" color="primary" mt={2} sx={{ marginTop: "15px", borderRadius: "18px" }}>
-                            {isEditable ? "Update" : "Submit"}
+                            {isEditableRecord?._id ? "Update" : "Submit"}
                         </Button>
                     </Box>
                 </form>
