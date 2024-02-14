@@ -102,10 +102,10 @@ const Notifications = () => {
                     </IconButton>
                     Back
                 </Button>
-                {user?.instituteInfo && <Typography sx={{ fontSize: "20px", py: 2, color: theme?.palette?.grey[800], fontWeight: "600" }}>Notifications</Typography>}
+                {InstituteAdmin && <Typography sx={{ fontSize: "20px", py: 2, color: theme?.palette?.grey[800], fontWeight: "600" }}>Notifications</Typography>}
             </Box>
             {
-                user?.instituteInfo ? <>
+                InstituteAdmin ? <>
                     {/* Institute User  */}
                     <List>
                         {allNotification?.length > 0

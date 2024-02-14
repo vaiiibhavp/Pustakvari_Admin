@@ -64,7 +64,7 @@ const CommonTable = ({
   };
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, data?.length - page * rowsPerPage);
 
   const renderText = (item, whichCoulumn) => {
     console.log(item, whichCoulumn);
@@ -268,7 +268,7 @@ const CommonTable = ({
           ))}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={columns.length} sx={{ width: "500px" }} />
+              <TableCell colSpan={columns?.length} sx={{ width: "500px" }} />
             </TableRow>
           )}
         </TableBody>
@@ -276,7 +276,7 @@ const CommonTable = ({
       <TablePagination
         rowsPerPageOptions={rowsPerPageOptions}
         component="div"
-        count={data.length}
+        count={data?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

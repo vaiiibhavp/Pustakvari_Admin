@@ -34,7 +34,7 @@ export default function NotificationsPopover() {
 
   const totalUnRead = notifications?.filter(
     (item) => item.isUnRead === true
-  ).length;
+  )?.length;
 
   const [open, setOpen] = useState(null);
 

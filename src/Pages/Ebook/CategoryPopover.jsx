@@ -111,7 +111,7 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
                     scrollbarWidth: "thin",
                     scrollbarColor: "#888 #f1f1f1", // For Firefox
                 }} >
-                    {dataList.length > 0 ? dataList?.map((category) => {
+                    {dataList?.length > 0 ? dataList?.map((category) => {
                         let { _id, categoryName } = category;
                         return (
 

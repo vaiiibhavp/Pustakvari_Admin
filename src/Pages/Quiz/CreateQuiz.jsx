@@ -47,7 +47,7 @@ const CreateQuiz = () => {
 
     const handleAddQuestion = () => {
         const newQuestion = {
-            id: questionText.length + 1,
+            id: questionText?.length + 1,
             question: "",
             type: "",
             option: [{ id: 1, value: "", editing: true }],
@@ -59,7 +59,7 @@ const CreateQuiz = () => {
         const newOptions = [
             ...questionText[questionIndex].option,
             {
-                id: questionText[questionIndex].option.length + 1,
+                id: questionText[questionIndex].option?.length + 1,
                 value: ``,
                 editing: true,
             },
@@ -134,7 +134,7 @@ const CreateQuiz = () => {
             !quizName ||
             !description ||
             !questionText ||
-            questionText.length === 0
+            questionText?.length === 0
         ) {
             console.error(
                 "Quiz name, description, and at least one question are required."
