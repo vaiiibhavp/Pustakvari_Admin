@@ -10,7 +10,7 @@ const UseUserApis = () => {
   const createUser = async (body) => {
     const response = await instance.post(`/userSingup`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response;

@@ -25,6 +25,7 @@ import { AppStrings } from '../../Helper/Constant';
 import useFileGenrator from '../../Hooks/ImageFileConverter';
 import { generatePassword } from '../../Helper/utils/Common';
 import { toast } from 'react-toastify';
+import UseUserApis from '../../Hooks/User';
 
 
 const style = {
@@ -64,6 +65,9 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
     const { createInstituteRecord,
         updateInstituteRecord
     } = useInstitues()
+
+
+    const { createUser } = UseUserApis();
 
 
 
@@ -127,8 +131,14 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                 } else {
 
                     delete values.confirmPassword;
-                    createInstituteRecord(values).then((res) => {
-                        if (res.status === 201) {
+
+                    let data = {
+                        ...values, userType: "INSTITUTE"
+                    }
+                    console.log(data, "valuess getting meeee");
+
+                    createUser(data).then((res) => {
+                        if (res.status === 200) {
                             setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res?.data.message }))
 
                         } else {
