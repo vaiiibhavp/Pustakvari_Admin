@@ -115,7 +115,7 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
                         let { _id, categoryName } = category;
                         return (
 
-                            <ListItem key={category?._id} sx={{ borderBottom: `1px solid ${theme.palette.grey[500]}` }}>
+                            <ListItem key={category?._id} sx={{ borderBottom: `1px solid ${theme.palette.grey[200]}` }}>
                                 <ListItemText primary={categoryName} />
                                 <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                                     <Button onClick={() => onEditHandler(category)} sx={{
