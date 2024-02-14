@@ -23,6 +23,7 @@ import UseUserApis from "../../Hooks/User";
 import { useSelector } from "react-redux";
 import { generatePassword } from "../../Helper/utils/Common";
 import { toast } from "react-toastify";
+import useUserTypeName from "../../Hooks/IsCheckAuth";
 
 const style = {
   position: "absolute",
@@ -57,7 +58,8 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
   userDataState }) => {
   let isEditable = isEditableRecord !== null ? true : false;
   const { updateUser, createUser } = UseUserApis();
-  let { user } = useSelector((state) => state.AuthUser)
+
+  const InstituteAdmin = useUserTypeName();
   const theme = useTheme();
 
   const [randomPwd, setRandomPwd] = useState()
@@ -70,8 +72,8 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
     mobileNo: isEditableRecord?.mobileNo ?? "",
 
 
-    userType: user?.instituteInfo ? "INSTITUTE_USER" : "REGULAR_USER",
-    is_instituteUser: user?.instituteInfo ? true : false,
+    userType: InstituteAdmin ? "INSTITUTE_USER" : "REGULAR_USER",
+    is_instituteUser: InstituteAdmin ? true : false,
   };
 
   const validationSchema = Yup.object().shape({
@@ -113,8 +115,8 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
         emailId: value?.emailId,
         mobileNo: value?.mobileNo,
         password: randomPwd,
-        userType: user?.instituteInfo ? "INSTITUTE_USER" : "REGULAR_USER",
-        is_instituteUser: user?.instituteInfo ? true : false,
+        userType: InstituteAdmin ? "INSTITUTE_USER" : "REGULAR_USER",
+        is_instituteUser: InstituteAdmin ? true : false,
       };
       createUser(data)
         .then((res) => {

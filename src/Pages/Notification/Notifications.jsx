@@ -22,11 +22,14 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import { fNotifiactionDate, fromAgoDate } from "../../Helper/utils/formatTime";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
+import useUserTypeName from "../../Hooks/IsCheckAuth";
 
 const Notifications = () => {
     const {
         AuthUser: { user },
     } = useSelector((state) => state);
+
+    const InstituteAdmin = useUserTypeName();
     const [page, setPage] = React.useState(0);
     const [notificationState, setNotificationState] = useState({
         selectedTab: 1,
@@ -52,12 +55,12 @@ const Notifications = () => {
     };
 
     useEffect(() => {
-        let hasInstituteUser = user?.instituteInfo
+        let hasInstituteUser = InstituteAdmin
             ? "Institutes"
             : user?.instituteInfo
                 ? "Users"
                 : "All";
-        console.log(hasInstituteUser, "hassssssss");
+
         getNotifiactionList(user)
             .then((res) => {
                 if (res?.status === 200) {

@@ -23,6 +23,8 @@ const ProfileModal = ({ profile, setProfile }) => {
     const [isChangingPassword, setIsChangingPassword] = useState(true);
 
 
+
+
     let theme = useTheme()
 
     const handleChange = (e) => {

@@ -10,9 +10,9 @@ import { useSelector } from 'react-redux'
 
 const Dashboard = () => {
 
-    const { user } = useSelector((state) => state?.AuthUser);
+    const { user: { userInfo } } = useSelector((state) => state?.AuthUser);
 
-
+    let InstituteAdmin = userInfo?.userType === "INSTITUTE" ? true : false;
 
     return (
         <Container maxWidth="xl" sx={{ padding: "0 0 40px 0" }}>
@@ -35,7 +35,7 @@ const Dashboard = () => {
 
 
 
-                {!user?.instituteInfo &&
+                {!InstituteAdmin &&
                     <Grid item xs={12} md={8} lg={8}>
                         <AppWebsiteVisits
                             title="Users"
@@ -57,7 +57,7 @@ const Dashboard = () => {
                     </Grid>
                 }
 
-                {!user?.instituteInfo &&
+                {!InstituteAdmin &&
                     <Grid item xs={12} md={4} lg={4}>
                         <AppWebsiteVisits
                             title="Top 5 categories"

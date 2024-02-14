@@ -24,9 +24,10 @@ import CreateQuiz from "./Pages/Quiz/CreateQuiz";
 import PaymentTracking from "./Pages/InstituteAdmin/PaymentTrackings";
 import InstituteLayout from "./Layout/InstituteLayout";
 import { useSelector } from "react-redux";
+import useUserTypeName from "./Hooks/IsCheckAuth";
 
 const App = () => {
-  const { user } = useSelector((state) => state?.AuthUser);
+  const InstituteAdmin = useUserTypeName();
 
   return (
     <BrowserRouter>
@@ -38,16 +39,14 @@ const App = () => {
           <Route path="/reset" element={<ResetPasswordForm />} />
           {/* <Route path="/modal" element={<DeleteModal />} /> */}
         </Route>
-        <Route
-          element={user?.instituteInfo ? <InstituteLayout /> : <MainContent />}
-        >
+        <Route element={InstituteAdmin ? <InstituteLayout /> : <MainContent />}>
           {/* above three for use for admin and superadmin both */}
           <Route path="/Payments" element={<PaymentTracking />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/User" element={<Users />} />
           <Route path="/Institute" element={<Institutes />} />
           <Route path="/institute/:id" element={<InstitutesDetail />} />
-          CreateQuiz
+          {/* CreateQuiz */}
           <Route path="/e-books" element={<EBooks />} />
           <Route path="/Quiz" element={<Quiz />} />
           <Route path="/createquize" element={<CreateQuiz />} />
