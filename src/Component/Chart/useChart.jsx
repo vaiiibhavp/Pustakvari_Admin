@@ -18,6 +18,7 @@ export default function useChart(options) {
     };
 
     const LABEL_VALUE = {
+        show: true,
         offsetY: 8,
         color: theme.palette.text.primary,
         fontSize: theme.typography.h3.fontSize,

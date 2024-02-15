@@ -24,6 +24,7 @@ import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 import useCategoryApis from "../../Hooks/Category";
 import useFileGenrator from "../../Hooks/ImageFileConverter";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const style = {
     position: "absolute",
@@ -110,13 +111,19 @@ const CategoryModal = ({
                 })
             } else {
                 createCategory(values).then((res) => {
-                    setIsOpenCategoryModal(false)
-                    setBooksState((prev) => ({
-                        ...prev,
-                        showSuccessModal: true,
-                        message: res.message,
-                    }));
-                    resetForm();
+                    if (res.status === 201) {
+
+                        // setIsOpenCategoryModal(false)
+                        setBooksState((prev) => ({
+                            ...prev,
+                            showSuccessModal: true,
+                            message: res.message,
+                        }));
+                        setIsOpenCategoryModal(false)
+                        resetForm();
+                    } else {
+                        formik.setFieldError("categoryName", res.message)
+                    }
                 }).catch((err) => {
                     console.log(err);
                 })

@@ -61,6 +61,7 @@ const Dashboard = () => {
                     <Grid item xs={12} md={4} lg={4}>
                         <AppWebsiteVisits
                             title="Top 5 categories"
+                            doNotlabel={true}
                             subheader=""
                             garphLable={false}
                             legendPosition={false}
