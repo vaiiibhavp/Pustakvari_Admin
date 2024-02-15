@@ -5,6 +5,8 @@ import moment from "moment/moment";
 export function accoundCreatedDate(date, newFormat) {
   const dateFormat = newFormat || "DD/MM/yyyy";
 
+  console.log(date);
+
   return date ? moment(date).format(dateFormat) : ""; // 12/12/2023
 }
 

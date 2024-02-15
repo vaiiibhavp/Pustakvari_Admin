@@ -120,6 +120,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
       };
       createUser(data)
         .then((res) => {
+          console.log(res, "Ressssss");
           if (res.data.status === 201) {
 
             setUserDataState((prev) => ({

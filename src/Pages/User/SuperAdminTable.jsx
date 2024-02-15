@@ -19,6 +19,7 @@ import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { accoundCreatedDate } from "../../Helper/utils/formatTime";
+import moment from "moment";
 const SuperAdminTable = ({ userData,
     page,
     rowsPerPage,
@@ -66,6 +67,7 @@ const SuperAdminTable = ({ userData,
                     {userData?.length > 0 ? userData
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row, idx) => {
+                            console.log("==============", row.created_at, accoundCreatedDate(row?.created_at, "DD/MM/yyyy"), moment(row?.created_at).format("DD/MM/yyyy"));
                             return (
                                 <TableRow key={row?.id}>
                                     <TableCell align="center" component="th" scope="row">
@@ -77,16 +79,16 @@ const SuperAdminTable = ({ userData,
                                         {row?.is_instituteUser}
                                     </TableCell>
                                     <TableCell align="left">{row?.emailId}</TableCell>
-                                    <TableCell align="center">{accoundCreatedDate(row?.created_at)}</TableCell>
+                                    <TableCell align="center">{row?.created_at}</TableCell>
                                     <TableCell align="center">{accoundCreatedDate(row?.Last_Login)}</TableCell>
                                     <TableCell align="center">
                                         <Button
                                             sx={{
                                                 width: "100px",
-                                                background: row?.activeStatus
+                                                background: row?.is_active
                                                     ? theme.palette?.secondary?.lighter
                                                     : theme.palette?.grey[300],
-                                                color: row?.activeStatus
+                                                color: row?.is_active
                                                     ? theme.palette?.secondary.main
                                                     : theme.palette?.grey[600],
                                                 // background: theme.palette?.grey[300],
@@ -101,18 +103,18 @@ const SuperAdminTable = ({ userData,
                                                 },
                                             }}
                                         >
-                                            {row?.activeStatus ? "Active" : "Deactive"}
+                                            {row?.is_active ? "Active" : "Deactive"}
                                         </Button>
                                     </TableCell>
                                     <TableCell align="center">
                                         <Switch
                                             value={row?._id}
                                             // checked={}
-                                            defaultChecked={row?.activeStatus}
+                                            defaultChecked={row?.is_active}
                                             color="secondary"
                                             onChange={(e) => {
 
-                                                handleCheckStatus(e.target.value, row?.activeStatus)
+                                                handleCheckStatus(e.target.value, row?.is_active)
                                             }}
                                         />
                                     </TableCell>

@@ -69,6 +69,7 @@ const InsitiuteUserTable = ({
             userData
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, idx) => {
+                console.log(row);
                 return (
                   <TableRow key={row?.id}>
                     <TableCell align="center" component="th" scope="row">
@@ -91,10 +92,10 @@ const InsitiuteUserTable = ({
                       <Button
                         sx={{
                           width: "100px",
-                          background: row?.activeStatus
+                          background: row?.is_active
                             ? theme.palette?.secondary?.lighter
                             : theme.palette?.grey[300],
-                          color: row?.activeStatus
+                          color: row?.is_active
                             ? theme.palette?.secondary.main
                             : theme.palette?.grey[600],
                           textDecoration: "none",
@@ -107,14 +108,14 @@ const InsitiuteUserTable = ({
                           },
                         }}
                       >
-                        {row?.activeStatus ? "Active" : "Deactive"}
+                        {row?.is_active ? "Active" : "Deactive"}
                       </Button>
                     </TableCell>
                     <TableCell align="center">
                       <Switch
                         value={row?._id}
                         // checked={}
-                        defaultChecked={row?.activeStatus}
+                        defaultChecked={row?.is_active}
                         color="secondary"
                         onChange={(e) => {
                           // handleCheckStatus(e.target.value, row?.activeStatus)

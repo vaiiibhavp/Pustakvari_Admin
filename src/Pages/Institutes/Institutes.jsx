@@ -39,7 +39,7 @@ const Institutes = () => {
         showSuccessModal: false,
         message: "",
         showEditSuccess: false,
-        render: false
+        render: false,
     });
     const [isEditable, setIsEditable] = useState({});
     const [page, setPage] = useState(0);
@@ -51,7 +51,7 @@ const Institutes = () => {
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
-    }
+    };
 
     const navigate = useNavigate();
 
@@ -63,7 +63,7 @@ const Institutes = () => {
                         ...prev,
                         instituteList: res.data || [],
                         globalInstituteList: res.data || [],
-                        render: false
+                        render: false,
                     }));
                 }
             })
@@ -73,7 +73,6 @@ const Institutes = () => {
     }, [isInstituteModalOpen, dataState?.render]);
 
     const handleSearch = (value) => {
-
         if (value) {
             const data = dataState?.globalInstituteList?.filter((e) => {
                 return e?.instituteName?.toLowerCase()?.includes(value?.toLowerCase());
@@ -81,29 +80,28 @@ const Institutes = () => {
             setDataState((prev) => ({
                 ...prev,
                 instituteList: data || [],
-
             }));
         } else {
             // getUserList();
             setDataState((prev) => ({
                 ...prev,
                 instituteList: dataState?.globalInstituteList,
-
-            }))
+            }));
         }
-    }
-
+    };
 
     const handleCheckStatus = (e, status) => {
-        let statusValue = status === true ? false : status === false ? true : true
-        onStatusChangeInstitute({ id: e, params: statusValue }).then((res) => {
-            setDataState((prev) => ({
-                render: true
-            }))
-        }).catch((error) => {
-            console.log(error);
-        })
-    }
+        let statusValue = status === true ? false : status === false ? true : true;
+        onStatusChangeInstitute({ id: e, params: statusValue })
+            .then((res) => {
+                setDataState((prev) => ({
+                    render: true,
+                }));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     return (
         <Container maxWidth="xl">
@@ -186,12 +184,34 @@ const Institutes = () => {
                                                 <TableCell component="th" align="center" scope="row">
                                                     {idx + 1}
                                                 </TableCell>
-                                                <TableCell align="left" onClick={() => navigate(`/institute/${_id}`, { state: institute })}> <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                                                    <Box>
-                                                        <img src={instituteImage ? instituteImage : "https://tse3.mm.bing.net/th?id=OIP.nzmvYPuJavbTzDLL4AGaFgAAAA&pid=Api&P=0&h=180"} alt="" style={{ width: "40px", height: "40px" }} />
+                                                <TableCell
+                                                    align="left"
+                                                    onClick={() =>
+                                                        navigate(`/institute/${_id}`, { state: institute })
+                                                    }
+                                                >
+                                                    {" "}
+                                                    <Box
+                                                        sx={{
+                                                            display: "flex",
+                                                            gap: 1,
+                                                            alignItems: "center",
+                                                        }}
+                                                    >
+                                                        <Box>
+                                                            <img
+                                                                src={
+                                                                    instituteImage
+                                                                        ? instituteImage
+                                                                        : "https://tse3.mm.bing.net/th?id=OIP.nzmvYPuJavbTzDLL4AGaFgAAAA&pid=Api&P=0&h=180"
+                                                                }
+                                                                alt=""
+                                                                style={{ width: "40px", height: "40px" }}
+                                                            />
+                                                        </Box>
+                                                        {instituteName}
                                                     </Box>
-                                                    {instituteName}
-                                                </Box></TableCell>
+                                                </TableCell>
                                                 <TableCell align="left">{mobileNo}</TableCell>
                                                 <TableCell align="left">{emailId}</TableCell>
                                                 <TableCell align="center">
@@ -223,9 +243,14 @@ const Institutes = () => {
                                                 </TableCell>
                                                 <TableCell align="center">{studentCount}</TableCell>
                                                 <TableCell align="center">
-                                                    <Switch value={_id} defaultChecked={is_active} onChange={(e) => {
-                                                        handleCheckStatus(e.target.value, is_active)
-                                                    }} color="secondary" />
+                                                    <Switch
+                                                        value={_id}
+                                                        defaultChecked={is_active}
+                                                        onChange={(e) => {
+                                                            handleCheckStatus(e.target.value, is_active);
+                                                        }}
+                                                        color="secondary"
+                                                    />
                                                 </TableCell>
 
                                                 <TableCell align="center" style={{ minWidth: "200px" }}>
@@ -294,9 +319,11 @@ const Institutes = () => {
                 setParentState={setDataState}
             />
 
-            <ShowsMessageModal isOpen={dataState.showSuccessModal} setIsOpen={setDataState} message={dataState?.message} />
-
-
+            <ShowsMessageModal
+                isOpen={dataState.showSuccessModal}
+                setIsOpen={setDataState}
+                message={dataState?.message}
+            />
         </Container>
     );
 };
