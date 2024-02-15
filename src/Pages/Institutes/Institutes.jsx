@@ -190,7 +190,7 @@ const Institutes = () => {
                                                         navigate(`/institute/${_id}`, { state: institute })
                                                     }
                                                 >
-                                                    {" "}
+
                                                     <Box
                                                         sx={{
                                                             display: "flex",

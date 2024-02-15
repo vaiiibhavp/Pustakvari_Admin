@@ -35,7 +35,7 @@ const SuperAdminTable = ({ userData,
                 <TableHead>
                     <TableRow>
                         <TableCell align="center" style={{ minWidth: "70px" }}>Sr No</TableCell>
-                        <TableCell align="center" style={{ minWidth: "150px" }}>
+                        <TableCell align="center" style={{ minWidth: "230px" }}>
                             {AppStrings?.user_Name}
                         </TableCell>
                         <TableCell align="center" style={{ minWidth: "100px" }}>
@@ -73,7 +73,25 @@ const SuperAdminTable = ({ userData,
                                     <TableCell align="center" component="th" scope="row">
                                         {idx + 1}
                                     </TableCell>
-                                    <TableCell align="left">{row?.fullName}</TableCell>
+                                    <TableCell align="left"> <Box
+                                        sx={{
+                                            display: "flex",
+                                            gap: 1,
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Box>
+                                            <img
+                                                src={
+
+                                                    "https://tse4.mm.bing.net/th?id=OIP.Bl6dInu-pv4nnfv-QAxgSwHaHa&pid=Api&P=0&h=180"
+                                                }
+                                                alt=""
+                                                style={{ width: "40px", height: "40px" }}
+                                            />
+                                        </Box>
+                                        {row?.fullName}
+                                    </Box></TableCell>
                                     <TableCell align="center">{row?.mobileNo}</TableCell>
                                     <TableCell align="center">
                                         {row?.is_instituteUser}

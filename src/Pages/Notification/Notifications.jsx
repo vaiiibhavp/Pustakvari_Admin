@@ -82,27 +82,30 @@ const Notifications = () => {
     return (
         <Container maxWidth="xl">
             <Box  >
-                <Button
-                    shadow={2}
-                    sx={{
-                        background: "#fff",
-                        color: "black",
-                        borderRadius: "15px",
-                        padding: "5px 20px 5px 2px",
-                        mb: 1
-                    }}
-                    onClick={() => navigate(-1)}
-                >
-                    <IconButton sx={{ margin: "0px" }}>
-                        <ArrowBackIosIcon
-                            size="small"
-                            color={theme?.palette?.grey[800]}
-                            sx={{ fontSize: "14px", color: theme?.palette?.grey[800] }}
-                        />
-                    </IconButton>
-                    Back
-                </Button>
-                {InstituteAdmin && <Typography sx={{ fontSize: "20px", py: 2, color: theme?.palette?.grey[800], fontWeight: "600" }}>Notifications</Typography>}
+                <Box sx={{ display: InstituteAdmin ? "flex" : "", alignItems: "center" }}>
+
+                    <Button
+                        shadow={2}
+                        sx={{
+                            background: !InstituteAdmin && "#fff",
+                            color: "black",
+                            borderRadius: "15px",
+                            padding: !InstituteAdmin && "5px 20px 5px 2px",
+                            mb: !InstituteAdmin && 1
+                        }}
+                        onClick={() => navigate(-1)}
+                    >
+                        <IconButton sx={{ margin: "0px" }}>
+                            <ArrowBackIosIcon
+                                size="small"
+                                color={theme?.palette?.grey[800]}
+                                sx={{ fontSize: "14px", color: theme?.palette?.grey[800] }}
+                            />
+                        </IconButton>
+                        {!InstituteAdmin && "Back"}
+                    </Button>
+                    {InstituteAdmin && <Typography sx={{ fontSize: "20px", py: 2, color: theme?.palette?.grey[800], fontWeight: "600" }}>Notifications</Typography>}
+                </Box>
             </Box>
             {
                 InstituteAdmin ? <>

@@ -23,7 +23,7 @@ const PRIMARY = {
   main: "#fe6b01",
   dark: "#cb5601",
   darker: "#331500",
-  forgot:"#0034EB",
+  forgot: "#0034EB",
   contrastText: "#fff",
 };
 
@@ -46,18 +46,18 @@ const INFO = {
 };
 
 const SUCCESS = {
-  lighter: "#86b1fb5e",
+  lighter: "#9ce1c0",
   light: "#7B82F7",
-  main: "#357df9", // Set the main color to 5666F7
+  main: "#07B561", // Set the main color to 5666F7
   dark: "#3743B7",
   darker: "#2558ae",
   contrastText: "#fff",
 };
 
 const WARNING = {
-  lighter: "#E8CBFF",
+  lighter: "#FFF0E6",
   light: "#D2A2FF",
-  main: "#925ACC", // Set the main color to 925ACC
+  main: "#FE6B01", // Set the main color to 925ACC
   dark: "#60387A",
   darker: "#381C4B",
   contrastText: GREY[800],
