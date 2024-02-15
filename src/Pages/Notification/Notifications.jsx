@@ -91,7 +91,10 @@ const Notifications = () => {
                             color: "black",
                             borderRadius: "15px",
                             padding: !InstituteAdmin && "5px 20px 5px 2px",
-                            mb: !InstituteAdmin && 1
+                            mb: !InstituteAdmin && 1,
+                            "&:hover": {
+                                background: "transparent"
+                            }
                         }}
                         onClick={() => navigate(-1)}
                     >

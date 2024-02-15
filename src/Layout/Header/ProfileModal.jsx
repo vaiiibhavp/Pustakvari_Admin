@@ -6,6 +6,9 @@ import { CropSquareSharp, Visibility, VisibilityOff } from "@mui/icons-material"
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import camereImage from "../../Assets/Images/camera.svg"
 import { useSelector } from "react-redux";
+import useUserTypeName from "../../Hooks/IsCheckAuth";
+import UseUserApis from "../../Hooks/User";
+import { toast } from "react-toastify";
 
 const validationSchema = Yup.object().shape({
     first_name: Yup.string().required("Required"),
@@ -14,10 +17,13 @@ const validationSchema = Yup.object().shape({
 });
 
 const ProfileModal = ({ profile, setProfile }) => {
+    const { updateUser } = UseUserApis();
     const [file, setFile] = useState();
     const [userProfile, setUserProfile] = useState();
     const [isLoading, setIsloading] = useState(false);
     const { AuthUser: { user } } = useSelector((state) => state)
+
+    const InstituteAdmin = useUserTypeName();
 
 
     const [isChangingPassword, setIsChangingPassword] = useState(true);
@@ -48,25 +54,27 @@ const ProfileModal = ({ profile, setProfile }) => {
 
     const handleCancel = () => {
         setProfile(false);
+        setIsChangingPassword(!isChangingPassword);
     };
 
     const handleOk = () => {
         setProfile(false);
+        setIsChangingPassword(!isChangingPassword);
     };
 
     const validationSchema = Yup.object().shape({
         fullName: Yup.string().required('Full Name is required'),
-        email: Yup.string().email('Invalid email format').required('Email is required'),
-        newPassword: isChangingPassword ? Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required') : Yup.string(),
-        confirmNewPassword: isChangingPassword ? Yup.string()
-            .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
+        emailId: Yup.string().email('Invalid email format').required('Email is required'),
+        password: InstituteAdmin ? Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required') : Yup.string(),
+        confirmNewPassword: InstituteAdmin ? Yup.string()
+            .oneOf([Yup.ref('password'), null], 'Passwords must match')
             .required('Confirm Password is required') : Yup.string(),
     });
 
     const initialValues = {
-        fullName: user?.userInfo?.fullName || user?.instituteInfo?.instituteName || '',
-        email: user?.userInfo?.emailId || user?.instituteInfo?.emailId || '',
-        newPassword: '',
+        fullName: user?.userInfo?.fullName || user?.userInfo?.instituteName || '',
+        emailId: user?.userInfo?.emailId || user?.userInfo?.emailId || '',
+        password: '',
         confirmNewPassword: '',
     };
 
@@ -75,8 +83,23 @@ const ProfileModal = ({ profile, setProfile }) => {
         validationSchema,
         enableReinitialize: true,
         onSubmit: (values) => {
-            // Handle form submission
-            console.log(values);
+            delete values.confirmNewPassword;
+            if (!InstituteAdmin) {
+                delete values.password;
+                console.log(values);
+            } else {
+
+                updateUser(values, user?.userInfo?._id).then((res) => {
+                    if (res.status === 200) {
+                        toast.dismiss();
+                        toast.success(res.message, { autoClose: 2000 })
+                    } else {
+                        toast.warning(res.message, { autoClose: 2000 })
+                    }
+                })
+
+
+            }
         },
     });
 
@@ -85,23 +108,26 @@ const ProfileModal = ({ profile, setProfile }) => {
     };
 
     const handleImageChange = (event) => {
-        formik.setFieldValue("instituteImage", event.currentTarget.files[0]);
+        formik.setFieldValue("userImage", event.currentTarget.files[0]);
     };
 
     let { values, errors } = formik;
     //    useEffect(() => {
     //         if (isEditableRecord?.instituteImage) {
-    //             fetchImageAsFile(isEditableRecord?.instituteImage).then((res) => {
+    //             fetchImageAsFile(isEditableRecord?.userImage).then((res) => {
     //                 if (res) {
-    //                     formik.setFieldValue("instituteImage", res);
+    //                     formik.setFieldValue("userImage", res);
     //                 }
     //             });
     //         }
-    //     }, [isEditableRecord?.instituteImage]);
+    //     }, [isEditableRecord?.userImage]);
 
     const handleTogglePasswordChange = () => {
         setIsChangingPassword(!isChangingPassword);
     };
+
+
+    console.log(errors, values, user?.userInfo, "errorr");
 
 
 
@@ -159,10 +185,10 @@ const ProfileModal = ({ profile, setProfile }) => {
 
 
                             <Box sx={{ width: "100%", display: "flex", alignItems: "start", justifyContent: "center" }}>
-                                <label htmlFor="instituteImage">
-                                    {values?.instituteImage ? (
+                                <label htmlFor="userImage">
+                                    {values?.userImage ? (
                                         <img
-                                            src={URL.createObjectURL(values.instituteImage)}
+                                            src={URL.createObjectURL(values.userImage)}
                                             alt="imageeCover"
                                             style={{
                                                 width: "120px",
@@ -192,8 +218,8 @@ const ProfileModal = ({ profile, setProfile }) => {
                                 </label>
                                 <input
                                     type="file"
-                                    id="instituteImage"
-                                    name="instituteImage"
+                                    id="userImage"
+                                    name="userImage"
                                     accept="image/*"
                                     style={{ display: "none" }}
                                     onChange={handleImageChange}
@@ -229,16 +255,16 @@ const ProfileModal = ({ profile, setProfile }) => {
                                 size="small"
                                 margin="normal"
                                 variant="outlined"
-                                {...formik.getFieldProps('email')}
-                                error={formik.touched.email && Boolean(formik.errors.email)}
-                                helperText={formik.touched.email && formik.errors.email}
+                                {...formik.getFieldProps('emailId')}
+                                error={formik.touched.emailId && Boolean(formik.errors.emailId)}
+                                helperText={formik.touched.emailId && formik.errors.emailId}
                             />
                         </Box>
 
 
 
                         <Box px={2}>
-                            {user?.instituteInfo && <>
+                            {InstituteAdmin && <>
 
                                 {isChangingPassword ? <Typography onClick={handleTogglePasswordChange} sx={{ fontSize: "12px", textDecoration: "underline", cursor: "pointer", color: theme.palette.primary.main }}>Change Password</Typography> : <Box>
                                     <Typography onClick={handleTogglePasswordChange} sx={{ fontSize: "12px", textDecoration: "underline", cursor: "pointer", color: theme.palette.primary.main }}>Cancel</Typography>
@@ -248,19 +274,19 @@ const ProfileModal = ({ profile, setProfile }) => {
                                         size="small"
                                         margin="normal"
                                         variant="outlined"
-                                        type={formik.values.newPassword ? 'text' : 'password'}
-                                        {...formik.getFieldProps('newPassword')}
+                                        type={formik.values.password ? 'text' : 'password'}
+                                        {...formik.getFieldProps('password')}
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">
-                                                    <IconButton onClick={() => handlePasswordVisibility('newPassword')} edge="end">
-                                                        {formik.values.newPassword ? <Visibility /> : <VisibilityOff />}
+                                                    <IconButton onClick={() => handlePasswordVisibility('password')} edge="end">
+                                                        {formik.values.password ? <Visibility /> : <VisibilityOff />}
                                                     </IconButton>
                                                 </InputAdornment>
                                             ),
                                         }}
-                                        error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
-                                        helperText={formik.touched.newPassword && formik.errors.newPassword}
+                                        error={formik.touched.password && Boolean(formik.errors.password)}
+                                        helperText={formik.touched.password && formik.errors.password}
                                     />
                                     <TextField
                                         // label="Confirm New Password"
@@ -291,10 +317,10 @@ const ProfileModal = ({ profile, setProfile }) => {
 
 
                         <Box px={3} mt={2} pb={2}>
-
-                            <Button sx={{ borderRadius: "18px" }} fullWidth type="submit" variant="contained" color="primary">
+                            {!InstituteAdmin || !isChangingPassword && <Button sx={{ borderRadius: "18px" }} fullWidth type="submit" variant="contained" color="primary">
                                 Submit
-                            </Button>
+                            </Button>}
+
                         </Box>
                     </form>
                 </Box>

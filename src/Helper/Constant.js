@@ -1,8 +1,3 @@
-import glassmessage from "../Assets/Images/glassMessage.svg";
-import userGlass from "../Assets/Images/glass_users.svg";
-import rupees from "../Assets/Images/rupee.svg";
-import bookframe from "../Assets/Images/booksFrame.svg";
-
 // menusIcons
 // import dashboardIcon from "../Assets/Images/price-list (1) 1 1.svg"
 
@@ -692,32 +687,5 @@ export const superAdminMenus = [
     ),
     title: "Quiz",
     path: "/Quiz",
-  },
-];
-
-export const dashboardWidgetData = [
-  {
-    id: 1,
-    title: AppStrings.monthly_subscription,
-    total: 714,
-    img: rupees,
-  },
-  {
-    id: 2,
-    title: AppStrings.total_user,
-    total: 111,
-    img: userGlass,
-  },
-  {
-    id: 3,
-    title: AppStrings.newly_e_books,
-    total: 121,
-    img: bookframe,
-  },
-  {
-    id: 4,
-    title: AppStrings.total_institutes,
-    total: 11,
-    img: glassmessage,
   },
 ];

@@ -43,7 +43,7 @@ export default function AppWebsiteVisits({
       },
     },
     xaxis: {
-      type: type !== "pie" ? "datetime" : "",
+      type: type !== "pie" ? "" : "",
     },
     tooltip: {
       shared: true,
