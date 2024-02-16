@@ -16,11 +16,11 @@ import {
 import React, { useState } from "react";
 import { AppStrings } from "../../Helper/Constant";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import Searchbar from "../../Component/Searchbar";
 
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { accoundCreatedDate } from "../../Helper/utils/formatTime";
-import Searchbar from "../../Component/Searchbar";
 
 const PaymentTracking = () => {
     const [isUserModalOpen, setIsUserModalOpen] = useState(false)
@@ -50,7 +50,7 @@ const PaymentTracking = () => {
 
                 <Typography variant='h5'>Payment Tracking</Typography>
                 <Box sx={{ display: "flex", gap: 1 }}>
-                    {/* <Searchbar onSearch={(e) => console.log("hello", e)} /> */}
+                    <Searchbar onSearch={(e) => console.log("hello", e)} />
 
                 </Box>
             </Box>

@@ -107,6 +107,8 @@ const Notifications = () => {
                         </IconButton>
                         {!InstituteAdmin && "Back"}
                     </Button>
+
+
                     {InstituteAdmin && <Typography sx={{ fontSize: "20px", py: 2, color: theme?.palette?.grey[800], fontWeight: "600" }}>Notifications</Typography>}
                 </Box>
             </Box>

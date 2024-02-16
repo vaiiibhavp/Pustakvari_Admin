@@ -97,7 +97,7 @@ const Dashboard = () => {
 
             <Grid container spacing={3}>
                 {dashboardWidgetData &&
-                    dashboardWidgetData.map((menuItemDashboard) => {
+                    dashboardWidgetData.slice(0, !InstituteAdmin ? dashboardWidgetData?.length : dashboardWidgetData?.length - 1).map((menuItemDashboard) => {
                         return (
                             <Grid key={menuItemDashboard.id} item xs={12} sm={6} md={3}>
                                 <AppWidgetSummary

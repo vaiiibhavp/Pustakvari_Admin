@@ -138,7 +138,7 @@ const InsitiuteUserTable = ({
                         defaultChecked={row?.is_active}
                         color="secondary"
                         onChange={(e) => {
-                          // handleCheckStatus(e.target.value, row?.activeStatus)
+                          handleCheckStatus(e.target.value, row?.is_active);
                         }}
                       />
                     </TableCell>

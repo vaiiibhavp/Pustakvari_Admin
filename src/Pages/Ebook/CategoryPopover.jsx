@@ -118,7 +118,7 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
                             <ListItem key={category?._id} sx={{ borderBottom: `1px solid ${theme.palette.grey[200]}` }}>
                                 <ListItemText primary={categoryName} />
                                 <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                                    <Button onClick={() => onEditHandler(category)} sx={{
+                                    {/* <Button onClick={() => onEditHandler(category)} sx={{
                                         borderRadius: "50%",
                                         width: "30px",
                                         height: "30px",
@@ -129,7 +129,7 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
                                             bgcolor: 'action.selected',
                                             fontWeight: 'fontWeightBold',
                                         },
-                                    }}  ><BorderColorOutlinedIcon sx={{ fontSize: "16px" }} /></Button>
+                                    }}  ><BorderColorOutlinedIcon sx={{ fontSize: "16px" }} /></Button> */}
                                     <Button
                                         onClick={() => onRemoveHandler(_id)}
                                         sx={{
