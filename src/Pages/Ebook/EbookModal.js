@@ -210,7 +210,24 @@ const EbookModal = ({
     }
   }, [isEditableRecord?.bookImage]);
 
-  console.log(errors, values, "error");
+  useEffect(() => {
+    if (isEditableRecord?.bookPdf) {
+      fetchImageAsFile(isEditableRecord?.bookPdf).then((res) => {
+        if (res) {
+          formik.setFieldValue("bookPdf", res);
+        }
+      });
+    }
+  }, [isEditableRecord?.bookPdf]);
+
+  function truncateFileName(fileName, maxLength = 30) {
+    if (fileName.length > maxLength) {
+      return fileName.substring(0, maxLength - 3) + "...";
+    }
+    return fileName;
+  }
+
+  console.log(errors, values, isEditableRecord, "error");
 
   return (
     <Modal
@@ -368,7 +385,9 @@ const EbookModal = ({
                         color: theme?.palette?.grey[400],
                       }}
                     >
-                      {values.bookPdf ? values.bookPdf.name : "upload pdf"}
+                      {values.bookPdf
+                        ? truncateFileName(values.bookPdf.name)
+                        : "upload pdf"}
                     </Typography>
                   </IconButton>
                 </label>
