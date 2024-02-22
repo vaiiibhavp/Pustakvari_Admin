@@ -56,16 +56,22 @@ const CreateQuiz = () => {
     };
 
     const handleAddOption = (questionIndex) => {
-        const newOptions = [
-            ...questionText[questionIndex].option,
-            {
-                id: questionText[questionIndex].option?.length + 1,
-                value: ``,
-                editing: true,
-            },
-        ];
+        const currentOptions = [...questionText[questionIndex].option];
+
+        const newOption = {
+            id: currentOptions.length + 1,
+            value: '',
+            editing: true,
+        };
+
+        const newOptions = [...currentOptions, newOption];
         const updatedQuestions = [...questionText];
         updatedQuestions[questionIndex].option = newOptions;
+        const lastIndex = currentOptions.length - 1;
+        if (currentOptions.length > 0 && updatedQuestions[questionIndex].option[lastIndex]?.value?.length > 0) {
+            updatedQuestions[questionIndex].option[lastIndex].editing = false;
+        }
+
         setQuestions(updatedQuestions);
     };
 
@@ -117,12 +123,22 @@ const CreateQuiz = () => {
 
     // save question answer
     const handleSaveAnswer = (questionIndex, event) => {
+
         const updatedQuestions = [...questionText];
         updatedQuestions[questionIndex].answer = event.target.value;
         setQuestions(updatedQuestions);
     };
 
     const handleSaveAnserKey = (questionIndex) => {
+        // const updatedQuestions = [...questionText];
+
+        // const currentOptions = [...questionText[questionIndex].option];
+        // const lastIndex = currentOptions.length - 1;
+        // if (currentOptions.length > 0 && updatedQuestions[questionIndex].option[lastIndex]?.value?.length > 0) {
+        //     updatedQuestions[questionIndex].option[lastIndex].editing = false;
+        // }
+        // setQuestions(updatedQuestions);
+
         setAnswerkey(questionIndex);
     };
 
@@ -200,6 +216,9 @@ const CreateQuiz = () => {
                 console.log(err);
             });
     }, []);
+
+
+    useEffect(() => { }, [answerkey])
 
     return (
         <Container maxWidth="xl" sx={{ position: "relative" }}>
@@ -422,6 +441,17 @@ const CreateQuiz = () => {
                                                                             }}
                                                                         />
                                                                     </Tooltip>
+                                                                </IconButton>
+                                                                <IconButton
+                                                                    type="button"
+                                                                    onClick={() =>
+                                                                        handleDeleteOption(
+                                                                            index,
+                                                                            optionIndex
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <DeleteOutlineOutlinedIcon fontSize="small" />
                                                                 </IconButton>
                                                             </Box>
                                                         )}
