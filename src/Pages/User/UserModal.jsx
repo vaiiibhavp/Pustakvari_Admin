@@ -58,6 +58,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
   userDataState }) => {
   let isEditable = isEditableRecord !== null ? true : false;
   const { updateUser, createUser } = UseUserApis();
+  const { AuthUser: { user } } = useSelector(state => state)
 
   const InstituteAdmin = useUserTypeName();
   const theme = useTheme();
@@ -74,6 +75,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
 
     userType: InstituteAdmin ? "INSTITUTE_USER" : "REGULAR_USER",
     is_instituteUser: InstituteAdmin ? true : false,
+    createdBy: InstituteAdmin ? user?.userInfo?._id : ""
   };
 
   const validationSchema = Yup.object().shape({
@@ -117,6 +119,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
         password: randomPwd,
         userType: InstituteAdmin ? "INSTITUTE_USER" : "REGULAR_USER",
         is_instituteUser: InstituteAdmin ? true : false,
+        createdBy: InstituteAdmin ? user?.userInfo?._id : ""
       };
       createUser(data)
         .then((res) => {

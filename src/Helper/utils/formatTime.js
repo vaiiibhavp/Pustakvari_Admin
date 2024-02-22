@@ -7,7 +7,7 @@ export function accoundCreatedDate(date, newFormat) {
 
   console.log(date);
 
-  return date ? moment(date).format(dateFormat) : ""; // 12/12/2023
+  return date ? moment(date, "DD-MM-YYYY hh:mm:ss a").format(dateFormat) : ""; // 12/12/2023
 }
 
 //

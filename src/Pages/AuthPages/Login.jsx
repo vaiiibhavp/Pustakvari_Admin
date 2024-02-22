@@ -43,12 +43,20 @@ const LoginForm = () => {
             userLogin(values).then((res) => {
                 console.log(res, "res login");
                 if (res.status === 200) {
-                    localStorage.setItem('user_token', res?.body?.token)
-                    localStorage.setItem('user', JSON.stringify(res?.body))
-                    dispatch(LogIn(res.body))
-                    navigate("/Dashboard")
-                    toast.dismiss();
-                    toast.success(res.message, { autoClose: 2000 })
+
+                    if (res.body.userInfo.userType === "SUPER_ADMIN" || res.body.userInfo.userType === "INSTITUTE") {
+                        localStorage.setItem('user_token', res?.body?.token)
+                        localStorage.setItem('user', JSON.stringify(res?.body))
+                        dispatch(LogIn(res.body))
+                        navigate("/Dashboard")
+                        toast.dismiss();
+                        toast.success(res.message, { autoClose: 2000 })
+                    } else {
+                        toast.dismiss();
+                        toast.warning("Access Denied: You do not have permission to access this portal. Please contact your administrator for assistance.", { autoClose: 2000 })
+                    }
+
+
 
                 } else {
                     toast.dismiss();

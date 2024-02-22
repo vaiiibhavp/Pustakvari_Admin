@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import useUserTypeName from "../../Hooks/IsCheckAuth";
 import UseUserApis from "../../Hooks/User";
 import { toast } from "react-toastify";
+import useFileGenrator from "../../Hooks/ImageFileConverter";
 
 const validationSchema = Yup.object().shape({
     first_name: Yup.string().required("Required"),
@@ -24,6 +25,8 @@ const ProfileModal = ({ profile, setProfile }) => {
     const { AuthUser: { user } } = useSelector((state) => state)
 
     const InstituteAdmin = useUserTypeName();
+
+    const { fetchImageAsFile } = useFileGenrator()
 
 
     const [isChangingPassword, setIsChangingPassword] = useState(true);
@@ -65,8 +68,8 @@ const ProfileModal = ({ profile, setProfile }) => {
     const validationSchema = Yup.object().shape({
         fullName: Yup.string().required('Full Name is required'),
         emailId: Yup.string().email('Invalid email format').required('Email is required'),
-        password: InstituteAdmin ? Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required') : Yup.string(),
-        confirmNewPassword: InstituteAdmin ? Yup.string()
+        password: !isChangingPassword ? Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required') : Yup.string(),
+        confirmNewPassword: !isChangingPassword ? Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
             .required('Confirm Password is required') : Yup.string(),
     });
@@ -76,6 +79,7 @@ const ProfileModal = ({ profile, setProfile }) => {
         emailId: user?.userInfo?.emailId || user?.userInfo?.emailId || '',
         password: '',
         confirmNewPassword: '',
+        userImage: ""
     };
 
     const formik = useFormik({
@@ -86,16 +90,36 @@ const ProfileModal = ({ profile, setProfile }) => {
             delete values.confirmNewPassword;
             if (!InstituteAdmin) {
                 delete values.password;
-                console.log(values);
-            } else {
-
                 updateUser(values, user?.userInfo?._id).then((res) => {
+                    console.log(res);
                     if (res.status === 200) {
                         toast.dismiss();
-                        toast.success(res.message, { autoClose: 2000 })
+                        setProfile(false);
+                        toast.success(res.data.message, { autoClose: 2000 })
                     } else {
-                        toast.warning(res.message, { autoClose: 2000 })
+                        toast.warning(res.data.message, { autoClose: 2000 })
                     }
+                }).catch((err) => {
+                    // toast.dismiss();
+                    // toast.warning(res.message, { autoClose: 2000 })
+                })
+            } else {
+                if (values.password?.length < 3) {
+                    delete values.password;
+                }
+                console.log(values, "institute haaaaaai yaaaaah");
+                updateUser(values, user?.userInfo?._id).then((res) => {
+                    console.log(res);
+                    if (res.status === 200) {
+                        toast.dismiss();
+                        setProfile(false);
+                        toast.success(res.data.message, { autoClose: 2000 })
+                    } else {
+                        toast.warning(res.data.message, { autoClose: 2000 })
+                    }
+                }).catch((err) => {
+                    // toast.dismiss();
+                    // toast.warning(res.message, { autoClose: 2000 })
                 })
 
 
@@ -108,26 +132,31 @@ const ProfileModal = ({ profile, setProfile }) => {
     };
 
     const handleImageChange = (event) => {
+
         formik.setFieldValue("userImage", event.currentTarget.files[0]);
     };
 
     let { values, errors } = formik;
-    //    useEffect(() => {
-    //         if (isEditableRecord?.instituteImage) {
-    //             fetchImageAsFile(isEditableRecord?.userImage).then((res) => {
-    //                 if (res) {
-    //                     formik.setFieldValue("userImage", res);
-    //                 }
-    //             });
-    //         }
-    //     }, [isEditableRecord?.userImage]);
+
+
+
+    useEffect(() => {
+
+        fetchImageAsFile(user?.userImage || user?.instituteImage).then((res) => {
+            if (res) {
+                console.log(res, "--------------------");
+                formik.setFieldValue("userImage", res);
+            }
+        });
+
+    }, [user?.userImage, user?.instituteImage]);
 
     const handleTogglePasswordChange = () => {
         setIsChangingPassword(!isChangingPassword);
     };
 
 
-    console.log(errors, values, user?.userInfo, "errorr");
+    console.log(errors, values.userImage, user?.userInfo, "errorr");
 
 
 
@@ -239,6 +268,7 @@ const ProfileModal = ({ profile, setProfile }) => {
                                 sx={{ marginTop: "0px" }}
                                 fullWidth
                                 margin="normal"
+                                disabled={!InstituteAdmin}
                                 variant="outlined"
                                 {...formik.getFieldProps('fullName')}
                                 error={formik.touched.fullName && Boolean(formik.errors.fullName)}
@@ -253,6 +283,7 @@ const ProfileModal = ({ profile, setProfile }) => {
                                 fullWidth
                                 sx={{ marginTop: "0px" }}
                                 size="small"
+                                disabled={!InstituteAdmin}
                                 margin="normal"
                                 variant="outlined"
                                 {...formik.getFieldProps('emailId')}
@@ -317,9 +348,9 @@ const ProfileModal = ({ profile, setProfile }) => {
 
 
                         <Box px={3} mt={2} pb={2}>
-                            {!InstituteAdmin || !isChangingPassword && <Button sx={{ borderRadius: "18px" }} fullWidth type="submit" variant="contained" color="primary">
+                            <Button sx={{ borderRadius: "18px" }} fullWidth type="submit" variant="contained" color="primary">
                                 Submit
-                            </Button>}
+                            </Button>
 
                         </Box>
                     </form>

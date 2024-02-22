@@ -64,12 +64,22 @@ const Notifications = () => {
         getNotifiactionList(user)
             .then((res) => {
                 if (res?.status === 200) {
-                    setNotificationState((prev) => ({
-                        ...prev,
-                        allNotification: res.data || [],
-                        globalAllNotifactions: res.data || [],
-                        render: false,
-                    }));
+                    if (InstituteAdmin) {
+                        setNotificationState((prev) => ({
+                            ...prev,
+                            allNotification: res.data?.instituteNotificationList || [],
+                            globalAllNotifactions: res.data?.instituteNotificationList || [],
+                            render: false,
+                        }));
+                    } else {
+
+                        setNotificationState((prev) => ({
+                            ...prev,
+                            allNotification: res.data?.notificationList || [],
+                            globalAllNotifactions: res.data?.notificationList || [],
+                            render: false,
+                        }));
+                    }
                 }
             })
             .catch((err) => {

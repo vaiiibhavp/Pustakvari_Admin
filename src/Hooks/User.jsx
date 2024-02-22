@@ -19,7 +19,7 @@ const UseUserApis = () => {
   const updateUser = async (body, id) => {
     const response = await instance.put(`/updateUser/${id}`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response;

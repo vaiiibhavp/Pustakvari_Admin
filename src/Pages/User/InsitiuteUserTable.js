@@ -19,6 +19,7 @@ import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { accoundCreatedDate } from "../../Helper/utils/formatTime";
+import moment from "moment";
 
 const InsitiuteUserTable = ({
   userData,
@@ -69,7 +70,6 @@ const InsitiuteUserTable = ({
             userData
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, idx) => {
-                console.log(row);
                 return (
                   <TableRow key={row?.id}>
                     <TableCell align="center" component="th" scope="row">
@@ -96,7 +96,7 @@ const InsitiuteUserTable = ({
                         {row?.fullName}
                       </Box>
                     </TableCell>
-                    <TableCell align="center">{row?.mobileNo}</TableCell>
+                    <TableCell align="left">{row?.mobileNo}</TableCell>
                     {/* <TableCell align="center">
                       {row?.is_instituteUser}
                     </TableCell> */}
