@@ -51,7 +51,6 @@ const OtpValidation = () => {
             }).catch((err) => {
                 console.log(err);
             })
-            console.log("data", data);
         }
     };
 
@@ -82,7 +81,6 @@ const OtpValidation = () => {
         return !isNaN(parseInt(value)) ? value : '';
     }
 
-    console.log(otp, "otp");
 
     return (
         <Container component="main" maxWidth="xs">

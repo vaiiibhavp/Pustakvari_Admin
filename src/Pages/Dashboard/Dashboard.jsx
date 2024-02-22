@@ -31,7 +31,6 @@ const Dashboard = () => {
     useEffect(() => {
         getDashboardData()
             .then((res) => {
-                console.log(res, "dahsbors");
                 if (res.status === 200) {
                     setDashboardData((prev) => ({
                         ...prev,
@@ -46,9 +45,7 @@ const Dashboard = () => {
 
     let { instituteData, superAdminData } = dashboardData?.Data;
 
-    console.log(instituteData, "institute data");
 
-    console.log(superAdminData, "super admin data");
 
     const dashboardWidgetData = [
         {
@@ -77,9 +74,7 @@ const Dashboard = () => {
         },
     ];
 
-    console.log(superAdminData?.lastYearUserGraphData?.map((item) => {
-        return item.month
-    }), "loginndatttaa");
+
 
     return (
         <Container maxWidth="xl" sx={{ padding: "0 0 40px 0" }}>

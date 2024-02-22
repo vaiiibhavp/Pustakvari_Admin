@@ -18,7 +18,6 @@ const BasicTable = () => {
         getCoreRowModel: getCoreRowModel(),
     });
 
-    //   console.log("test", tableInstance.getHeaderGroups());
 
     return (
         <div style={{ overflowX: "auto", maxWidth: "500px", maxHeight: "500px" }}>

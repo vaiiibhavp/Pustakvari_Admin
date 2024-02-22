@@ -52,7 +52,6 @@ const CreateNotificationModal = ({
   };
 
   const handleSubmit = (values, { resetForm }) => {
-    console.log(values);
     createNotifiacation(values)
       .then((res) => {
         setNotificationState((prev) => ({
@@ -62,7 +61,6 @@ const CreateNotificationModal = ({
         }));
         resetForm();
         handleClose();
-        console.log(res, "added notifiaction");
       })
       .catch((err) => {
         console.log(err, "err");

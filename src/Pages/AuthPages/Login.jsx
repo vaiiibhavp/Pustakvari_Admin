@@ -41,7 +41,6 @@ const LoginForm = () => {
         onSubmit: (values) => {
             // You can handle form submission here
             userLogin(values).then((res) => {
-                console.log(res, "res login");
                 if (res.status === 200) {
 
                     if (res.body.userInfo.userType === "SUPER_ADMIN" || res.body.userInfo.userType === "INSTITUTE") {
@@ -65,7 +64,6 @@ const LoginForm = () => {
             }).catch((error) => {
                 toast.dismiss();
                 toast.warning("Something went wrong", { autoClose: 2000 })
-                console.log(error);
             })
         },
     });

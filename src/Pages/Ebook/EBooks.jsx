@@ -237,7 +237,7 @@ const EBooks = () => {
                                                                         : "https://tse3.mm.bing.net/th?id=OIP.M-oyJjMArCOCU2z4bjLkjgAAAA&pid=Api&P=0&h=180"
                                                                 }
                                                                 alt=""
-                                                                style={{ width: "40px", height: "40px" }}
+                                                                style={{ width: "40px", minWidth: "40px", height: "40px" }}
                                                             />
                                                         </Box>
                                                         {bookName}

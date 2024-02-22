@@ -135,7 +135,6 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                     let data = {
                         ...values, userType: "INSTITUTE"
                     }
-                    console.log(data, "valuess getting meeee");
 
                     createUser(data).then((res) => {
                         if (res.status === 200) {

@@ -227,8 +227,6 @@ const EbookModal = ({
     return fileName;
   }
 
-  console.log(errors, values, isEditableRecord, "error");
-
   return (
     <Modal
       open={isOpenEbookModal}

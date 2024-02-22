@@ -38,7 +38,6 @@ const ForgotPasswordForm = () => {
                 console.error(err)
             })
             // You can handle forgot password submission here
-            console.log('Form values:', values);
         },
     });
 

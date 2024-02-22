@@ -91,7 +91,6 @@ const ProfileModal = ({ profile, setProfile }) => {
             if (!InstituteAdmin) {
                 delete values.password;
                 updateUser(values, user?.userInfo?._id).then((res) => {
-                    console.log(res);
                     if (res.status === 200) {
                         toast.dismiss();
                         setProfile(false);
@@ -107,9 +106,7 @@ const ProfileModal = ({ profile, setProfile }) => {
                 if (values.password?.length < 3) {
                     delete values.password;
                 }
-                console.log(values, "institute haaaaaai yaaaaah");
                 updateUser(values, user?.userInfo?._id).then((res) => {
-                    console.log(res);
                     if (res.status === 200) {
                         toast.dismiss();
                         setProfile(false);
@@ -144,7 +141,6 @@ const ProfileModal = ({ profile, setProfile }) => {
 
         fetchImageAsFile(user?.userImage || user?.instituteImage).then((res) => {
             if (res) {
-                console.log(res, "--------------------");
                 formik.setFieldValue("userImage", res);
             }
         });
@@ -156,7 +152,6 @@ const ProfileModal = ({ profile, setProfile }) => {
     };
 
 
-    console.log(errors, values.userImage, user?.userInfo, "errorr");
 
 
 

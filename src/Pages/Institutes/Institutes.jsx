@@ -206,7 +206,7 @@ const Institutes = () => {
                                                                         : "https://tse3.mm.bing.net/th?id=OIP.nzmvYPuJavbTzDLL4AGaFgAAAA&pid=Api&P=0&h=180"
                                                                 }
                                                                 alt=""
-                                                                style={{ width: "40px", height: "40px" }}
+                                                                style={{ minWidth: "40px", width: "40px", height: "40px" }}
                                                             />
                                                         </Box>
                                                         {instituteName}

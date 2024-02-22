@@ -2,7 +2,6 @@ import instance from "../Axios/Instance";
 
 const UseUserApis = () => {
   const getUsers = async ({ user }) => {
-    console.log(user, "user====");
     const Response = await instance.get(user ? `/userList?is_instituteUser=${true}` : `/userList`);
     return Response;
   };
@@ -37,7 +36,6 @@ const UseUserApis = () => {
 
   const changeUserStatus = async ({ id, params }) => {
 
-    console.log(id, params);
     const response = await instance.put(`userStatus/${id}?activeStatus=${params?.activeStatus}`);
     return response;
   };

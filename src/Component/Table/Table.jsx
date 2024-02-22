@@ -54,7 +54,6 @@ const CommonTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
 
   const handleChangePage = (event, newPage) => {
-    console.log("hello");
     setPage(newPage);
   };
 
@@ -67,7 +66,6 @@ const CommonTable = ({
     rowsPerPage - Math.min(rowsPerPage, data?.length - page * rowsPerPage);
 
   const renderText = (item, whichCoulumn) => {
-    console.log(item, whichCoulumn);
     if (whichCoulumn?.icon) {
       if (whichCoulumn?.deleteIcon && whichCoulumn?.editIcon) {
         return (
@@ -260,7 +258,6 @@ const CommonTable = ({
                   key={colIndex}
                   sx={{ minWidth: `${column.width}px` }}
                 >
-                  {console.log(column?.width, "yes we getting")}
                   {renderText(row[column.field], column)}
                 </TableCell>
               ))}

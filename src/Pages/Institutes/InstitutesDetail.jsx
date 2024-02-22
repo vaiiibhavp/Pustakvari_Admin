@@ -49,13 +49,11 @@ const InstitutesDetail = () => {
     const { getInstituteRecordDetail, deleteInstituteRecord } = useInstitues();
 
     const { state } = useLocation();
-    console.log(state, "data ");
 
     useEffect(() => {
         if (state?._id) {
             getInstituteRecordDetail(state?._id)
                 .then((res) => {
-                    console.log(res, "resss");
                     setInstiDetail((prev) => ({ ...prev, instituteDetail: res.body }));
                 })
                 .catch((error) => {
@@ -66,14 +64,12 @@ const InstitutesDetail = () => {
 
     let { instituteDetail, instituteInfo } = instiDetail || {};
 
-    console.log(instituteDetail, "detailllll");
 
     const onRemoveHandler = () => {
         if (instituteDetail?._id) {
             deleteInstituteRecord(instituteDetail?._id)
                 .then((res) => {
                     if (res.status === 200) {
-                        console.log(res);
                         toast.dismiss();
                         toast.success(res.message, { autoClose: 1000 });
                         setTakeDeleteConfirmation(false);
