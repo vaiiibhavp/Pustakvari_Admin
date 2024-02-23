@@ -136,6 +136,8 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                         ...values, userType: "INSTITUTE"
                     }
 
+                    console.log(data, "data");
+
                     createUser(data).then((res) => {
                         if (res.status === 200) {
                             setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res?.data.message }))
@@ -173,8 +175,6 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         formik.setFieldValue("instituteImage", event.currentTarget.files[0]);
     };
     let { values, errors } = formik;
-
-
 
 
     useEffect(() => {

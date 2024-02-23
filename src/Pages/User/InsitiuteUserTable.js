@@ -87,10 +87,16 @@ const InsitiuteUserTable = ({
                         <Box>
                           <img
                             src={
-                              "https://tse4.mm.bing.net/th?id=OIP.Bl6dInu-pv4nnfv-QAxgSwHaHa&pid=Api&P=0&h=180"
+                              row?.userImage
+                                ? row.userImage
+                                : "https://tse4.mm.bing.net/th?id=OIP.Bl6dInu-pv4nnfv-QAxgSwHaHa&pid=Api&P=0&h=180"
                             }
                             alt=""
-                            style={{ width: "40px", height: "40px" }}
+                            style={{
+                              width: "40px",
+                              minWidth: "40px",
+                              height: "40px",
+                            }}
                           />
                         </Box>
                         {row?.fullName}

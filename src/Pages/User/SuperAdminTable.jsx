@@ -20,21 +20,23 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { accoundCreatedDate } from "../../Helper/utils/formatTime";
 import moment from "moment";
-const SuperAdminTable = ({ userData,
+const SuperAdminTable = ({
+    userData,
     page,
     rowsPerPage,
     setIsUserModalOpen,
     setIsEditable,
-    handleCheckStatus
+    handleCheckStatus,
 }) => {
-
     let theme = useTheme();
     return (
         <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                     <TableRow>
-                        <TableCell align="center" style={{ minWidth: "70px" }}>Sr No</TableCell>
+                        <TableCell align="center" style={{ minWidth: "70px" }}>
+                            Sr No
+                        </TableCell>
                         <TableCell align="center" style={{ minWidth: "230px" }}>
                             {AppStrings?.user_Name}
                         </TableCell>
@@ -60,103 +62,115 @@ const SuperAdminTable = ({ userData,
                             {AppStrings?.deactivate}
                         </TableCell>
                         <TableCell align="center" style={{ minWidth: "150px" }}>
-                            {AppStrings?.takeAction}                </TableCell>
+                            {AppStrings?.takeAction}{" "}
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {userData?.length > 0 ? userData
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row, idx) => {
-
-                            return (
-                                <TableRow key={row?.id}>
-                                    <TableCell align="center" component="th" scope="row">
-                                        {idx + 1}
-                                    </TableCell>
-                                    <TableCell align="left"> <Box
-                                        sx={{
-                                            display: "flex",
-                                            gap: 1,
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Box>
-                                            <img
-                                                src={
-
-                                                    "https://tse4.mm.bing.net/th?id=OIP.Bl6dInu-pv4nnfv-QAxgSwHaHa&pid=Api&P=0&h=180"
-                                                }
-                                                alt=""
-                                                style={{ width: "40px", height: "40px" }}
-                                            />
-                                        </Box>
-                                        {row?.fullName}
-                                    </Box></TableCell>
-                                    <TableCell align="center">{row?.mobileNo}</TableCell>
-                                    <TableCell align="center">
-                                        {row?.is_instituteUser}
-                                    </TableCell>
-                                    <TableCell align="left">{row?.emailId}</TableCell>
-                                    <TableCell align="center">{accoundCreatedDate(row?.created_at)}</TableCell>
-                                    <TableCell align="center">{accoundCreatedDate(row?.lastLoginDate)}</TableCell>
-                                    <TableCell align="center">
-                                        <Button
-                                            sx={{
-                                                width: "100px",
-                                                background: row?.is_active
-                                                    ? theme.palette?.secondary?.lighter
-                                                    : theme.palette?.grey[300],
-                                                color: row?.is_active
-                                                    ? theme.palette?.secondary.main
-                                                    : theme.palette?.grey[600],
-                                                // background: theme.palette?.grey[300],
-                                                // color: theme.palette?.grey[600],
-                                                textDecoration: "none",
-                                                borderRadius: "8px",
-                                                padding: "3px 16px",
-                                                "&.active": {
-                                                    color: "text.primary",
-                                                    bgcolor: "action.selected",
-                                                    fontWeight: "fontWeightBold",
-                                                },
-                                            }}
-                                        >
-                                            {row?.is_active ? "Active" : "Deactive"}
-                                        </Button>
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        <Switch
-                                            value={row?._id}
-                                            // checked={}
-                                            defaultChecked={row?.is_active}
-                                            color="secondary"
-                                            onChange={(e) => {
-
-                                                handleCheckStatus(e.target.value, row?.is_active)
-                                            }}
-                                        />
-                                    </TableCell>
-                                    <TableCell align="center" style={{ minWidth: "200px" }}>
-                                        <Box>
+                    {userData?.length > 0 ? (
+                        userData
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row, idx) => {
+                                return (
+                                    <TableRow key={row?.id}>
+                                        <TableCell align="center" component="th" scope="row">
+                                            {idx + 1}
+                                        </TableCell>
+                                        <TableCell align="left">
+                                            {" "}
+                                            <Box
+                                                sx={{
+                                                    display: "flex",
+                                                    gap: 1,
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <Box>
+                                                    <img
+                                                        src={
+                                                            row?.userImage
+                                                                ? row.userImage
+                                                                : "https://tse4.mm.bing.net/th?id=OIP.Bl6dInu-pv4nnfv-QAxgSwHaHa&pid=Api&P=0&h=180"
+                                                        }
+                                                        alt=""
+                                                        style={{
+                                                            width: "40px",
+                                                            minWidth: "40px",
+                                                            height: "40px",
+                                                        }}
+                                                    />
+                                                </Box>
+                                                {row?.fullName}
+                                            </Box>
+                                        </TableCell>
+                                        <TableCell align="center">{row?.mobileNo}</TableCell>
+                                        <TableCell align="center">
+                                            {row?.is_instituteUser}
+                                        </TableCell>
+                                        <TableCell align="left">{row?.emailId}</TableCell>
+                                        <TableCell align="center">
+                                            {accoundCreatedDate(row?.created_at)}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            {accoundCreatedDate(row?.lastLoginDate)}
+                                        </TableCell>
+                                        <TableCell align="center">
                                             <Button
                                                 sx={{
-                                                    margin: " 0 10px",
-                                                    background: theme.palette?.primary?.lighter,
-                                                    color: theme.palette?.primary.main,
+                                                    width: "100px",
+                                                    background: row?.is_active
+                                                        ? theme.palette?.secondary?.lighter
+                                                        : theme.palette?.grey[300],
+                                                    color: row?.is_active
+                                                        ? theme.palette?.secondary.main
+                                                        : theme.palette?.grey[600],
+                                                    // background: theme.palette?.grey[300],
+                                                    // color: theme.palette?.grey[600],
+                                                    textDecoration: "none",
+                                                    borderRadius: "8px",
+                                                    padding: "3px 16px",
                                                     "&.active": {
                                                         color: "text.primary",
                                                         bgcolor: "action.selected",
                                                         fontWeight: "fontWeightBold",
                                                     },
                                                 }}
-                                                onClick={() => {
-                                                    setIsEditable(row);
-                                                    setIsUserModalOpen(true);
-                                                }}
                                             >
-                                                <BorderColorOutlinedIcon size="medium" />
+                                                {row?.is_active ? "Active" : "Deactive"}
                                             </Button>
-                                            {/* <Button
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            <Switch
+                                                value={row?._id}
+                                                // checked={}
+                                                defaultChecked={row?.is_active}
+                                                color="secondary"
+                                                onChange={(e) => {
+                                                    handleCheckStatus(e.target.value, row?.is_active);
+                                                }}
+                                            />
+                                        </TableCell>
+                                        <TableCell align="center" style={{ minWidth: "200px" }}>
+                                            <Box>
+                                                <Button
+                                                    sx={{
+                                                        margin: " 0 10px",
+                                                        background: theme.palette?.primary?.lighter,
+                                                        color: theme.palette?.primary.main,
+                                                        "&.active": {
+                                                            color: "text.primary",
+                                                            bgcolor: "action.selected",
+                                                            fontWeight: "fontWeightBold",
+                                                        },
+                                                    }}
+                                                    onClick={() => {
+                                                        setIsEditable(row);
+                                                        setIsUserModalOpen(true);
+                                                    }}
+                                                >
+                                                    <BorderColorOutlinedIcon size="medium" />
+                                                </Button>
+                                                {/* <Button
                         sx={{
                           margin: " 0 10px",
                           background: theme.palette?.secondary?.lighter,
@@ -169,27 +183,34 @@ const SuperAdminTable = ({ userData,
                         }}
                         onClick={() => onRemoveHandler(row._id)}
                       > <DeleteOutlineOutlinedIcon size="medium" /></Button> */}
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            );
-                        }) :
+                                            </Box>
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })
+                    ) : (
                         <TableRow>
                             <TableCell colSpan={12} align="center">
                                 <Box sx={{ padding: "20px 0" }}>
-                                    <ErrorOutlineIcon fontSize="large" sx={{ color: theme.palette.grey[500] }} />
-                                    <Typography sx={{ color: theme.palette.grey[400] }} mt={1} mb={4}>
+                                    <ErrorOutlineIcon
+                                        fontSize="large"
+                                        sx={{ color: theme.palette.grey[500] }}
+                                    />
+                                    <Typography
+                                        sx={{ color: theme.palette.grey[400] }}
+                                        mt={1}
+                                        mb={4}
+                                    >
                                         {AppStrings?.no_data_available}
                                     </Typography>
                                 </Box>
                             </TableCell>
-                        </TableRow>}
+                        </TableRow>
+                    )}
                 </TableBody>
             </Table>
         </TableContainer>
+    );
+};
 
-
-    )
-}
-
-export default SuperAdminTable
+export default SuperAdminTable;
