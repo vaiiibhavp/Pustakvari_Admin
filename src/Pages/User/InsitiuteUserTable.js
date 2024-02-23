@@ -118,10 +118,10 @@ const InsitiuteUserTable = ({
                       <Button
                         sx={{
                           width: "100px",
-                          background: row?.is_active
+                          background: !row?.is_active
                             ? theme.palette?.secondary?.lighter
                             : theme.palette?.grey[300],
-                          color: row?.is_active
+                          color: !row?.is_active
                             ? theme.palette?.secondary.main
                             : theme.palette?.grey[600],
                           textDecoration: "none",
@@ -134,7 +134,7 @@ const InsitiuteUserTable = ({
                           },
                         }}
                       >
-                        {row?.is_active ? "Active" : "Deactive"}
+                        {!row?.is_active ? "Active" : "Deactive"}
                       </Button>
                     </TableCell>
                     <TableCell align="center">

@@ -3,12 +3,19 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
 import Header from './Header/Header'
 import Sidebar from './Sidebar/Sidebar'
+import { useSelector } from 'react-redux'
 
 
 const InstituteLayout = () => {
 
 
+    const navigate = useNavigate();
 
+    const {
+        user: { userInfo },
+    } = useSelector((state) => state.AuthUser);
+
+    console.log(userInfo);
 
 
     return (

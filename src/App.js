@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import MainContent from "./Layout/MainContent";
 import AuthLayout from "./Layout/AuthLayout";
 import LoginForm from "./Pages/AuthPages/Login";
@@ -28,6 +22,10 @@ import useUserTypeName from "./Hooks/IsCheckAuth";
 
 const App = () => {
   const InstituteAdmin = useUserTypeName();
+
+  const {
+    user: { userInfo },
+  } = useSelector((state) => state.AuthUser);
 
   return (
     <BrowserRouter>

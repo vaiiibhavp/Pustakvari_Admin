@@ -28,13 +28,21 @@ import ShowsMessageModal from "../../Component/ShowMessageModal";
 import { accoundCreatedDate } from "../../Helper/utils/formatTime";
 import DeleteModal from "../../Component/DeleteModal";
 import { toast } from "react-toastify";
+import UseUserApis from "../../Hooks/User";
+import moment from "moment";
 
 const InstitutesDetail = () => {
     const [isInstituteModalOpen, setIsInstituteModalOpen] = useState(false);
     const [isEditable, setIsEditable] = useState({});
     const [instiDetail, setInstiDetail] = useState({
         instituteDetail: {},
+        userData: [],
+        globalData: [],
     });
+
+
+    const { getUsers } = UseUserApis()
+
 
     const [takeDeleteConfirmationOpen, setTakeDeleteConfirmation] =
         useState(false);
@@ -52,6 +60,7 @@ const InstitutesDetail = () => {
 
     useEffect(() => {
         if (state?._id) {
+            getUserList(state?._id);
             getInstituteRecordDetail(state?._id)
                 .then((res) => {
                     setInstiDetail((prev) => ({ ...prev, instituteDetail: res.body }));
@@ -62,7 +71,29 @@ const InstitutesDetail = () => {
         }
     }, []);
 
-    let { instituteDetail, instituteInfo } = instiDetail || {};
+
+    const getUserList = () => {
+
+        try {
+            getUsers({ user: state }).then((res) => {
+                console.log(res, "resssssss");
+
+                const data = res?.data?.data?.map((ele, idx) => {
+                    return {
+                        ...ele,
+                        created_at: moment(ele?.created_at).format("DD-MM-YYYY h:mm:ss a"),
+                        is_instituteUser: ele?.is_instituteUser === true ? "Yes" : "No",
+                        index: idx,
+                    };
+                });
+                setInstiDetail((prev) => ({ ...prev, userData: data || [], globalData: data || [] }))
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    let { instituteDetail, instituteInfo, userData } = instiDetail || {};
 
 
     const onRemoveHandler = () => {
@@ -83,6 +114,8 @@ const InstitutesDetail = () => {
                 });
         }
     };
+
+    console.log(instiDetail, "detail");
 
     return (
         <Container maxWidth="xl">
@@ -240,7 +273,7 @@ const InstitutesDetail = () => {
                             >
                                 {AppStrings?.total_user} :{" "}
                                 <span style={{ color: theme?.palette?.grey[500] }}>
-                                    {instituteDetail?.studentCount}
+                                    {userData?.length}
                                 </span>
                             </Typography>
                         </Box>
@@ -250,7 +283,7 @@ const InstitutesDetail = () => {
                     <Box p={1} mb={2} fontWeight={600} sx={{ background: "#fff" }}>
                         {AppStrings?.institute_users}
                     </Box>
-                    <InstitutesUsers InstituteUserData={[]} />
+                    <InstitutesUsers InstituteUserData={userData} />
                 </Grid>
             </Grid>
 

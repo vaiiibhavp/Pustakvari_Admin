@@ -70,7 +70,7 @@ const Institutes = () => {
             .catch((error) => {
                 console.log("errro");
             });
-    }, [isInstituteModalOpen, dataState?.render]);
+    }, [isInstituteModalOpen]);
 
     const handleSearch = (value) => {
         if (value) {
@@ -225,10 +225,10 @@ const Institutes = () => {
                                                             margin: "0 10px",
                                                             px: 3,
                                                             borderRadius: "8px",
-                                                            background: is_active
+                                                            background: !is_active
                                                                 ? theme.palette?.secondary?.lighter
                                                                 : theme.palette?.grey[300],
-                                                            color: is_active
+                                                            color: !is_active
                                                                 ? theme.palette?.secondary.main
                                                                 : theme.palette?.grey[600],
                                                             "&.active": {
@@ -238,7 +238,7 @@ const Institutes = () => {
                                                             },
                                                         }}
                                                     >
-                                                        {is_active ? "Active" : "Deactive"}
+                                                        {!is_active ? "Active" : "Deactive"}
                                                     </Button>
                                                 </TableCell>
                                                 <TableCell align="center">{studentCount}</TableCell>

@@ -40,19 +40,48 @@ const InstitutesUsers = ({ InstituteUserData }) => {
                                         <TableCell component="th" scope="row">
                                             {idx + 1}
                                         </TableCell>
-                                        <TableCell align="right">{row?.fullName}</TableCell>
-                                        <TableCell align="right">{row?.mobileNo}</TableCell>
+                                        <TableCell align="left">
+                                            <Box
+                                                sx={{
+                                                    display: "flex",
+                                                    gap: 1,
+                                                    alignItems: "center",
+                                                }}
+                                            >  <Box>
+                                                    <img
+                                                        src={
+                                                            row?.userImage
+                                                                ? row.userImage
+                                                                : "https://tse4.mm.bing.net/th?id=OIP.Bl6dInu-pv4nnfv-QAxgSwHaHa&pid=Api&P=0&h=180"
+                                                        }
+                                                        alt=""
+                                                        style={{
+                                                            width: "40px",
+                                                            minWidth: "40px",
+                                                            height: "40px",
+                                                        }}
+                                                    />
+                                                </Box>
+                                                {row?.fullName} </Box></TableCell>
+                                        <TableCell align="left">{row?.mobileNo}</TableCell>
 
-                                        <TableCell align="right">{row?.emailId}</TableCell>
-                                        <TableCell align="right">{accoundCreatedDate(row?.created_at)}</TableCell>
-                                        <TableCell align="right">
+                                        <TableCell align="left">{row?.emailId}</TableCell>
+                                        <TableCell align="center">{accoundCreatedDate(row?.created_at)}</TableCell>
+                                        <TableCell align="center">
                                             <Button
                                                 sx={{
-                                                    background: theme.palette?.grey[300],
-                                                    color: theme.palette?.grey[600],
+                                                    width: "100px",
+                                                    background: !row?.is_active
+                                                        ? theme.palette?.secondary?.lighter
+                                                        : theme.palette?.info?.lighter,
+                                                    color: !row?.is_active
+                                                        ? theme.palette?.secondary.main
+                                                        : theme.palette?.info.main,
+                                                    // background: theme.palette?.grey[300],
+                                                    // color: theme.palette?.grey[600],
                                                     textDecoration: "none",
-                                                    borderRadius: "20px",
-                                                    padding: "0 16px",
+                                                    borderRadius: "8px",
+                                                    padding: "3px 20px",
                                                     "&.active": {
                                                         color: "text.primary",
                                                         bgcolor: "action.selected",
@@ -60,17 +89,11 @@ const InstitutesUsers = ({ InstituteUserData }) => {
                                                     },
                                                 }}
                                             >
-                                                {row?.activeStatus ? AppStrings?.subscribed : AppStrings?.unsubscribed}
+                                                {!row?.is_active ? "Subscribed" : " Unsubscribed "}
                                             </Button>
                                         </TableCell>
-                                        <TableCell align="right">
 
-                                        </TableCell>
-                                        <TableCell align="right" style={{ minWidth: "200px" }}>
-                                            <Box>
-                                                Active
-                                            </Box>
-                                        </TableCell>
+
                                     </TableRow>
                                 );
                             }) :

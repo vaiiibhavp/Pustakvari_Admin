@@ -55,6 +55,8 @@ const ProfileModal = ({ profile, setProfile }) => {
 
 
 
+
+
     const handleCancel = () => {
         setProfile(false);
         setIsChangingPassword(!isChangingPassword);
