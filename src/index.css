@@ -49,3 +49,7 @@ body {
   width: 30px;
   height: 10px;
 }
+
+.custom-toast {
+  width: 300px; /* Set the desired width */
+}

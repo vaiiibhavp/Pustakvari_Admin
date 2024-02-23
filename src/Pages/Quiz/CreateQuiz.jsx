@@ -28,6 +28,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { answerKeySvg } from "../../Assets/AnswerKey";
 import useQuiz from "../../Hooks/Quiz";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
+import { toast } from "react-toastify";
 
 const CreateQuiz = () => {
     const [quizName, setQuizName] = useState("");
@@ -38,6 +39,9 @@ const CreateQuiz = () => {
         showSuccessModal: false,
         message: "",
     });
+
+    const [quizTextError, setQuizTextError] = useState(null);
+    const [descriptionError, setDescriptionError] = useState(null);
     let { getQuizTypeList, createQuizRecord } = useQuiz();
 
     const [questionText, setQuestions] = useState([]);
@@ -60,7 +64,7 @@ const CreateQuiz = () => {
 
         const newOption = {
             id: currentOptions.length + 1,
-            value: '',
+            value: "",
             editing: true,
         };
 
@@ -68,7 +72,10 @@ const CreateQuiz = () => {
         const updatedQuestions = [...questionText];
         updatedQuestions[questionIndex].option = newOptions;
         const lastIndex = currentOptions.length - 1;
-        if (currentOptions.length > 0 && updatedQuestions[questionIndex].option[lastIndex]?.value?.length > 0) {
+        if (
+            currentOptions.length > 0 &&
+            updatedQuestions[questionIndex].option[lastIndex]?.value?.length > 0
+        ) {
             updatedQuestions[questionIndex].option[lastIndex].editing = false;
         }
 
@@ -123,7 +130,6 @@ const CreateQuiz = () => {
 
     // save question answer
     const handleSaveAnswer = (questionIndex, event) => {
-
         const updatedQuestions = [...questionText];
         updatedQuestions[questionIndex].answer = event.target.value;
         setQuestions(updatedQuestions);
@@ -139,7 +145,14 @@ const CreateQuiz = () => {
         // }
         // setQuestions(updatedQuestions);
 
+        let currentQuestion = questionText[questionIndex];
+
+        // if (
+        //     currentQuestion?.type?.length > 0 &&
+        //     currentQuestion?.question?.length > 0
+        // ) {
         setAnswerkey(questionIndex);
+        // }
     };
 
     const createQuiz = () => {
@@ -152,9 +165,26 @@ const CreateQuiz = () => {
             !questionText ||
             questionText?.length === 0
         ) {
-            console.error(
-                "Quiz name, description, and at least one question are required."
-            );
+            if (!quizName && !description) {
+                setQuizTextError("Quiz text is required");
+                setDescriptionError("Description is required");
+                toast.dismiss();
+                toast.warning("Please provide a name and description for the quiz before continuing", { autoClose: 2000, className: 'custom-toast' })
+            }
+            if (!quizName) {
+                setQuizTextError("Quiz text is required");
+                toast.dismiss();
+                toast.warning("Please provide a name for the quiz before continuing", { autoClose: 2000, className: 'custom-toast' })
+            } else if (!description) {
+                setDescriptionError("Description is required");
+                toast.dismiss();
+                toast.warning("Please provide a description for the quiz before continuing", { autoClose: 2000, className: 'custom-toast' })
+            } else {
+                toast.dismiss();
+                toast.warning("Please add questions to the quiz before continuing.", { autoClose: 2000, className: 'custom-toast' })
+            }
+
+
             return (error = true); // Exit function if validation fails
         } else {
             error = false;
@@ -163,9 +193,8 @@ const CreateQuiz = () => {
         // Validation for empty question, type, and answer in each question
         for (const question of questionText) {
             if (!question.question || !question.type || !question.answer) {
-                console.error(
-                    "Question, type, and answer are required for each question."
-                );
+                toast.dismiss();
+                toast.warning(`Please review all questions and answers to ensure they are set up properly.`, { autoClose: 2000, className: 'custom-toast' })
                 return (error = true); // Exit function if validation fails
             } else {
                 error = false;
@@ -217,12 +246,10 @@ const CreateQuiz = () => {
             });
     }, []);
 
-
-    useEffect(() => { }, [answerkey])
-
+    useEffect(() => { }, [answerkey]);
 
     return (
-        <Container maxWidth="xl" sx={{ position: "relative" }}>
+        <Container maxWidth="xl" sx={{ position: "relative", textAlign: "center" }}>
             <Box display={"flex"} pb={3} sx={{ alignItems: "center" }}>
                 <Button
                     boxShadow={2}
@@ -263,31 +290,41 @@ const CreateQuiz = () => {
             <Grid container spacing={3}>
                 <Grid item xs={12} md={6} lg={6}>
                     <Box>
-                        <Typography>Quiz Name</Typography>
+                        <Typography sx={{ textAlign: "start" }}>Quiz Name</Typography>
                         <TextField
                             fullWidth
                             size="small"
+                            sx={{ mt: 0.5 }}
                             variant="outlined"
                             margin="normal"
                             type="text"
+                            error={Boolean(quizTextError)}
                             placeholder="Enter quiz name..."
                             value={quizName}
-                            onChange={(e) => setQuizName(e.target.value)}
+                            onChange={(e) => {
+                                setQuizTextError(null);
+                                setQuizName(e.target.value);
+                            }}
                         />
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
                     <Box>
-                        <Typography>Description</Typography>
+                        <Typography sx={{ textAlign: "start" }}>Description</Typography>
                         <TextField
                             fullWidth
+                            sx={{ mt: 0.5 }}
                             size="small"
                             variant="outlined"
                             margin="normal"
                             type="text"
+                            error={Boolean(descriptionError)}
                             placeholder="Enter quiz description..."
                             value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            onChange={(e) => {
+                                setDescriptionError(null);
+                                setDescription(e.target.value);
+                            }}
                         />
                     </Box>
                 </Grid>
@@ -297,15 +334,15 @@ const CreateQuiz = () => {
                             <Card sx={{ marginBottom: "10px" }} key={question.id}>
                                 <form style={{ padding: "0px" }}>
                                     {index === answerkey && (
-                                        <Typography sx={{ padding: "15px" }}>
+                                        <Typography sx={{ padding: "15px", textAlign: "start" }}>
                                             Choose correct answers
                                         </Typography>
                                     )}
                                     {index === answerkey && <Divider />}
                                     <Box p={2} sx={{ display: "flex", gap: 3 }}>
                                         {index === answerkey ? (
-                                            <>{`${answerkey + 1}. ${questionText[answerkey].question
-                                                }`}</>
+                                            <Typography sx={{ fontWeight: "600" }}>{`Q ${answerkey + 1} : ${questionText[answerkey].question
+                                                }`}</Typography>
                                         ) : (
                                             <TextField
                                                 sx={{ width: "70%" }}
@@ -349,7 +386,9 @@ const CreateQuiz = () => {
                                     </Box>
                                     {question.type === "65bc956e471d1efeff9367db" && (
                                         <div style={{ padding: "0 20px 10px 15px" }}>
-                                            <InputLabel>Options</InputLabel>
+                                            <InputLabel sx={{ textAlign: "start" }}>
+                                                Options
+                                            </InputLabel>
                                             <RadioGroup>
                                                 {question.option.map((option, optionIndex) => (
                                                     <div
@@ -446,10 +485,7 @@ const CreateQuiz = () => {
                                                                 <IconButton
                                                                     type="button"
                                                                     onClick={() =>
-                                                                        handleDeleteOption(
-                                                                            index,
-                                                                            optionIndex
-                                                                        )
+                                                                        handleDeleteOption(index, optionIndex)
                                                                     }
                                                                 >
                                                                     <DeleteOutlineOutlinedIcon fontSize="small" />
@@ -459,22 +495,28 @@ const CreateQuiz = () => {
                                                     </div>
                                                 ))}
                                             </RadioGroup>
-                                            {index !== answerkey && (
-                                                <Button
-                                                    type="button"
-                                                    sx={{
-                                                        padding: "6px 10px",
-                                                        mg: 2,
-                                                        border: "none",
-                                                        "&:hover": { border: "none" },
-                                                    }}
-                                                    variant="outlined"
-                                                    onClick={() => handleAddOption(index)}
-                                                    style={{ marginTop: "10px", marginBottom: "10px" }}
-                                                >
-                                                    + Add Option
-                                                </Button>
-                                            )}
+                                            <Box
+                                                sx={{
+                                                    textAlign: "start",
+                                                }}
+                                            >
+                                                {index !== answerkey && (
+                                                    <Button
+                                                        type="button"
+                                                        sx={{
+                                                            padding: "6px 10px",
+                                                            mg: 2,
+                                                            border: "none",
+                                                            "&:hover": { border: "none" },
+                                                        }}
+                                                        variant="outlined"
+                                                        onClick={() => handleAddOption(index)}
+                                                        style={{ marginTop: "10px", marginBottom: "10px" }}
+                                                    >
+                                                        + Add Option
+                                                    </Button>
+                                                )}
+                                            </Box>
                                         </div>
                                     )}
                                 </form>
@@ -511,20 +553,47 @@ const CreateQuiz = () => {
                                             padding: "8px 20px",
                                         }}
                                     >
+                                        {console.log(questionText[index], "testttt")}
                                         <Button
-                                            color="secondary"
+                                            // color="secondary"
                                             onClick={() => handleSaveAnserKey(index)}
-                                            sx={{ display: "flex", alignItems: "center" }}
+                                            sx={
+                                                questionText[index]?.question?.length > 0 &&
+                                                    questionText[index]?.type?.length > 0 &&
+                                                    questionText[index]?.option?.length > 0
+                                                    ? {
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        color: theme.palette.secondary.main,
+                                                    }
+                                                    : {
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        color: theme.palette.grey[500],
+                                                        cursor: "not-allowed",
+                                                    }
+                                            }
                                         >
-                                            <span sx={{ pe: 1 }}>{answerKeySvg}</span> Answer key
+                                            <span
+                                                sx={{
+                                                    pe: 2,
+                                                    stroke: `${questionText[index]?.question?.length > 0 &&
+                                                        questionText[index]?.type?.length > 0 &&
+                                                        questionText[index]?.option?.length > 0
+                                                        ? theme.palette.secondary.main
+                                                        : theme.palette.grey[200]
+                                                        }`,
+                                                }}
+                                            >
+                                                {answerKeySvg}
+                                            </span>{" "}
+                                            Answer key
                                         </Button>
                                         <Button variant="primary">
                                             {" "}
                                             <IconButton
                                                 type="button"
-                                                onClick={() =>
-                                                    handleDeleteQuestion(index)
-                                                }
+                                                onClick={() => handleDeleteQuestion(index)}
                                             >
                                                 <DeleteOutlineOutlinedIcon fontSize="small" />
                                             </IconButton>
@@ -551,11 +620,27 @@ const CreateQuiz = () => {
                 </Grid>
             </Grid>
             <Button
-                sx={{ position: "fixed", bottom: 4, left: "60%" }}
+                sx={
+                    false
+                        ? {
+                            position: "fixed",
+                            bottom: 10,
+                            borderRadius: "18px",
+                            padding: "5px 30px",
+                            background: theme.palette.grey[300],
+                            color: theme.palette.grey[500],
+                        }
+                        : {
+                            position: "fixed",
+                            bottom: 10,
+                            borderRadius: "18px",
+                            padding: "5px 30px",
+                            background: theme.palette.primary.main,
+                            color: "#fff",
+                        }
+                }
                 type="submit"
                 variant="contained"
-                color="primary"
-                style={{ marginTop: "10px" }}
                 onClick={createQuiz}
             >
                 Submit

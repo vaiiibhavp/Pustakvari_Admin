@@ -60,10 +60,9 @@ const Users = () => {
   };
 
   const getUserList = () => {
-
     let isIntitute = InstituteAdmin
     try {
-      getUsers({ user: InstituteAdmin }).then((res) => {
+      getUsers({ user: user?.userInfo }).then((res) => {
 
         const data = res?.data?.data?.map((ele, idx) => {
           return {

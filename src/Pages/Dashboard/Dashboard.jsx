@@ -29,7 +29,7 @@ const Dashboard = () => {
     const { getDashboardData } = useDashboard();
 
     useEffect(() => {
-        getDashboardData()
+        getDashboardData(userInfo)
             .then((res) => {
                 if (res.status === 200) {
                     setDashboardData((prev) => ({
