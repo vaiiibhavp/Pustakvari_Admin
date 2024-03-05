@@ -1,15 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, TextField, Box, Typography, FormControl, OutlinedInput, InputAdornment, IconButton, Divider, useTheme } from "@mui/material";
+import {
+    Modal,
+    Button,
+    TextField,
+    Box,
+    Typography,
+    FormControl,
+    OutlinedInput,
+    InputAdornment,
+    IconButton,
+    Divider,
+    useTheme,
+} from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { CropSquareSharp, Visibility, VisibilityOff } from "@mui/icons-material";
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import camereImage from "../../Assets/Images/camera.svg"
-import { useSelector } from "react-redux";
+import {
+    CropSquareSharp,
+    Visibility,
+    VisibilityOff,
+} from "@mui/icons-material";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import camereImage from "../../Assets/Images/camera.svg";
+import { useDispatch, useSelector } from "react-redux";
 import useUserTypeName from "../../Hooks/IsCheckAuth";
 import UseUserApis from "../../Hooks/User";
 import { toast } from "react-toastify";
 import useFileGenrator from "../../Hooks/ImageFileConverter";
+import { LogIn } from "../../Store/Slice/AuthSlice";
 
 const validationSchema = Yup.object().shape({
     first_name: Yup.string().required("Required"),
@@ -22,19 +39,18 @@ const ProfileModal = ({ profile, setProfile }) => {
     const [file, setFile] = useState();
     const [userProfile, setUserProfile] = useState();
     const [isLoading, setIsloading] = useState(false);
-    const { AuthUser: { user } } = useSelector((state) => state)
+    const {
+        AuthUser: { user },
+    } = useSelector((state) => state);
+    const dispatch = useDispatch();
 
     const InstituteAdmin = useUserTypeName();
 
-    const { fetchImageAsFile } = useFileGenrator()
-
+    const { fetchImageAsFile } = useFileGenrator();
 
     const [isChangingPassword, setIsChangingPassword] = useState(true);
 
-
-
-
-    let theme = useTheme()
+    let theme = useTheme();
 
     const handleChange = (e) => {
         const data = {
@@ -53,10 +69,6 @@ const ProfileModal = ({ profile, setProfile }) => {
         // getUserProfileImage().then((res) => setUserProfile(res.user));
     }, [isLoading]);
 
-
-
-
-
     const handleCancel = () => {
         setProfile(false);
         setIsChangingPassword(!isChangingPassword);
@@ -68,20 +80,28 @@ const ProfileModal = ({ profile, setProfile }) => {
     };
 
     const validationSchema = Yup.object().shape({
-        fullName: Yup.string().required('Full Name is required'),
-        emailId: Yup.string().email('Invalid email format').required('Email is required'),
-        password: !isChangingPassword ? Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required') : Yup.string(),
-        confirmNewPassword: !isChangingPassword ? Yup.string()
-            .oneOf([Yup.ref('password'), null], 'Passwords must match')
-            .required('Confirm Password is required') : Yup.string(),
+        fullName: Yup.string().required("Full Name is required"),
+        emailId: Yup.string()
+            .email("Invalid email format")
+            .required("Email is required"),
+        password: !isChangingPassword
+            ? Yup.string()
+                .min(8, "Password must be at least 8 characters")
+                .required("Password is required")
+            : Yup.string(),
+        confirmNewPassword: !isChangingPassword
+            ? Yup.string()
+                .oneOf([Yup.ref("password"), null], "Passwords must match")
+                .required("Confirm Password is required")
+            : Yup.string(),
     });
 
     const initialValues = {
-        fullName: user?.userInfo?.fullName || user?.userInfo?.instituteName || '',
-        emailId: user?.userInfo?.emailId || user?.userInfo?.emailId || '',
-        password: '',
-        confirmNewPassword: '',
-        userImage: ""
+        fullName: user?.userInfo?.fullName || user?.userInfo?.instituteName || "",
+        emailId: user?.userInfo?.emailId || user?.userInfo?.emailId || "",
+        password: "",
+        confirmNewPassword: "",
+        userImage: "",
     };
 
     const formik = useFormik({
@@ -92,36 +112,40 @@ const ProfileModal = ({ profile, setProfile }) => {
             delete values.confirmNewPassword;
             if (!InstituteAdmin) {
                 delete values.password;
-                updateUser(values, user?.userInfo?._id).then((res) => {
-                    if (res.status === 200) {
-                        toast.dismiss();
-                        setProfile(false);
-                        toast.success(res.data.message, { autoClose: 2000 })
-                    } else {
-                        toast.warning(res.data.message, { autoClose: 2000 })
-                    }
-                }).catch((err) => {
-                    // toast.dismiss();
-                    // toast.warning(res.message, { autoClose: 2000 })
-                })
+                updateUser(values, user?.userInfo?._id)
+                    .then((res) => {
+                        if (res.status === 200) {
+                            dispatch(LogIn({ ...user, userInfo: res?.data?.body?.userInfo }));
+                            toast.dismiss();
+                            setProfile(false);
+                            toast.success(res.data.message, { autoClose: 2000 });
+                        } else {
+                            toast.warning(res.data.message, { autoClose: 2000 });
+                        }
+                    })
+                    .catch((err) => {
+                        // toast.dismiss();
+                        // toast.warning(res.message, { autoClose: 2000 })
+                    });
             } else {
                 if (values.password?.length < 3) {
                     delete values.password;
                 }
-                updateUser(values, user?.userInfo?._id).then((res) => {
-                    if (res.status === 200) {
-                        toast.dismiss();
-                        setProfile(false);
-                        toast.success(res.data.message, { autoClose: 2000 })
-                    } else {
-                        toast.warning(res.data.message, { autoClose: 2000 })
-                    }
-                }).catch((err) => {
-                    // toast.dismiss();
-                    // toast.warning(res.message, { autoClose: 2000 })
-                })
-
-
+                updateUser(values, user?.userInfo?._id)
+                    .then((res) => {
+                        if (res.status === 200) {
+                            console.log(res, "resss");
+                            toast.dismiss();
+                            setProfile(false);
+                            toast.success(res.data.message, { autoClose: 2000 });
+                        } else {
+                            toast.warning(res.data.message, { autoClose: 2000 });
+                        }
+                    })
+                    .catch((err) => {
+                        // toast.dismiss();
+                        // toast.warning(res.message, { autoClose: 2000 })
+                    });
             }
         },
     });
@@ -131,22 +155,19 @@ const ProfileModal = ({ profile, setProfile }) => {
     };
 
     const handleImageChange = (event) => {
-
         formik.setFieldValue("userImage", event.currentTarget.files[0]);
     };
 
     let { values, errors } = formik;
 
-
-
     useEffect(() => {
-
-        fetchImageAsFile(user?.userInfo?.userImage || user?.userInfo?.instituteImage).then((res) => {
+        fetchImageAsFile(
+            user?.userInfo?.userImage || user?.userInfo?.instituteImage
+        ).then((res) => {
             if (res) {
                 formik.setFieldValue("userImage", res);
             }
         });
-
     }, [user?.userImage, user?.instituteImage]);
 
     const handleTogglePasswordChange = () => {
@@ -154,10 +175,7 @@ const ProfileModal = ({ profile, setProfile }) => {
     };
 
 
-
-
-
-
+    console.log(errors, "errr");
 
     return (
         <Modal open={profile} onClose={handleCancel}>
@@ -191,17 +209,25 @@ const ProfileModal = ({ profile, setProfile }) => {
                     scrollbarColor: "#888 #f1f1f1",
                 }}
             >
-
                 <Box sx={{ width: "100%" }}>
-                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            p: 2,
+                        }}
+                    >
                         <Typography sx={{ fontWeight: "600" }}>{"Profile"}</Typography>
-                        <Button onClick={handleCancel} sx={{ color: theme.palette.grey[700] }}><CloseOutlinedIcon /></Button>
+                        <Button
+                            onClick={handleCancel}
+                            sx={{ color: theme.palette.grey[700] }}
+                        >
+                            <CloseOutlinedIcon />
+                        </Button>
                     </Box>
 
-
-
                     <form onSubmit={formik.handleSubmit}>
-
                         <Box
                             sx={{
                                 display: "flex",
@@ -210,9 +236,14 @@ const ProfileModal = ({ profile, setProfile }) => {
                                 marginBottom: "16px",
                             }}
                         >
-
-
-                            <Box sx={{ width: "100%", display: "flex", alignItems: "start", justifyContent: "center" }}>
+                            <Box
+                                sx={{
+                                    width: "100%",
+                                    display: "flex",
+                                    alignItems: "start",
+                                    justifyContent: "center",
+                                }}
+                            >
                                 <label htmlFor="userImage">
                                     {values?.userImage ? (
                                         <img
@@ -238,8 +269,18 @@ const ProfileModal = ({ profile, setProfile }) => {
                                                 background: theme?.palette?.grey[200],
                                             }}
                                         >
-                                            <Box sx={{ position: "absolute", right: "2px", bottom: "10px" }}>
-                                                <img src={camereImage} alt="" style={{ width: "30px", height: "30px" }} />
+                                            <Box
+                                                sx={{
+                                                    position: "absolute",
+                                                    right: "2px",
+                                                    bottom: "10px",
+                                                }}
+                                            >
+                                                <img
+                                                    src={camereImage}
+                                                    alt=""
+                                                    style={{ width: "30px", height: "30px" }}
+                                                />
                                             </Box>
                                         </IconButton>
                                     )}
@@ -256,7 +297,6 @@ const ProfileModal = ({ profile, setProfile }) => {
                         </Box>
                         <Divider />
 
-
                         <Box px={2} pt={2}>
                             <Typography style={{ padding: "0 0 5px 0" }}>
                                 Full Name:
@@ -269,13 +309,13 @@ const ProfileModal = ({ profile, setProfile }) => {
                                 margin="normal"
                                 disabled={!InstituteAdmin}
                                 variant="outlined"
-                                {...formik.getFieldProps('fullName')}
-                                error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+                                {...formik.getFieldProps("fullName")}
+                                error={
+                                    formik.touched.fullName && Boolean(formik.errors.fullName)
+                                }
                                 helperText={formik.touched.fullName && formik.errors.fullName}
                             />
-                            <Typography style={{ padding: "0 0 5px 0" }}>
-                                Email:
-                            </Typography>
+                            <Typography style={{ padding: "0 0 5px 0" }}>Email:</Typography>
 
                             <TextField
                                 // label="Email"
@@ -285,77 +325,132 @@ const ProfileModal = ({ profile, setProfile }) => {
                                 disabled={!InstituteAdmin}
                                 margin="normal"
                                 variant="outlined"
-                                {...formik.getFieldProps('emailId')}
+                                {...formik.getFieldProps("emailId")}
                                 error={formik.touched.emailId && Boolean(formik.errors.emailId)}
                                 helperText={formik.touched.emailId && formik.errors.emailId}
                             />
                         </Box>
 
-
-
                         <Box px={2}>
-                            {InstituteAdmin && <>
-
-                                {isChangingPassword ? <Typography onClick={handleTogglePasswordChange} sx={{ fontSize: "12px", textDecoration: "underline", cursor: "pointer", color: theme.palette.primary.main }}>Change Password</Typography> : <Box>
-                                    <Typography onClick={handleTogglePasswordChange} sx={{ fontSize: "12px", textDecoration: "underline", cursor: "pointer", color: theme.palette.primary.main }}>Cancel</Typography>
-                                    <TextField
-                                        // label="New Password"
-                                        fullWidth
-                                        size="small"
-                                        margin="normal"
-                                        variant="outlined"
-                                        type={formik.values.password ? 'text' : 'password'}
-                                        {...formik.getFieldProps('password')}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton onClick={() => handlePasswordVisibility('password')} edge="end">
-                                                        {formik.values.password ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                        error={formik.touched.password && Boolean(formik.errors.password)}
-                                        helperText={formik.touched.password && formik.errors.password}
-                                    />
-                                    <TextField
-                                        // label="Confirm New Password"
-                                        fullWidth
-                                        size="small"
-                                        margin="normal"
-                                        variant="outlined"
-                                        type={formik.values.confirmNewPassword ? 'text' : 'password'}
-                                        {...formik.getFieldProps('confirmNewPassword')}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton onClick={() => handlePasswordVisibility('confirmNewPassword')} edge="end">
-                                                        {formik.values.confirmNewPassword ? <Visibility /> : <VisibilityOff />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                        error={formik.touched.confirmNewPassword && Boolean(formik.errors.confirmNewPassword)}
-                                        helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
-                                    />
-                                </Box>
-                                }</>
-
-
-                            }</Box>
-
-
+                            {InstituteAdmin && (
+                                <>
+                                    {isChangingPassword ? (
+                                        <Typography
+                                            onClick={handleTogglePasswordChange}
+                                            sx={{
+                                                fontSize: "12px",
+                                                textDecoration: "underline",
+                                                cursor: "pointer",
+                                                color: theme.palette.primary.main,
+                                            }}
+                                        >
+                                            Change Password
+                                        </Typography>
+                                    ) : (
+                                        <Box>
+                                            <Typography
+                                                onClick={handleTogglePasswordChange}
+                                                sx={{
+                                                    fontSize: "12px",
+                                                    textDecoration: "underline",
+                                                    cursor: "pointer",
+                                                    color: theme.palette.primary.main,
+                                                }}
+                                            >
+                                                Cancel
+                                            </Typography>
+                                            <TextField
+                                                // label="New Password"
+                                                fullWidth
+                                                size="small"
+                                                margin="normal"
+                                                variant="outlined"
+                                                type={formik.values.password ? "text" : "password"}
+                                                {...formik.getFieldProps("password")}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <IconButton
+                                                                onClick={() =>
+                                                                    handlePasswordVisibility("password")
+                                                                }
+                                                                edge="end"
+                                                            >
+                                                                {formik.values.password ? (
+                                                                    <Visibility />
+                                                                ) : (
+                                                                    <VisibilityOff />
+                                                                )}
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                                error={
+                                                    formik.touched.password &&
+                                                    Boolean(formik.errors.password)
+                                                }
+                                                helperText={
+                                                    formik.touched.password && formik.errors.password
+                                                }
+                                            />
+                                            <TextField
+                                                // label="Confirm New Password"
+                                                fullWidth
+                                                size="small"
+                                                margin="normal"
+                                                variant="outlined"
+                                                type={
+                                                    formik.values.confirmNewPassword ? "text" : "password"
+                                                }
+                                                {...formik.getFieldProps("confirmNewPassword")}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <IconButton
+                                                                onClick={() =>
+                                                                    handlePasswordVisibility("confirmNewPassword")
+                                                                }
+                                                                edge="end"
+                                                            >
+                                                                {formik.values.confirmNewPassword ? (
+                                                                    <Visibility />
+                                                                ) : (
+                                                                    <VisibilityOff />
+                                                                )}
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                                error={
+                                                    formik.touched.confirmNewPassword &&
+                                                    Boolean(formik.errors.confirmNewPassword)
+                                                }
+                                                helperText={
+                                                    formik.touched.confirmNewPassword &&
+                                                    formik.errors.confirmNewPassword
+                                                }
+                                            />
+                                        </Box>
+                                    )}
+                                </>
+                            )}
+                        </Box>
 
                         <Box px={3} mt={2} pb={2}>
-                            <Button sx={{ borderRadius: "18px" }} fullWidth type="submit" variant="contained" color="primary">
+                            <Button
+                                sx={{ borderRadius: "18px" }}
+                                fullWidth
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                            >
                                 Submit
                             </Button>
-
                         </Box>
                     </form>
                 </Box>
             </Box>
-        </Modal >
+        </Modal>
     );
 };
 
