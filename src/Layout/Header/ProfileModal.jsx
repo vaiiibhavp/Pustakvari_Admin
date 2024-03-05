@@ -141,7 +141,7 @@ const ProfileModal = ({ profile, setProfile }) => {
 
     useEffect(() => {
 
-        fetchImageAsFile(user?.userImage || user?.instituteImage).then((res) => {
+        fetchImageAsFile(user?.userInfo?.userImage || user?.userInfo?.instituteImage).then((res) => {
             if (res) {
                 formik.setFieldValue("userImage", res);
             }
@@ -152,6 +152,7 @@ const ProfileModal = ({ profile, setProfile }) => {
     const handleTogglePasswordChange = () => {
         setIsChangingPassword(!isChangingPassword);
     };
+
 
 
 
@@ -196,6 +197,7 @@ const ProfileModal = ({ profile, setProfile }) => {
                         <Typography sx={{ fontWeight: "600" }}>{"Profile"}</Typography>
                         <Button onClick={handleCancel} sx={{ color: theme.palette.grey[700] }}><CloseOutlinedIcon /></Button>
                     </Box>
+
 
 
                     <form onSubmit={formik.handleSubmit}>

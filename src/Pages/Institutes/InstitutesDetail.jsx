@@ -69,7 +69,7 @@ const InstitutesDetail = () => {
                     console.log(error);
                 });
         }
-    }, []);
+    }, [isInstituteModalOpen]);
 
 
     const getUserList = () => {
