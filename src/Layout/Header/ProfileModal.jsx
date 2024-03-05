@@ -71,12 +71,12 @@ const ProfileModal = ({ profile, setProfile }) => {
 
     const handleCancel = () => {
         setProfile(false);
-        setIsChangingPassword(!isChangingPassword);
+        setIsChangingPassword(true);
     };
 
     const handleOk = () => {
         setProfile(false);
-        setIsChangingPassword(!isChangingPassword);
+        setIsChangingPassword(true);
     };
 
     const validationSchema = Yup.object().shape({
@@ -171,7 +171,7 @@ const ProfileModal = ({ profile, setProfile }) => {
     }, [user?.userImage, user?.instituteImage]);
 
     const handleTogglePasswordChange = () => {
-        setIsChangingPassword(!isChangingPassword);
+        setIsChangingPassword(false);
     };
 
 
