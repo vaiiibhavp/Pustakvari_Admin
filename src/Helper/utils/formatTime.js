@@ -5,7 +5,7 @@ import moment from "moment/moment";
 export function accoundCreatedDate(date, newFormat) {
   const dateFormat = newFormat || "DD/MM/yyyy";
 
-  return date ? moment(date, "DD-MM-YYYY hh:mm:ss a").format(dateFormat) : ""; // 12/12/2023
+  return date ? moment(date).format(dateFormat) : ""; // 12/12/2023
 }
 
 //
@@ -16,7 +16,7 @@ export function fNotifiactionDate(date, newFormat) {
 }
 
 export function fromAgoDate(date) {
-  return date ? moment(date).startOf("hour").fromNow() : ""; // 12 minutes ago
+  return date ? moment(date).fromNow() : ""; // 12 minutes ago
 }
 
 export function fTime(date) {

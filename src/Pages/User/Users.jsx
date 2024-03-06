@@ -67,7 +67,7 @@ const Users = () => {
         const data = res?.data?.data?.map((ele, idx) => {
           return {
             ...ele,
-            created_at: moment(ele?.created_at).format("DD-MM-YYYY h:mm:ss a"),
+            // created_at: moment(ele?.created_at).format("DD-MM-YYYY h:mm:ss a"),
             is_instituteUser: ele?.is_instituteUser === true ? "Yes" : "No",
             index: idx,
           };
