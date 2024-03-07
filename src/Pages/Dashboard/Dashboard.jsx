@@ -165,7 +165,7 @@ const Dashboard = () => {
                         type="donut"
                         Colors={["#a3c9fa", "#4692f5"]}
                         chartLabels={["Active users", "Deactive users"]}
-                        chartData={InstituteAdmin ? [instituteData?.instituteActiveUserCount || 0, instituteData?.instituteInactiveUserCount || 0] : [superAdminData?.activeUserCount || 0, superAdminData?.inactiveUserCount || 0]}
+                        chartData={InstituteAdmin ? [instituteData?.instituteInactiveUserCount || 0, instituteData?.instituteActiveUserCount || 0] : [superAdminData?.inactiveUserCount || 0, superAdminData?.activeUserCount || 0]}
                     />
                 </Grid>
 

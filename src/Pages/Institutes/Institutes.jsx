@@ -93,7 +93,7 @@ const Institutes = () => {
     };
 
     const handleCheckStatus = (e, status) => {
-        let statusValue = status === true ? true : status === false ? false : false;
+        let statusValue = status === true ? false : status === false ? true : true
 
         onStatusChangeInstitute({ id: e, params: statusValue })
             .then((res) => {

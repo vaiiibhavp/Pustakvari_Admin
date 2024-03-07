@@ -104,7 +104,7 @@ const Users = () => {
   }
 
   const handleCheckStatus = (e, status) => {
-    let statusValue = status === true ? true : status === false ? false : false
+    let statusValue = status === true ? false : status === false ? true : true
 
     changeUserStatus({ id: e, params: { activeStatus: statusValue } }).then((res) => {
       setUserDataState((prev) => ({
