@@ -20,7 +20,14 @@ const CategoryPopover = ({ id, open, isPopOver, handleClose, handleOpenCategoryM
     useEffect(() => {
         getCateogoryList().then((res) => {
 
-            setCategoryData((prev) => ({ ...prev, dataList: res.data, globalList: res.data }))
+            const data = res.data;
+            const otherBookIndex = data.findIndex(category => category.categoryName === "Other Book");
+            if (otherBookIndex !== -1) {
+                const otherBookCategory = data.splice(otherBookIndex, 1)[0]; // Remove "Other Book" category
+                data.push(otherBookCategory); // Add "Other Book" category at the end
+            }
+
+            setCategoryData((prev) => ({ ...prev, dataList: data, globalList: data }))
         }).catch((error) => {
             console.log(error)
         })

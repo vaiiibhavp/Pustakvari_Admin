@@ -214,7 +214,13 @@ const EbookModal = ({
     if (isEditableRecord?.bookPdf) {
       fetchImageAsFile(isEditableRecord?.bookPdf).then((res) => {
         if (res) {
-          formik.setFieldValue("bookPdf", res);
+          const filename = isEditableRecord.bookPdf.split("/").pop();
+
+          const pdfFile = new File([res], filename, {
+            type: "application/pdf",
+          });
+
+          formik.setFieldValue("bookPdf", pdfFile);
         }
       });
     }
