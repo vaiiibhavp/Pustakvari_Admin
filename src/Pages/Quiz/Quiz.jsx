@@ -27,6 +27,7 @@ import { useEffect } from 'react'
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 import { accoundCreatedDate } from '../../Helper/utils/formatTime'
+import DeleteModal from "../../Component/DeleteModal";
 
 
 const Quiz = () => {
@@ -35,6 +36,9 @@ const Quiz = () => {
         allQuizRecords: [],
         globalQuizRecords: []
     });
+
+    const [takeDeleteConfirmationOpen, setTakeDeleteConfirmation] = useState(false)
+    const [deletionRecord, setDeletionRecord] = useState({})
 
     let theme = useTheme();
     const { getAllQuizes, deleteQuizRecord } = useQuiz();
@@ -65,15 +69,30 @@ const Quiz = () => {
 
     let { allQuizRecords } = quizDataState;
 
-    const onRemoveHandler = (id) => {
-        deleteQuizRecord(id).then((res) => {
-            let filternewData = allQuizRecords?.filter((item) => {
-                return item._id !== id
+    const onRemoveHandler = () => {
+        if (deletionRecord?._id) {
+            deleteQuizRecord(deletionRecord?._id).then((res) => {
+                let filternewData = allQuizRecords?.filter((item) => {
+                    return item._id !== deletionRecord?._id
+                })
+                setQuizDataState((prev) => ({ ...prev, allQuizRecords: filternewData }))
+                setTakeDeleteConfirmation(false)
+            }).catch((error) => {
+                console.log(error);
             })
-            setQuizDataState((prev) => ({ ...prev, allQuizRecords: filternewData }))
-        }).catch((error) => {
-            console.log(error);
-        })
+        }
+    }
+
+    const handleSearch = (value) => {
+        if (value) {
+            const data = quizDataState?.globalQuizRecords?.filter((e) => {
+                return e?.quizName?.toLowerCase()?.includes(value?.toLowerCase());
+            });
+            setQuizDataState((prev) => ({ ...prev, allQuizRecords: data || [] }))
+        } else {
+            // getUserList();
+            setQuizDataState((prev) => ({ ...prev, allQuizRecords: quizDataState?.globalQuizRecords || [] }))
+        }
     }
 
 
@@ -83,8 +102,8 @@ const Quiz = () => {
 
                 <Typography variant='h5'>{AppStrings?.Quiz}</Typography>
                 <Box sx={{ display: "flex", gap: 1 }}>
-                    <Searchbar onSearch={(e) => console.log("hello", e)} />
-                    <Button onClick={() => navigate("/createquize")} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+{AppStrings?.add_quize}</Button>
+                    <Searchbar onSearch={handleSearch} />
+                    <Button onClick={() => navigate("/createquize")} sx={{ background: colorCodes?.PRIMARY_COLOR, color: "#fff" }}>+ {AppStrings?.add_quize}</Button>
                 </Box>
             </Box>
 
@@ -94,17 +113,17 @@ const Quiz = () => {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead sx={{ background: theme.palette.grey[700] }}>
                             <TableRow sx={{ background: "gray" }}>
-                                <TableCell style={{ minWidth: "80px" }}>
+                                <TableCell align="center" style={{ minWidth: "70px" }}>
                                     {AppStrings?.sNo}
                                 </TableCell>
-                                <TableCell align="keft" style={{ minWidth: "150px" }}>
+                                <TableCell align="left" style={{ minWidth: "150px" }}>
                                     {AppStrings?.QuizName || "Quiz Name"}
                                 </TableCell>
-                                <TableCell align="left" style={{ minWidth: "100px" }}>
+                                <TableCell align="center" style={{ minWidth: "100px" }}>
                                     {AppStrings?.No_Of_questIon || "NO of Question"}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "180px" }}>
-                                    {AppStrings?.Solved_by_No_of_users || "Solved By No of users"}{" "}
+                                    {AppStrings?.Solved_by_No_of_users || "Solved By No of users"}
                                 </TableCell>
 
                                 <TableCell align="center" style={{ minWidth: "100px" }}>
@@ -116,21 +135,20 @@ const Quiz = () => {
                             {allQuizRecords?.length > 0 ? (
                                 allQuizRecords
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((QuizName, idx) => {
+                                    .map((QuizNames, idx) => {
                                         let {
                                             _id,
                                             quizName,
                                             description,
                                             solveByUser,
                                             questionCount
-                                        } = QuizName;
+                                        } = QuizNames;
                                         return (
                                             <TableRow key={_id}>
-                                                <TableCell component="th" scope="row">
+                                                <TableCell align="center" component="th" scope="row">
                                                     {idx + 1}
                                                 </TableCell>
                                                 <TableCell align="left" >
-
                                                     {quizName}
                                                 </TableCell>
                                                 {/* <TableCell align="left">{""}</TableCell> */}
@@ -152,7 +170,10 @@ const Quiz = () => {
                                                                     fontWeight: "fontWeightBold",
                                                                 },
                                                             }}
-                                                            onClick={() => onRemoveHandler(_id)}
+                                                            onClick={() => {
+                                                                setTakeDeleteConfirmation(true)
+                                                                setDeletionRecord(QuizNames)
+                                                            }}
                                                         > <DeleteOutlineOutlinedIcon size="medium" /></Button>
                                                     </Box>
                                                 </TableCell>
@@ -191,6 +212,18 @@ const Quiz = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
+
+            <DeleteModal
+                message={"Are you sure do you want to delete this quiz?"}
+                onCancelDeleteHandler={() => {
+                    setTakeDeleteConfirmation(false);
+                    setDeletionRecord({});
+                }}
+                onDeleteHandler={() => {
+                    onRemoveHandler();
+                    setDeletionRecord({});
+                }}
+                open={takeDeleteConfirmationOpen} setIsOpen={setTakeDeleteConfirmation} />
 
         </Container>
     )

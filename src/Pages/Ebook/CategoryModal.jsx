@@ -24,6 +24,7 @@ import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 import useCategoryApis from "../../Hooks/Category";
 import useFileGenrator from "../../Hooks/ImageFileConverter";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const style = {
     position: "absolute",
@@ -59,9 +60,11 @@ let types = ["Type1", "Type2", "Type3"];
 const CategoryModal = ({
     isOpenCategoryModal,
     setIsOpenCategoryModal,
+    setBooksState,
     isEditableRecord,
 }) => {
     const theme = useTheme();
+
     let isEditable = isEditableRecord?.id ? true : false;
 
     const { fetchImageAsFile } = useFileGenrator();
@@ -73,7 +76,7 @@ const CategoryModal = ({
     const validationSchema = Yup.object({
         categoryName: Yup.string().required("Category name is required"),
         file: Yup.mixed()
-            .required("Image is required")
+            .required("Category image is required")
             .test(
                 "fileSize",
                 "File size is too large",
@@ -83,7 +86,7 @@ const CategoryModal = ({
                 "fileType",
                 "Invalid file type",
                 (value) =>
-                    value && ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+                    value && value.type && value.type.startsWith("image/")
             ),
     });
 
@@ -94,16 +97,33 @@ const CategoryModal = ({
         },
         validationSchema,
         enableReinitialize: true,
-        onSubmit: (values) => {
-            if (isEditableRecord) {
+        onSubmit: (values, { resetForm }) => {
+            if (isEditableRecord?._id) {
                 updateCategoryRecord({ id: isEditableRecord?._id, body: values }).then((res) => {
-                    setIsOpenCategoryModal(false)
+                    setIsOpenCategoryModal(false);
+                    setBooksState((prev) => ({
+                        ...prev,
+                        showSuccessModal: true,
+                        message: res.message,
+                    }));
                 }).catch((err) => {
                     console.log(err);
                 })
             } else {
                 createCategory(values).then((res) => {
-                    setIsOpenCategoryModal(false)
+                    if (res.status === 201) {
+
+                        // setIsOpenCategoryModal(false)
+                        setBooksState((prev) => ({
+                            ...prev,
+                            showSuccessModal: true,
+                            message: res.message,
+                        }));
+                        setIsOpenCategoryModal(false)
+                        resetForm();
+                    } else {
+                        formik.setFieldError("categoryName", res.message)
+                    }
                 }).catch((err) => {
                     console.log(err);
                 })
@@ -120,17 +140,19 @@ const CategoryModal = ({
         if (isEditableRecord?.categoryImage) {
             fetchImageAsFile(isEditableRecord?.categoryImage).then((res) => {
                 if (res) {
-                    console.log(res, "ress");
+
                     formik.setFieldValue("file", res);
                 }
             });
         }
     }, [isEditableRecord?.categoryImage]);
 
-    console.log(isEditableRecord, "isRecord");
+
     let { values } = formik;
 
-    console.log(values, "valuesss");
+
+
+
 
 
     return (
@@ -215,6 +237,8 @@ const CategoryModal = ({
                                     onChange={handleImageChange}
                                 />
                             </Box>
+                            {formik.touched.file && formik.errors.file && <Typography color="error" sx={{ fontSize: "12px", pl: 1 }}>{formik.errors.file}</Typography>}
+
                         </Box>
                         <Box
                             sx={{

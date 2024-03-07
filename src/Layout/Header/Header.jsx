@@ -48,7 +48,8 @@ export default function Header() {
             <StyledToolbar shadow={1}>
 
 
-                <SearchIcon size="small" sx={{ color: "#000000" }} />
+                {/* <SearchIcon size="small" sx={{ color: "#000000" }} /> */}
+                <span></span>
                 <Box sx={{ flexGrow: 1, }} />
 
                 <Stack

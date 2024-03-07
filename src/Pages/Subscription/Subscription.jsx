@@ -11,6 +11,7 @@ import SubscriptionModal from './SubscriptionModal';
 import Searchbar from '../../Component/Searchbar';
 import useSubscription from '../../Hooks/Subscription';
 import ShowsMessageModal from '../../Component/ShowMessageModal';
+import DeleteModal from '../../Component/DeleteModal';
 
 
 
@@ -20,6 +21,9 @@ const Subscription = () => {
     const theme = useTheme()
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const [takeDeleteConfirmationOpen, setTakeDeleteConfirmation] = useState(false)
+    const [deletionRecord, setDeletionRecord] = useState({})
 
     const [subscriptionData, setSubscriptionData] = useState({
         subscriptionList: [],
@@ -41,17 +45,20 @@ const Subscription = () => {
         })
     }, [isOpenSunscriptionPlanModal])
 
-    const onRemoveHandler = (id) => {
-        deleteSubscription(id).then((res) => {
-            let filternewData = subscriptionData?.subscriptionList?.filter((item) => {
-                return item._id !== id
+    const onRemoveHandler = () => {
+        if (deletionRecord?._id) {
+            deleteSubscription(deletionRecord?._id).then((res) => {
+                let filternewData = subscriptionData?.subscriptionList?.filter((item) => {
+                    return item._id !== deletionRecord?._id
+                })
+                setSubscriptionData((prev) => ({
+                    ...prev, subscriptionList: filternewData
+                }))
+                setTakeDeleteConfirmation(false);
+            }).catch((error) => {
+                console.log(error);
             })
-            setSubscriptionData((prev) => ({
-                ...prev, subscriptionList: filternewData
-            }))
-        }).catch((error) => {
-            console.log(error);
-        })
+        }
     }
 
     const onSearch = (value) => {
@@ -99,16 +106,16 @@ const Subscription = () => {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead sx={{ background: theme.palette.grey[700] }}>
                             <TableRow sx={{ background: "gray" }}>
-                                <TableCell style={{ minWidth: "80px" }}>{AppStrings?.sNo}</TableCell>
-                                <TableCell align="keft" style={{ minWidth: "150px" }}>
+                                <TableCell align="center" style={{ minWidth: "70px" }}>{AppStrings?.sNo}</TableCell>
+                                <TableCell align="left" style={{ minWidth: "150px" }}>
                                     {AppStrings?.subscription_Name}
                                 </TableCell>
-                                <TableCell align="left" style={{ minWidth: "100px" }}>
+                                <TableCell align="center" style={{ minWidth: "100px" }}>
                                     {AppStrings?.Duration}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "150px" }}>
                                     {AppStrings?.rate}                                </TableCell>
-                                <TableCell align="center" style={{ minWidth: "120px" }}>
+                                <TableCell align="left" style={{ minWidth: "120px" }}>
                                     {AppStrings?.features}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "120px" }}>
@@ -124,16 +131,16 @@ const Subscription = () => {
                                         let { _id, duration, features, rate, subscriptionName, created_at, updated_at } = subscription;
                                         return (
                                             <TableRow key={_id}>
-                                                <TableCell component="th" scope="row">
+                                                <TableCell align="center" component="th" scope="row">
                                                     {idx + 1}
                                                 </TableCell>
                                                 <TableCell align="left">{subscriptionName}</TableCell>
+                                                <TableCell align="center">{duration?.duration}</TableCell>
+                                                <TableCell align="center">{rate}</TableCell>
+
                                                 <TableCell align="left">
                                                     {features}
                                                 </TableCell>
-                                                <TableCell align="center">{rate}</TableCell>
-                                                <TableCell align="center">{duration?.duration}</TableCell>
-
                                                 <TableCell align="center" style={{ minWidth: "200px" }}>
                                                     <Box>
                                                         <Button
@@ -164,7 +171,11 @@ const Subscription = () => {
                                                                     fontWeight: "fontWeightBold",
                                                                 },
                                                             }}
-                                                            onClick={() => onRemoveHandler(_id)}
+                                                            onClick={() => {
+                                                                setTakeDeleteConfirmation(true)
+                                                                setDeletionRecord(subscription)
+                                                                //  onRemoveHandler(_id)
+                                                            }}
                                                         > <DeleteOutlineOutlinedIcon size="medium" /></Button>
                                                     </Box>
                                                 </TableCell>
@@ -194,8 +205,20 @@ const Subscription = () => {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            <SubscriptionModal isModalOpen={isOpenSunscriptionPlanModal} subscriptionData={subscriptionData} setSubscriptionData={setSubscriptionData} setIsModalOpen={setIsOpenSubscriptionPlanModal} isEditRecord={isEditRecord} />
+            <SubscriptionModal isModalOpen={isOpenSunscriptionPlanModal} subscriptionData={subscriptionData} setSubscriptionData={setSubscriptionData} setIsModalOpen={setIsOpenSubscriptionPlanModal} isEditRecord={isEditRecord} setIsEditRecord={setIsEditRecord} />
             <ShowsMessageModal isOpen={subscriptionData.showSuccessModal} setIsOpen={setSubscriptionData} message={subscriptionData?.message} />
+
+            <DeleteModal
+                message={"Are you sure  you want to delete the subscription?"}
+                onCancelDeleteHandler={() => {
+                    setTakeDeleteConfirmation(false);
+                    setDeletionRecord({});
+                }}
+                onDeleteHandler={() => {
+                    onRemoveHandler();
+                    setDeletionRecord({});
+                }}
+                open={takeDeleteConfirmationOpen} setIsOpen={setTakeDeleteConfirmation} />
 
         </Container>
     )

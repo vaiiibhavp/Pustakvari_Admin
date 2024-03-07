@@ -11,6 +11,7 @@ import { adminMenus, superAdminMenus } from '../../Helper/Constant';
 import NavSection from './SidebarNav';
 import logoImage from "../../Assets/Images/logo.svg"
 import { useSelector } from 'react-redux';
+import useUserTypeName from '../../Hooks/IsCheckAuth';
 // mock
 
 // hooks
@@ -39,8 +40,8 @@ const StyledAccount = styled('div')(({ theme }) => ({
 export default function Sidebar() {
     const { pathname } = useLocation();
 
-    const { user } = useSelector((state) => state?.AuthUser);
 
+    const InstituteAdmin = useUserTypeName();
 
     // const isDesktop = useResponsive('up', 'lg');
 
@@ -59,7 +60,7 @@ export default function Sidebar() {
             </Box>
 
 
-            <NavSection data={user?.instituteInfo ? adminMenus : superAdminMenus} />
+            <NavSection data={InstituteAdmin ? adminMenus : superAdminMenus} />
 
             <Box sx={{ flexGrow: 1 }} />
 

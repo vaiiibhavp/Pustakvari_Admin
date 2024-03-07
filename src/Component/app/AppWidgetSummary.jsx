@@ -18,7 +18,7 @@ export default function AppWidgetSummary({ item, total, icon, color = 'primary',
     return (
         <Card
             sx={{
-                p: 3,
+                p: 2,
                 boxShadow: (theme) => theme.customShadows.z1,
                 textAlign: 'center',
                 display: "flex",
@@ -29,8 +29,8 @@ export default function AppWidgetSummary({ item, total, icon, color = 'primary',
             }}
             {...other}
         >
-            <img src={item.img} alt="" style={{ width: "50px", height: "50px" }} />
-            <Box sx={{ display: "flex", flexDirection: "column", paddingLeft: "15px" }}>
+            <img src={item.img} alt="" style={{ width: "38px", height: "38px" }} />
+            <Box sx={{ display: "flex", flexDirection: "column", paddingLeft: "10px" }}>
 
                 <Typography variant="h3" textAlign={"start"}>{item?.total}</Typography>
                 <Typography color={colorCodes?.GRAY_SHAD_100} fontWeight={400} variant="subtitle2" sx={{ opacity: 0.72 }}>

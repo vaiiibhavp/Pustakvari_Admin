@@ -23,6 +23,9 @@ import useInstitues from '../../Hooks/Institutes';
 
 import { AppStrings } from '../../Helper/Constant';
 import useFileGenrator from '../../Hooks/ImageFileConverter';
+import { generatePassword } from '../../Helper/utils/Common';
+import { toast } from 'react-toastify';
+import UseUserApis from '../../Hooks/User';
 
 
 const style = {
@@ -63,6 +66,11 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         updateInstituteRecord
     } = useInstitues()
 
+
+    const { createUser } = UseUserApis();
+
+
+
     const { fetchImageAsFile } = useFileGenrator();
 
 
@@ -71,54 +79,86 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         setIsInstituteModalOpen(false)
     };
     const initialValues = {
-        instituteName: isEditableRecord?.instituteName || '',
-        emailId: isEditableRecord?.emailId || '',
-        mobileNo: isEditableRecord?.mobileNo || '',
+        instituteName: isEditableRecord?.instituteName ?? '',
+        emailId: isEditableRecord?.emailId ?? '',
+        mobileNo: isEditableRecord?.mobileNo ?? '',
         password: '',
-        confirmPassword: '',
-        instituteImage: ""
+        instituteImage: null
     };
 
     const validationSchema = Yup.object().shape({
         instituteName: Yup.string().required('Full name is required'),
-        emailId: Yup.string().email('Invalid email address').required('Email is required'),
-        mobileNo: Yup.string().required('Contact number is required'),
-        password: Yup.string().required('Password is required'),
-        confirmPassword: Yup.string()
-            .oneOf([Yup.ref('password'), null], 'Passwords must match')
-            .required('Confirm password is required'),
+        emailId: Yup.string().matches(/^[^\s@]+@[^\s@]+\.(?:com)$/, 'Invalid email address').required('Email is required'),
+        mobileNo: Yup.string().matches(/^[0-9]{10}$/, "Contact number must be 10 digits").required('Contact number is required'),
+        instituteImage: Yup.mixed()
+            .required("Institute image is required")
+            .test(
+                "fileSize",
+                "File size is too large",
+                (value) => value && value.size <= 2000000
+            ) // 2MB limit
+            .test(
+                "fileType",
+                "Invalid file type",
+                (value) =>
+                    value && value.type && value.type.startsWith("image/")
+            ),
+        // password: !isEditableRecord && Yup.string().required('Password is required'),
+        // confirmPassword: !isEditableRecord && Yup.string()
+        //     .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        //     .required('Confirm password is required'),
     });
 
     const formik = useFormik({
         initialValues,
         validationSchema,
         enableReinitialize: true,
-        onSubmit: (values) => {
+        onSubmit: (values, { resetForm }) => {
 
             if (isEditableRecord?._id) {
                 delete values.confirmPassword;
                 updateInstituteRecord(values, isEditableRecord?._id).then((res) => {
+
                     if (res.status === 200) {
-                        setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res.data.message }))
+                        setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res.message }))
                         setDetroyExistRecord({});
                     }
                     setIsInstituteModalOpen(false)
                 })
             } else {
-                delete values.confirmPassword;
-                createInstituteRecord(values).then((res) => {
-                    if (res.status === 201) {
-                        setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res?.data.message }))
+                if (!values.instituteImage) {
+                    formik.setFieldError("instituteImage", "Intitute image is required")
+                } else {
+
+                    delete values.confirmPassword;
+
+                    let data = {
+                        ...values, userType: "INSTITUTE"
                     }
-                    setIsInstituteModalOpen(false)
-                }).catch((errr) => {
-                    console.log(
-                        errr, "errro"
-                    );
-                })
+
+                    console.log(data, "data");
+
+                    createUser(data).then((res) => {
+                        if (res.status === 200) {
+                            setParentState((prev) => ({ ...prev, showSuccessModal: true, message: res?.data.message }))
+
+                        } else {
+                            toast.dismiss();
+                            // formik.setFieldError("emailId", res.data.message)
+                            toast.warning(res.data.message, { autoClose: 2000 })
+                        }
+                        setIsInstituteModalOpen(false)
+                        resetForm();
+                    }).catch((errr) => {
+                        console.log(
+                            errr, "errro"
+                        );
+                    })
+                }
             }
         },
     });
+
 
     const handleClickShowPassword = () => {
         formik.setFieldValue('passwordVisible', !formik.values.passwordVisible);
@@ -134,10 +174,8 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
     const handleImageChange = (event) => {
         formik.setFieldValue("instituteImage", event.currentTarget.files[0]);
     };
-
     let { values, errors } = formik;
 
-    console.log(errors, isEditableRecord, values, values?.confirmPassword, "error");
 
     useEffect(() => {
         if (isEditableRecord?.instituteImage) {
@@ -148,6 +186,13 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
             });
         }
     }, [isEditableRecord?.instituteImage]);
+
+
+    useEffect(() => {
+        let newPassword = generatePassword();
+        formik.setFieldValue("password", newPassword)
+    }, [isInstituteModalOpen])
+
 
     return (
         <Modal
@@ -168,7 +213,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                         alignItems: "center",
                     }}
                 >
-                    {isEditable ? "Edit institute" : "Create New Institute"}
+                    {isEditableRecord?._id ? "Edit institute" : "Create New Institute"}
 
                     <span onClick={handleClose}>
                         <CloseIcon sx={{ color: theme.palette.grey[400] }} />
@@ -228,7 +273,10 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                                 style={{ display: "none" }}
                                 onChange={handleImageChange}
                             />
+
                         </Box>
+                        {formik.touched.instituteImage && formik.errors.instituteImage && <Typography color="error" sx={{ fontSize: "12px", pl: 1 }}>{formik.errors.instituteImage}</Typography>}
+
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
@@ -295,7 +343,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                         />
                     </Box>
 
-                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
+                    {/* <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
 
                         <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.password}:</Typography>
 
@@ -358,13 +406,13 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                                 size="small"
                             />
                         </FormControl>
-                    </Box>
+                    </Box> */}
 
                     <Box px={3}>
 
 
                         <Button fullWidth type="submit" variant="contained" color="primary" mt={2} sx={{ marginTop: "15px", borderRadius: "18px" }}>
-                            {isEditable ? "Update" : "Submit"}
+                            {isEditableRecord?._id ? "Update" : "Submit"}
                         </Button>
                     </Box>
                 </form>

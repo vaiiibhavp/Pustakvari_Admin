@@ -35,3 +35,21 @@ body {
   width: 27px;
   height: 28px;
 }
+
+/* global style  */
+
+.otp-input-fields {
+  /* background-color: red; */
+  display: flex;
+  justify-content: center;
+}
+
+.otp-input-fields input {
+  /* background-color: red; */
+  width: 30px;
+  height: 10px;
+}
+
+.custom-toast {
+  width: 300px; /* Set the desired width */
+}

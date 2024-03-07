@@ -83,28 +83,35 @@ const EbookModal = ({
 
   const handleClose = () => setIsOpenEbookModal(false);
 
-  // const validationSchema = Yup.object({
-  //   bookName: Yup.string().required("Book name is required"),
-  //   authorName: Yup.string().required("Author name is required"),
-  //   category: Yup.string().required("Category is required"),
-  //   type: Yup.string().required("Type is required"),
-  //   // videoLink: Yup.string()
-  //   //   .url("Invalid URL")
-  //   //   .required("Video link is required"),
-  //   bookImage: Yup.mixed()
-  //     .required("Image is required")
-  //     .test(
-  //       "fileSize",
-  //       "File size is too large",
-  //       (value) => value && value.size <= 2000000
-  //     ) // 2MB limit
-  //     .test(
-  //       "fileType",
-  //       "Invalid file type",
-  //       (value) =>
-  //         value && ["image/jpeg", "image/png", "image/gif"].includes(value.type)
-  //     ),
-  // });
+  const validationSchema = Yup.object({
+    bookName: Yup.string().required("Book name is required"),
+    authorName: Yup.string().required("Author name is required"),
+    category: Yup.string().required("Category is required"),
+    bookType: Yup.string().required("Type is required"),
+    // videoLink: Yup.string()
+    //   .url("Invalid URL")
+    //   .required("Video link is required"),
+    bookImage: Yup.mixed()
+      .required("Image is required")
+      // 2MB limit
+      .test(
+        "fileType",
+        "Invalid file type",
+        (value) => value && value.type && value.type.startsWith("image/")
+      ),
+    bookPdf: Yup.mixed()
+      .required("File is required")
+      .test(
+        "fileSize",
+        "File size is too large",
+        (value) => value && value.size <= 2000000 // 2MB limit
+      )
+      .test(
+        "fileType",
+        "Invalid file type",
+        (value) => value && value.type === "application/pdf"
+      ),
+  });
 
   // bookName;
   // authorName;
@@ -115,18 +122,18 @@ const EbookModal = ({
 
   const formik = useFormik({
     initialValues: {
-      bookName: isEditableRecord?.bookName || "",
-      authorName: isEditableRecord?.bookName || "",
+      bookName: isEditableRecord?.bookName ?? "",
+      authorName: isEditableRecord?.bookName ?? "",
       bookPdf: null,
       bookImage: null,
-      category: isEditableRecord?.category?._id || "",
-      bookType: isEditableRecord?.bookType?._id || "",
-      bookLanguage: isEditableRecord?.bookLanguage?._id || "",
-      videoLink: isEditableRecord?.bookName || "",
+      category: isEditableRecord?.category?._id ?? "",
+      bookType: isEditableRecord?.bookType?._id ?? "",
+      bookLanguage: isEditableRecord?.bookLanguage?._id ?? "",
+      videoLink: isEditableRecord?.bookName ?? "",
     },
-    // validationSchema,
+    validationSchema,
     enableReinitialize: true,
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       if (isEditableRecord) {
         delete values.bookPdf;
         delete values.bookImage;
@@ -151,6 +158,7 @@ const EbookModal = ({
               showSuccessModal: true,
               message: res.message,
             }));
+            resetForm();
           })
           .catch((err) => {
             console.log(err);
@@ -160,10 +168,17 @@ const EbookModal = ({
   });
 
   const handleImageChange = (event, fieldName) => {
+    // if (
+    //   event.currentTarget.files[0].type === "application/pdf" &&
+    //   fieldName === "bookPdf"
+    // ) {
+    //   formik.setFieldValue(fieldName, event.currentTarget.files[0]);
+    // } else if (fieldName === "bookImage") {
     formik.setFieldValue(fieldName, event.currentTarget.files[0]);
+    // }
   };
 
-  let { values } = formik;
+  let { values, errors } = formik;
 
   useEffect(() => {
     const fetchCategoryList = getCateogoryList();
@@ -195,6 +210,29 @@ const EbookModal = ({
     }
   }, [isEditableRecord?.bookImage]);
 
+  useEffect(() => {
+    if (isEditableRecord?.bookPdf) {
+      fetchImageAsFile(isEditableRecord?.bookPdf).then((res) => {
+        if (res) {
+          const filename = isEditableRecord.bookPdf.split("/").pop();
+
+          const pdfFile = new File([res], filename, {
+            type: "application/pdf",
+          });
+
+          formik.setFieldValue("bookPdf", pdfFile);
+        }
+      });
+    }
+  }, [isEditableRecord?.bookPdf]);
+
+  function truncateFileName(fileName, maxLength = 30) {
+    if (fileName.length > maxLength) {
+      return fileName.substring(0, maxLength - 3) + "...";
+    }
+    return fileName;
+  }
+
   return (
     <Modal
       open={isOpenEbookModal}
@@ -214,7 +252,7 @@ const EbookModal = ({
             alignItems: "center",
           }}
         >
-          {isEditable ? "Edit E-book" : AppStrings?.Add_new_e_book}
+          {isEditableRecord?._id ? "Edit E-book" : AppStrings?.Add_new_e_book}
 
           <span onClick={handleClose}>
             <CloseIcon sx={{ color: theme?.palette.grey[400] }} />
@@ -316,6 +354,11 @@ const EbookModal = ({
                     onChange={(e) => handleImageChange(e, "bookImage")}
                   />
                 </Box>
+                {formik.touched.bookImage && formik.errors.bookImage && (
+                  <Typography color="error" sx={{ fontSize: "12px", pl: 1 }}>
+                    {formik.errors.bookImage}
+                  </Typography>
+                )}
               </Box>
               <Box
                 fullWidth
@@ -342,11 +385,13 @@ const EbookModal = ({
                     {/* <AddIcon sx={{ width: 40, height: 40 }} /> */}
                     <Typography
                       sx={{
-                        fontSize: "14px",
+                        fontSize: "13px",
                         color: theme?.palette?.grey[400],
                       }}
                     >
-                      upload pdf
+                      {values.bookPdf
+                        ? truncateFileName(values.bookPdf.name)
+                        : "upload pdf"}
                     </Typography>
                   </IconButton>
                 </label>
@@ -358,6 +403,11 @@ const EbookModal = ({
                   style={{ display: "none" }}
                   onChange={(e) => handleImageChange(e, "bookPdf")}
                 />
+                {formik.touched.bookPdf && formik.errors.bookPdf && (
+                  <Typography color="error" sx={{ fontSize: "12px", pl: 1 }}>
+                    {formik.errors.bookPdf}
+                  </Typography>
+                )}
               </Box>
             </Box>
 

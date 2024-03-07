@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -21,6 +21,9 @@ import { AppStrings } from "../../Helper/Constant";
 import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
 import UseUserApis from "../../Hooks/User";
 import { useSelector } from "react-redux";
+import { generatePassword } from "../../Helper/utils/Common";
+import { toast } from "react-toastify";
+import useUserTypeName from "../../Hooks/IsCheckAuth";
 
 const style = {
   position: "absolute",
@@ -55,8 +58,12 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
   userDataState }) => {
   let isEditable = isEditableRecord !== null ? true : false;
   const { updateUser, createUser } = UseUserApis();
-  let { user } = useSelector((state) => state.AuthUser)
+  const { AuthUser: { user } } = useSelector(state => state)
+
+  const InstituteAdmin = useUserTypeName();
   const theme = useTheme();
+
+  const [randomPwd, setRandomPwd] = useState()
 
 
   const handleClose = () => setUserModalOpen(false);
@@ -64,22 +71,21 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
     fullName: isEditableRecord?.fullName ?? "",
     emailId: isEditableRecord?.emailId ?? "",
     mobileNo: isEditableRecord?.mobileNo ?? "",
-    password: "",
-    confirmPassword: "",
-    userType: user?.instituteInfo ? "INSTITUTE_USER" : "REGULAR_USER",
-    is_instituteUser: user?.instituteInfo ? true : false,
+
+
+    userType: InstituteAdmin ? "INSTITUTE_USER" : "REGULAR_USER",
+    is_instituteUser: InstituteAdmin ? true : false,
+    createdBy: InstituteAdmin ? user?.userInfo?._id : ""
   };
 
   const validationSchema = Yup.object().shape({
     fullName: Yup.string().required("Full name is required"),
     emailId: Yup.string()
-      .email("Invalid email address")
+      .matches(/^[^\s@]+@[^\s@]+\.(?:com)$/, "Invalid email address")
       .required("Email is required"),
-    mobileNo: Yup.string().required("Contact number is required"),
-    password: Yup.string().required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm password is required"),
+    mobileNo: Yup.string().matches(/^[0-9]{10}$/, "Contact number must be 10 digits")
+      .required("Contact number is required"),
+
   });
 
   const handleSubmit = (isEdit, value, { resetForm }) => {
@@ -92,8 +98,13 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
               showSuccessModal: true,
               message: res?.data.message,
             }));
-            resetForm();
+
+          } else {
+
+            toast.dismiss();
+            toast.warning(res.data.message, { autoClose: 2000 })
           }
+          resetForm();
           setUserModalOpen(false);
         })
         .catch((err) => {
@@ -104,21 +115,29 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
         fullName: value?.fullName,
         emailId: value?.emailId,
         mobileNo: value?.mobileNo,
-        password: value?.password,
-        userType: user?.instituteInfo ? "INSTITUTE_USER" : "REGULAR_USER",
-        is_instituteUser: user?.instituteInfo ? true : false,
+        password: randomPwd,
+        userType: InstituteAdmin ? "INSTITUTE_USER" : "REGULAR_USER",
+        is_instituteUser: InstituteAdmin ? true : false,
+        createdBy: InstituteAdmin ? user?.userInfo?._id : ""
       };
       createUser(data)
         .then((res) => {
           if (res.data.status === 201) {
+
             setUserDataState((prev) => ({
               ...prev,
               showSuccessModal: true,
               message: res?.data.message,
             }));
-            resetForm();
+
+          } else {
+            toast.dismiss();
+            // formik.setFieldError("emailId", res.data.message)
+            toast.warning(res.data.message, { autoClose: 2000 })
           }
+          resetForm();
           setUserModalOpen(false);
+
         })
         .catch((err) => {
           console.log(err);
@@ -135,20 +154,26 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
     },
   });
 
-  const handleClickShowPassword = () => {
-    formik.setFieldValue("passwordVisible", !formik.values.passwordVisible);
-  };
+  // const handleClickShowPassword = () => {
+  //   formik.setFieldValue("passwordVisible", !formik.values.passwordVisible);
+  // };
 
-  const handleClickShowConfirmPassword = () => {
-    formik.setFieldValue(
-      "confirmPasswordVisible",
-      !formik.values.confirmPasswordVisible
-    );
-  };
+  // const handleClickShowConfirmPassword = () => {
+  //   formik.setFieldValue(
+  //     "confirmPasswordVisible",
+  //     !formik.values.confirmPasswordVisible
+  //   );
+  // };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  useEffect(() => {
+    let newPassword = generatePassword();
+    setRandomPwd(newPassword);
+  }, [isUserModalOpen])
+
 
   return (
     <Modal
@@ -263,7 +288,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
             />
           </Box>
 
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -363,7 +388,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
                 size="small"
               />
             </FormControl>
-          </Box>
+          </Box> */}
 
           <Box px={3}>
             <Button

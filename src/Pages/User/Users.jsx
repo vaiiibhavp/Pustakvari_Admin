@@ -29,11 +29,14 @@ import { useSelector } from "react-redux";
 import PaginationComponent from "../../Component/Pagination/Paginations";
 import InsitiuteUserTable from "./InsitiuteUserTable";
 import SuperAdminTable from "./SuperAdminTable";
+import useUserTypeName from "../../Hooks/IsCheckAuth";
 
 const Users = () => {
 
   let { user } = useSelector((state) => state.AuthUser)
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+
+  const InstituteAdmin = useUserTypeName();
   const [isEditable, setIsEditable] = useState(null);
   const [userData, setUserData] = useState([]);
   const [globalData, setGlobalData] = useState([]);
@@ -57,14 +60,14 @@ const Users = () => {
   };
 
   const getUserList = () => {
-
-    let isIntitute = user?.instituteInfo
+    let isIntitute = InstituteAdmin
     try {
-      getUsers({ user: user?.instituteInfo }).then((res) => {
+      getUsers({ user: user?.userInfo }).then((res) => {
+
         const data = res?.data?.data?.map((ele, idx) => {
           return {
             ...ele,
-            created_at: moment(ele?.created_at).format("DD-MM-YYYY h:mm:ss a"),
+            // created_at: moment(ele?.created_at).format("DD-MM-YYYY h:mm:ss a"),
             is_instituteUser: ele?.is_instituteUser === true ? "Yes" : "No",
             index: idx,
           };
@@ -150,7 +153,7 @@ const Users = () => {
 
       <Paper sx={{ width: "100%" }}>
 
-        {user?.instituteInfo ?
+        {InstituteAdmin ?
           <InsitiuteUserTable userData={userData} page={page} rowsPerPage={rowsPerPage} setIsUserModalOpen={setIsUserModalOpen} setIsEditable={setIsEditable} handleCheckStatus={handleCheckStatus} /> :
           <SuperAdminTable userData={userData} page={page} rowsPerPage={rowsPerPage} setIsUserModalOpen={setIsUserModalOpen} setIsEditable={setIsEditable} handleCheckStatus={handleCheckStatus} />
         }
@@ -158,7 +161,7 @@ const Users = () => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={userData.length}
+          count={userData?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -175,8 +178,7 @@ const Users = () => {
         userDataState={userDataState}
         isEditableRecord={isEditable}
       />
-      {console.log(userDataState, "jsdhfhskuwekbknjehecjahsdkjh")
-      }
+
       <ShowsMessageModal isOpen={userDataState.showSuccessModal} setIsOpen={setUserDataState} message={userDataState?.message} />
     </Container>
   );

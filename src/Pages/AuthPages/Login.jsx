@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 
 // Components
-import { TextField, Button, Typography, Container, CssBaseline, Grid, InputAdornment, IconButton } from '@mui/material';
+import { TextField, Button, Typography, Container, CssBaseline, Grid, InputAdornment, IconButton, useTheme } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 // Constants
@@ -25,6 +25,8 @@ const LoginForm = () => {
     const { userLogin } = useAuthApis();
     const dispatch = useDispatch();
 
+    const theme = useTheme();
+
     const navigate = useNavigate()
 
     const formik = useFormik({
@@ -33,33 +35,36 @@ const LoginForm = () => {
             password: '',
         },
         validationSchema: Yup.object({
-            emailId: Yup.string().email('Invalid email address').required('Email Id is required'),
+            emailId: Yup.string().matches(/^[^\s@]+@[^\s@]+\.(?:com)$/, 'Invalid email address').required('Email Id is required'),
             password: Yup.string().required('Password is required'),
         }),
         onSubmit: (values) => {
             // You can handle form submission here
             userLogin(values).then((res) => {
-                console.log(res, "res login");
                 if (res.status === 200) {
-                    localStorage.setItem('user_token', res?.body?.token)
-                    localStorage.setItem('user', JSON.stringify(res?.body))
-                    dispatch(LogIn(res.body))
-                    navigate("/Dashboard")
 
-                    toast.dismiss();
-                    toast.success(res.message, { autoClose: 2000 })
+                    if (res.body.userInfo.userType === "SUPER_ADMIN" || res.body.userInfo.userType === "INSTITUTE") {
+                        localStorage.setItem('user_token', res?.body?.token)
+                        localStorage.setItem('user', JSON.stringify(res?.body))
+                        dispatch(LogIn(res.body))
+                        navigate("/Dashboard")
+                        toast.dismiss();
+                        toast.success(res.message, { autoClose: 2000 })
+                    } else {
+                        toast.dismiss();
+                        toast.warning("Access Denied: You do not have permission to access this portal. Please contact your administrator for assistance.", { autoClose: 2000 })
+                    }
+
+
 
                 } else {
                     toast.dismiss();
                     toast.warning(res.message, { autoClose: 2000 })
                 }
-
             }).catch((error) => {
                 toast.dismiss();
                 toast.warning("Something went wrong", { autoClose: 2000 })
-                console.log(error);
             })
-
         },
     });
 
@@ -137,7 +142,7 @@ const LoginForm = () => {
                         </Grid>
                     </Grid>
 
-                    <Typography color={colorCodes?.SECONDARY_COLOR} pb={3} sx={{ cursor: "pointer" }} onClick={() => navigate("/forgot")}>
+                    <Typography sx={{ color: theme?.palette?.primary?.forgot, cursor: "pointer" }} pb={3} onClick={() => navigate("/forgot")}>
                         {AppStrings?.forgot_password}
                     </Typography>
                     <Button sx={{

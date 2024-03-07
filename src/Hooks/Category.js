@@ -16,7 +16,7 @@ const useCategoryApis = () => {
   };
 
   const updateCategoryRecord = async ({ id, body }) => {
-    const response = await instance.put(`/updateInstitute/${id}`, body, {
+    const response = await instance.put(`/categoryUpdate/${id}`, body, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -30,7 +30,7 @@ const useCategoryApis = () => {
   };
 
   const deleteCategoryRecord = async (id) => {
-    const response = await instance.delete(`/deleteInstituteInfo/${id}`);
+    const response = await instance.delete(`/deleteCategory/${id}`);
     return response.data;
   };
   return {

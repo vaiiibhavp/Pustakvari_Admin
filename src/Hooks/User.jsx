@@ -2,15 +2,17 @@ import instance from "../Axios/Instance";
 
 const UseUserApis = () => {
   const getUsers = async ({ user }) => {
-    console.log(user, "user====");
-    const Response = await instance.get(user ? `/userList?is_instituteUser=${true}` : `/userList`);
+    let hasInstitute = user?.userType === "INSTITUTE";
+
+
+    const Response = await instance.get(hasInstitute ? `/userList?id=${user?._id}` : `/userList`);
     return Response;
   };
 
   const createUser = async (body) => {
     const response = await instance.post(`/userSingup`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response;
@@ -19,7 +21,7 @@ const UseUserApis = () => {
   const updateUser = async (body, id) => {
     const response = await instance.put(`/updateUser/${id}`, body, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
     return response;
@@ -37,7 +39,6 @@ const UseUserApis = () => {
 
   const changeUserStatus = async ({ id, params }) => {
 
-    console.log(id, params);
     const response = await instance.put(`userStatus/${id}?activeStatus=${params?.activeStatus}`);
     return response;
   };

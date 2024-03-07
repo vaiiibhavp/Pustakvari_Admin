@@ -28,46 +28,57 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { answerKeySvg } from "../../Assets/AnswerKey";
 import useQuiz from "../../Hooks/Quiz";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
+import { toast } from "react-toastify";
 
 const CreateQuiz = () => {
     const [quizName, setQuizName] = useState("");
     const [description, setDescription] = useState("");
-    const [typeList, setTypeList] = useState([])
+    const [typeList, setTypeList] = useState([]);
 
     const [modalData, setModalData] = useState({
         showSuccessModal: false,
         message: "",
-    })
+    });
+
+    const [quizTextError, setQuizTextError] = useState(null);
+    const [descriptionError, setDescriptionError] = useState(null);
     let { getQuizTypeList, createQuizRecord } = useQuiz();
 
-
-    const [questionText, setQuestions] = useState([
-    ]);
+    const [questionText, setQuestions] = useState([]);
     const [answerkey, setAnswerkey] = useState(null);
     const theme = useTheme();
     const navigate = useNavigate();
 
-
     const handleAddQuestion = () => {
         const newQuestion = {
-            id: questionText.length + 1,
+            id: questionText?.length + 1,
             question: "",
-            type: "text",
-            option: [{ id: 1, value: "Option 1" }],
+            type: "",
+            option: [{ id: 1, value: "", editing: true }],
         };
         setQuestions([...questionText, newQuestion]);
     };
 
     const handleAddOption = (questionIndex) => {
-        const newOptions = [
-            ...questionText[questionIndex].option,
-            {
-                id: questionText[questionIndex].option.length + 1,
-                value: `Option ${questionText[questionIndex].option.length + 1}`,
-            },
-        ];
+        const currentOptions = [...questionText[questionIndex].option];
+
+        const newOption = {
+            id: currentOptions.length + 1,
+            value: "",
+            editing: true,
+        };
+
+        const newOptions = [...currentOptions, newOption];
         const updatedQuestions = [...questionText];
         updatedQuestions[questionIndex].option = newOptions;
+        const lastIndex = currentOptions.length - 1;
+        if (
+            currentOptions.length > 0 &&
+            updatedQuestions[questionIndex].option[lastIndex]?.value?.length > 0
+        ) {
+            updatedQuestions[questionIndex].option[lastIndex].editing = false;
+        }
+
         setQuestions(updatedQuestions);
     };
 
@@ -91,6 +102,11 @@ const CreateQuiz = () => {
         setQuestions(updatedQuestions);
     };
 
+    const handleDeleteQuestion = (questionIndex) => {
+        let updatedQuestions = questionText.filter((_, i) => i !== questionIndex);
+        setQuestions(updatedQuestions);
+    };
+
     const handleQuestionNameChange = (index, event) => {
         const updatedQuestions = [...questionText];
         updatedQuestions[index].question = event.target.value;
@@ -100,7 +116,6 @@ const CreateQuiz = () => {
     const handleQuestionTypeChange = (index, event) => {
         const updatedQuestions = [...questionText];
 
-
         updatedQuestions[index].type = event.target.value;
         setQuestions(updatedQuestions);
     };
@@ -108,7 +123,8 @@ const CreateQuiz = () => {
     const handleOptionChange = (questionIndex, optionIndex, event) => {
         const updatedQuestions = [...questionText];
 
-        updatedQuestions[questionIndex].option[optionIndex].value = event.target.value;
+        updatedQuestions[questionIndex].option[optionIndex].value =
+            event.target.value;
         setQuestions(updatedQuestions);
     };
 
@@ -119,41 +135,73 @@ const CreateQuiz = () => {
         setQuestions(updatedQuestions);
     };
 
-
     const handleSaveAnserKey = (questionIndex) => {
+        // const updatedQuestions = [...questionText];
+
+        // const currentOptions = [...questionText[questionIndex].option];
+        // const lastIndex = currentOptions.length - 1;
+        // if (currentOptions.length > 0 && updatedQuestions[questionIndex].option[lastIndex]?.value?.length > 0) {
+        //     updatedQuestions[questionIndex].option[lastIndex].editing = false;
+        // }
+        // setQuestions(updatedQuestions);
+
+        let currentQuestion = questionText[questionIndex];
+
+        // if (
+        //     currentQuestion?.type?.length > 0 &&
+        //     currentQuestion?.question?.length > 0
+        // ) {
         setAnswerkey(questionIndex);
+        // }
     };
-
-
-
 
     const createQuiz = () => {
         delete questionText?.id;
         let error = false;
         // Validation for empty quiz name, description, and question text
-        if (!quizName || !description || !questionText || questionText.length === 0) {
-            console.error("Quiz name, description, and at least one question are required.");
-            return error = true;// Exit function if validation fails
+        if (
+            !quizName ||
+            !description ||
+            !questionText ||
+            questionText?.length === 0
+        ) {
+            if (!quizName && !description) {
+                setQuizTextError("Quiz text is required");
+                setDescriptionError("Description is required");
+                toast.dismiss();
+                toast.warning("Please provide a name and description for the quiz before continuing", { autoClose: 2000, className: 'custom-toast' })
+            }
+            if (!quizName) {
+                setQuizTextError("Quiz text is required");
+                toast.dismiss();
+                toast.warning("Please provide a name for the quiz before continuing", { autoClose: 2000, className: 'custom-toast' })
+            } else if (!description) {
+                setDescriptionError("Description is required");
+                toast.dismiss();
+                toast.warning("Please provide a description for the quiz before continuing", { autoClose: 2000, className: 'custom-toast' })
+            } else {
+                toast.dismiss();
+                toast.warning("Please add questions to the quiz before continuing.", { autoClose: 2000, className: 'custom-toast' })
+            }
+
+
+            return (error = true); // Exit function if validation fails
         } else {
-            error = false
+            error = false;
         }
 
         // Validation for empty question, type, and answer in each question
         for (const question of questionText) {
             if (!question.question || !question.type || !question.answer) {
-                console.error("Question, type, and answer are required for each question.");
-                return error = true; // Exit function if validation fails
+                toast.dismiss();
+                toast.warning(`Please review all questions and answers to ensure they are set up properly.`, { autoClose: 2000, className: 'custom-toast' })
+                return (error = true); // Exit function if validation fails
             } else {
-                error = false
+                error = false;
             }
         }
 
-
-
-
-
         if (!error) {
-
             let data = {
                 quizName: quizName,
                 description: description,
@@ -162,51 +210,47 @@ const CreateQuiz = () => {
                         question: item.question,
                         option: item.option.map((optionText) => optionText.value),
                         questionType: item.type,
-                        answer: item.answer
+                        answer: item.answer,
+                    };
+                }),
+            };
+
+            createQuizRecord(data)
+                .then((res) => {
+                    if (res.status === 201) {
+                        setModalData((prev) => ({
+                            ...prev,
+                            showSuccessModal: true,
+                            message: res.message,
+                        }));
+                        setTimeout(() => {
+                            navigate("/Quiz");
+                        }, 2000);
                     }
                 })
-            }
-
-            createQuizRecord(data).then((res) => {
-                if (res.status === 201) {
-                    setModalData((prev) => ({ ...prev, showSuccessModal: true, message: res.message }))
-                    setTimeout(() => {
-                        navigate("/Quiz")
-                    }, 2000);
-                }
-            }).catch((err) => {
-                console.log(err);
-            })
-
-
+                .catch((err) => {
+                    console.log(err);
+                });
         }
-
-
-
-    }
-
-
-
+    };
 
     useEffect(() => {
-        getQuizTypeList().then((res) => {
-            if (res.status === 200) {
+        getQuizTypeList()
+            .then((res) => {
+                if (res.status === 200) {
+                    setTypeList(res.data || []);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
-                setTypeList(res.data || [])
-            }
-
-        }).catch((err) => {
-            console.log(err);
-        })
-    }, [])
-
-
-
+    useEffect(() => { }, [answerkey]);
 
     return (
-        <Container maxWidth="xl" sx={{ position: "relative" }}>
+        <Container maxWidth="xl" sx={{ position: "relative", textAlign: "center" }}>
             <Box display={"flex"} pb={3} sx={{ alignItems: "center" }}>
-
                 <Button
                     boxShadow={2}
                     sx={{
@@ -216,8 +260,8 @@ const CreateQuiz = () => {
                         padding: 0,
 
                         "&:hover": {
-                            background: "none"
-                        }
+                            background: "none",
+                        },
 
                         // padding: "5px 20px 5px 12px",
                     }}
@@ -246,29 +290,41 @@ const CreateQuiz = () => {
             <Grid container spacing={3}>
                 <Grid item xs={12} md={6} lg={6}>
                     <Box>
-                        <Typography>Quiz Name</Typography>
+                        <Typography sx={{ textAlign: "start" }}>Quiz Name</Typography>
                         <TextField
                             fullWidth
                             size="small"
+                            sx={{ mt: 0.5 }}
                             variant="outlined"
                             margin="normal"
                             type="text"
+                            error={Boolean(quizTextError)}
+                            placeholder="Enter quiz name..."
                             value={quizName}
-                            onChange={(e) => setQuizName(e.target.value)}
+                            onChange={(e) => {
+                                setQuizTextError(null);
+                                setQuizName(e.target.value);
+                            }}
                         />
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={6} lg={6}>
                     <Box>
-                        <Typography>Description</Typography>
+                        <Typography sx={{ textAlign: "start" }}>Description</Typography>
                         <TextField
                             fullWidth
+                            sx={{ mt: 0.5 }}
                             size="small"
                             variant="outlined"
                             margin="normal"
                             type="text"
+                            error={Boolean(descriptionError)}
+                            placeholder="Enter quiz description..."
                             value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            onChange={(e) => {
+                                setDescriptionError(null);
+                                setDescription(e.target.value);
+                            }}
                         />
                     </Box>
                 </Grid>
@@ -277,16 +333,22 @@ const CreateQuiz = () => {
                         return (
                             <Card sx={{ marginBottom: "10px" }} key={question.id}>
                                 <form style={{ padding: "0px" }}>
-                                    {index === answerkey && <Typography sx={{ padding: "15px" }} >Choose correct answers</Typography>}
+                                    {index === answerkey && (
+                                        <Typography sx={{ padding: "15px", textAlign: "start" }}>
+                                            Choose correct answers
+                                        </Typography>
+                                    )}
                                     {index === answerkey && <Divider />}
                                     <Box p={2} sx={{ display: "flex", gap: 3 }}>
                                         {index === answerkey ? (
-                                            <>{`${answerkey + 1}. ${questionText[answerkey].question}`}</>
+                                            <Typography sx={{ fontWeight: "600" }}>{`Q ${answerkey + 1} : ${questionText[answerkey].question
+                                                }`}</Typography>
                                         ) : (
                                             <TextField
                                                 sx={{ width: "70%" }}
                                                 variant="outlined"
                                                 fullWidth
+                                                placeholder="Enter question here..."
                                                 size="small"
                                                 value={question.question}
                                                 onChange={(e) => handleQuestionNameChange(index, e)}
@@ -299,6 +361,7 @@ const CreateQuiz = () => {
                                                 sx={{ width: "30%" }}
                                                 fullWidth
                                                 variant="outlined"
+                                                placeholder="Select Type"
                                                 style={{ marginBottom: "10px" }}
                                             >
                                                 <Select
@@ -311,7 +374,7 @@ const CreateQuiz = () => {
                                                             <MenuItem key={type._id} value={type?._id}>
                                                                 {type.pattern || "Multiple Choice"}
                                                             </MenuItem>
-                                                        )
+                                                        );
                                                     })}
 
                                                     {/* <MenuItem value="Checkbox">
@@ -323,7 +386,9 @@ const CreateQuiz = () => {
                                     </Box>
                                     {question.type === "65bc956e471d1efeff9367db" && (
                                         <div style={{ padding: "0 20px 10px 15px" }}>
-                                            <InputLabel>Options</InputLabel>
+                                            <InputLabel sx={{ textAlign: "start" }}>
+                                                Options
+                                            </InputLabel>
                                             <RadioGroup>
                                                 {question.option.map((option, optionIndex) => (
                                                     <div
@@ -338,13 +403,16 @@ const CreateQuiz = () => {
                                                         <FormControlLabel
                                                             value={option.value}
                                                             control={<Radio />}
-                                                            onChange={(event) => handleSaveAnswer(index, event)}
+                                                            onChange={(event) =>
+                                                                handleSaveAnswer(index, event)
+                                                            }
                                                             disabled={index === answerkey ? false : true}
                                                             label={
                                                                 option.editing ? (
                                                                     <TextField
                                                                         variant="outlined"
                                                                         size="small"
+                                                                        placeholder="Enter Option Name Here..."
                                                                         value={option.value}
                                                                         onChange={(event) =>
                                                                             handleOptionChange(
@@ -365,28 +433,31 @@ const CreateQuiz = () => {
                                                                     >
                                                                         {option.value}
 
-
-                                                                        {index !== answerkey && <Box
-                                                                            sx={{ position: "absolute", right: 0 }}
-                                                                        >
-                                                                            <IconButton
-                                                                                type="button"
-                                                                                onClick={() =>
-                                                                                    handleEditOption(index, optionIndex)
-                                                                                }
+                                                                        {index !== answerkey && (
+                                                                            <Box
+                                                                                sx={{ position: "absolute", right: 0 }}
                                                                             >
-                                                                                <BorderColorOutlinedIcon fontSize="small" />
-                                                                            </IconButton>
-                                                                            <IconButton
-                                                                                type="button"
-                                                                                onClick={() =>
-                                                                                    handleDeleteOption(index, optionIndex)
-                                                                                }
-                                                                            >
-                                                                                <DeleteOutlineOutlinedIcon fontSize="small" />
-                                                                            </IconButton>
-                                                                        </Box>}
-
+                                                                                <IconButton
+                                                                                    type="button"
+                                                                                    onClick={() =>
+                                                                                        handleEditOption(index, optionIndex)
+                                                                                    }
+                                                                                >
+                                                                                    <BorderColorOutlinedIcon fontSize="small" />
+                                                                                </IconButton>
+                                                                                <IconButton
+                                                                                    type="button"
+                                                                                    onClick={() =>
+                                                                                        handleDeleteOption(
+                                                                                            index,
+                                                                                            optionIndex
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    <DeleteOutlineOutlinedIcon fontSize="small" />
+                                                                                </IconButton>
+                                                                            </Box>
+                                                                        )}
                                                                     </Box>
                                                                 )
                                                             }
@@ -395,34 +466,57 @@ const CreateQuiz = () => {
                                                         {option.editing && (
                                                             <Box sx={{ marginRight: "20px" }}>
                                                                 <IconButton
-                                                                    onClick={() =>
-                                                                        handleSaveOption(index, optionIndex)
-                                                                    }
+                                                                    // title={option.value?.length === 0 && "Enter something in op"}
+                                                                    onClick={() => {
+                                                                        if (option.value?.length > 0) {
+                                                                            handleSaveOption(index, optionIndex);
+                                                                        }
+                                                                    }}
                                                                 >
                                                                     <Tooltip title={"Save"}>
-                                                                        <SaveOutlinedIcon fontSize="small" sx={{ color: theme.palette.secondary.main }} />
+                                                                        <SaveOutlinedIcon
+                                                                            fontSize="small"
+                                                                            sx={{
+                                                                                color: theme.palette.secondary.main,
+                                                                            }}
+                                                                        />
                                                                     </Tooltip>
+                                                                </IconButton>
+                                                                <IconButton
+                                                                    type="button"
+                                                                    onClick={() =>
+                                                                        handleDeleteOption(index, optionIndex)
+                                                                    }
+                                                                >
+                                                                    <DeleteOutlineOutlinedIcon fontSize="small" />
                                                                 </IconButton>
                                                             </Box>
                                                         )}
                                                     </div>
                                                 ))}
                                             </RadioGroup>
-                                            {index !== answerkey && <Button
-                                                type="button"
+                                            <Box
                                                 sx={{
-                                                    padding: "6px 10px",
-                                                    mg: 2,
-                                                    border: "none",
-                                                    "&:hover": { border: "none" },
+                                                    textAlign: "start",
                                                 }}
-                                                variant="outlined"
-                                                onClick={() => handleAddOption(index)}
-                                                style={{ marginTop: "10px", marginBottom: "10px" }}
                                             >
-                                                + Add Option
-                                            </Button>}
-
+                                                {index !== answerkey && (
+                                                    <Button
+                                                        type="button"
+                                                        sx={{
+                                                            padding: "6px 10px",
+                                                            mg: 2,
+                                                            border: "none",
+                                                            "&:hover": { border: "none" },
+                                                        }}
+                                                        variant="outlined"
+                                                        onClick={() => handleAddOption(index)}
+                                                        style={{ marginTop: "10px", marginBottom: "10px" }}
+                                                    >
+                                                        + Add Option
+                                                    </Button>
+                                                )}
+                                            </Box>
                                         </div>
                                     )}
                                 </form>
@@ -459,22 +553,51 @@ const CreateQuiz = () => {
                                             padding: "8px 20px",
                                         }}
                                     >
+                                        {console.log(questionText[index], "testttt")}
                                         <Button
-                                            color="secondary"
+                                            // color="secondary"
                                             onClick={() => handleSaveAnserKey(index)}
-                                            sx={{ display: "flex", alignItems: "center" }}
+                                            sx={
+                                                questionText[index]?.question?.length > 0 &&
+                                                    questionText[index]?.type?.length > 0 &&
+                                                    questionText[index]?.option?.length > 0
+                                                    ? {
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        color: theme.palette.secondary.main,
+                                                    }
+                                                    : {
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        color: theme.palette.grey[500],
+                                                        cursor: "not-allowed",
+                                                    }
+                                            }
                                         >
-                                            <span sx={{ pe: 1 }}>{answerKeySvg}
-                                            </span> Answer key
+                                            <span
+                                                sx={{
+                                                    pe: 2,
+                                                    stroke: `${questionText[index]?.question?.length > 0 &&
+                                                        questionText[index]?.type?.length > 0 &&
+                                                        questionText[index]?.option?.length > 0
+                                                        ? theme.palette.secondary.main
+                                                        : theme.palette.grey[200]
+                                                        }`,
+                                                }}
+                                            >
+                                                {answerKeySvg}
+                                            </span>{" "}
+                                            Answer key
                                         </Button>
-                                        <Button variant="primary"> <IconButton
-                                            type="button"
-                                        // onClick={() =>
-                                        //   handleDeleteOption(index, optionIndex)
-                                        // }
-                                        >
-                                            <DeleteOutlineOutlinedIcon fontSize="small" />
-                                        </IconButton></Button>
+                                        <Button variant="primary">
+                                            {" "}
+                                            <IconButton
+                                                type="button"
+                                                onClick={() => handleDeleteQuestion(index)}
+                                            >
+                                                <DeleteOutlineOutlinedIcon fontSize="small" />
+                                            </IconButton>
+                                        </Button>
                                     </Box>
                                 )}
                             </Card>
@@ -497,17 +620,37 @@ const CreateQuiz = () => {
                 </Grid>
             </Grid>
             <Button
-                sx={{ position: "fixed", bottom: 4, left: "60%" }}
+                sx={
+                    false
+                        ? {
+                            position: "fixed",
+                            bottom: 10,
+                            borderRadius: "18px",
+                            padding: "5px 30px",
+                            background: theme.palette.grey[300],
+                            color: theme.palette.grey[500],
+                        }
+                        : {
+                            position: "fixed",
+                            bottom: 10,
+                            borderRadius: "18px",
+                            padding: "5px 30px",
+                            background: theme.palette.primary.main,
+                            color: "#fff",
+                        }
+                }
                 type="submit"
                 variant="contained"
-                color="primary"
-                style={{ marginTop: "10px" }}
                 onClick={createQuiz}
             >
                 Submit
             </Button>
 
-            <ShowsMessageModal isOpen={modalData.showSuccessModal} setIsOpen={setModalData} message={modalData?.message} />
+            <ShowsMessageModal
+                isOpen={modalData.showSuccessModal}
+                setIsOpen={setModalData}
+                message={modalData?.message}
+            />
         </Container>
     );
 };

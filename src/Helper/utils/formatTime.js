@@ -16,7 +16,7 @@ export function fNotifiactionDate(date, newFormat) {
 }
 
 export function fromAgoDate(date) {
-  return date ? moment(date).startOf("hour").fromNow() : ""; // 12 minutes ago
+  return date ? moment(date).fromNow() : ""; // 12 minutes ago
 }
 
 export function fTime(date) {

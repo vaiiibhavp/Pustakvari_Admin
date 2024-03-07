@@ -15,6 +15,7 @@ export default function AppWebsiteVisits({
   garphLable,
   subtext,
   Colors,
+  doNotlabel,
   widthlarge,
   legendPosition,
   ...other
@@ -41,7 +42,9 @@ export default function AppWebsiteVisits({
         colors: theme.palette.text.primary,
       },
     },
-    xaxis: { type: type !== "pie" ? "datetime" : "" },
+    xaxis: {
+      type: type !== "pie" ? "" : "",
+    },
     tooltip: {
       shared: true,
       intersect: false,

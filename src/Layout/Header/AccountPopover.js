@@ -13,6 +13,7 @@ import {
   Popover,
   useTheme,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 // mocks_
 // import account from "../../../_mock/account";
 // import { authLogOut } from "../../../Axios/ApiCall";
@@ -41,6 +42,10 @@ export default function AccountPopover({ profile, setProfile }) {
   const [open, setOpen] = useState(null);
 
   const theme = useTheme();
+
+  const {
+    user: { userInfo },
+  } = useSelector((state) => state.AuthUser);
 
   const navigate = useNavigate();
 
@@ -84,7 +89,11 @@ export default function AccountPopover({ profile, setProfile }) {
         {/* <Avatar src={account.photoURL} alt="photoURL" /> */}
         {/* hello lakhan */}
         <img
-          src="https://cdn.vectorstock.com/i/preview-1x/08/19/gray-photo-placeholder-icon-design-ui-vector-35850819.jpg"
+          src={
+            userInfo
+              ? userInfo?.userImage
+              : "https://cdn.vectorstock.com/i/preview-1x/08/19/gray-photo-placeholder-icon-design-ui-vector-35850819.jpg"
+          }
           alt="profile"
           style={{ width: "40px", height: "40px", borderRadius: "50%" }}
         />

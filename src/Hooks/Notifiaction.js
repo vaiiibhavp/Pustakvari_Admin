@@ -4,9 +4,9 @@ const useNotifiaction = () => {
 
   const getNotifiactionList = async (requestParams) => {
     let userTypeBaseUrl;
-    if (requestParams?.instituteInfo) {
+    if (requestParams?.userInfo?.userType === "INSTITUTE") {
       userTypeBaseUrl = `/getNotificationList?usertype=Institutes`;
-    } else if (requestParams?.userInfo) {
+    } else if (requestParams?.userInfo === "SUPER_ADMIN") {
       if (requestParams?.userInfo?.userType === "SUPER_ADMIN") {
         userTypeBaseUrl = `/getNotificationList`;
       } else {

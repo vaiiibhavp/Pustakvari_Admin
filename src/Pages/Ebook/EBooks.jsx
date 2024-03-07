@@ -26,6 +26,7 @@ import CategoryModal from "./CategoryModal";
 import Searchbar from "../../Component/Searchbar";
 import useEbookApis from "../../Hooks/Ebook";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
+import DeleteModal from "../../Component/DeleteModal";
 
 const EBooks = () => {
     const theme = useTheme();
@@ -50,12 +51,14 @@ const EBooks = () => {
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
+    const [takeDeleteConfirmationOpen, setTakeDeleteConfirmation] =
+        useState(false);
+    const [deletionRecord, setDeletionRecord] = useState({});
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-
 
     const handleOpenCategory = (event) => {
         setIsPopOver(event.currentTarget);
@@ -82,20 +85,43 @@ const EBooks = () => {
             .catch((err) => {
                 console.log(err);
             });
-    }, [setIsOpenEbookModal]);
+    }, [isOpenEbookModal]);
 
     let { bookList } = booksState;
 
-    const onRemoveHandler = (id) => {
-        deleteBookRecord(id).then((res) => {
-            let filternewData = bookList?.filter((item) => {
-                return item._id !== id
-            })
-            setBooksState((prev) => ({ ...prev, bookList: filternewData }))
-        }).catch((error) => {
-            console.log(error);
-        })
-    }
+    const onRemoveHandler = () => {
+        if (deletionRecord?._id) {
+            deleteBookRecord(deletionRecord?._id)
+                .then((res) => {
+                    let filternewData = bookList?.filter((item) => {
+                        return item._id !== deletionRecord?._id;
+                    });
+                    setTakeDeleteConfirmation(false);
+                    setBooksState((prev) => ({ ...prev, bookList: filternewData }));
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    };
+
+    const handleSearch = (value) => {
+        if (value) {
+            const data = booksState?.globalbookList?.filter((e) => {
+                return e?.bookName?.toLowerCase()?.includes(value?.toLowerCase());
+            });
+            setBooksState((prev) => ({
+                ...prev,
+                bookList: data || [],
+            }));
+        } else {
+            // getUserList();
+            setBooksState((prev) => ({
+                ...prev,
+                bookList: booksState?.globalbookList || [],
+            }));
+        }
+    };
 
     return (
         <Container maxWidth="xl">
@@ -135,7 +161,7 @@ const EBooks = () => {
                         </Button>
                     </Box>
                     <Box sx={{ display: "flex", gap: 1 }}>
-                        <Searchbar onSearch={(e) => console.log("hello", e)} />
+                        <Searchbar onSearch={handleSearch} />
                         <Button
                             onClick={() => {
                                 setIsEditable();
@@ -143,7 +169,7 @@ const EBooks = () => {
                             }}
                             variant="contained"
                         >
-                            +{AppStrings?.add_e_book}
+                            + {AppStrings?.add_e_book}
                         </Button>
                     </Box>
                 </Box>
@@ -154,15 +180,15 @@ const EBooks = () => {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                <TableCell style={{ minWidth: "60px" }}>Sr No</TableCell>
-                                <TableCell align="center" style={{ minWidth: "150px" }}>
+                                <TableCell align="center" style={{ minWidth: "60px" }}>Sr No</TableCell>
+                                <TableCell align="left" style={{ minWidth: "150px" }}>
                                     {AppStrings?.e_books}
                                 </TableCell>
-                                <TableCell align="center" style={{ minWidth: "100px" }}>
+                                <TableCell align="left" style={{ minWidth: "100px" }}>
                                     {AppStrings?.Category}
                                 </TableCell>
 
-                                <TableCell align="center" style={{ minWidth: "120px" }}>
+                                <TableCell align="left" style={{ minWidth: "120px" }}>
                                     {AppStrings?.author_Name}
                                 </TableCell>
                                 <TableCell align="center" style={{ minWidth: "180px" }}>
@@ -192,19 +218,36 @@ const EBooks = () => {
                                         } = row;
                                         return (
                                             <TableRow key={row?.id}>
-                                                <TableCell component="th" scope="row">
+                                                <TableCell align="center" component="th" scope="row">
                                                     {idx + 1}
                                                 </TableCell>
                                                 <TableCell align="center">
-                                                    <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                                                    <Box
+                                                        sx={{
+                                                            display: "flex",
+                                                            gap: 1,
+                                                            alignItems: "center",
+                                                        }}
+                                                    >
                                                         <Box>
-                                                            <img src={bookImage ? bookImage : "https://tse3.mm.bing.net/th?id=OIP.M-oyJjMArCOCU2z4bjLkjgAAAA&pid=Api&P=0&h=180"} alt="" style={{ width: "40px", height: "40px" }} />
+                                                            <img
+                                                                src={
+                                                                    bookImage
+                                                                        ? bookImage
+                                                                        : "https://tse3.mm.bing.net/th?id=OIP.M-oyJjMArCOCU2z4bjLkjgAAAA&pid=Api&P=0&h=180"
+                                                                }
+                                                                alt=""
+                                                                style={{ width: "40px", minWidth: "40px", height: "40px" }}
+                                                            />
                                                         </Box>
                                                         {bookName}
-                                                    </Box></TableCell>
-                                                <TableCell align="center">{category?.categoryName}</TableCell>
+                                                    </Box>
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    {category?.categoryName}
+                                                </TableCell>
 
-                                                <TableCell align="center">{authorName}</TableCell>
+                                                <TableCell align="left">{authorName}</TableCell>
 
                                                 <TableCell align="center">
                                                     {bookType?.ebookType}
@@ -258,8 +301,14 @@ const EBooks = () => {
                                                                     fontWeight: "fontWeightBold",
                                                                 },
                                                             }}
-                                                            onClick={() => onRemoveHandler(_id)}
-                                                        > <DeleteOutlineOutlinedIcon size="medium" /></Button>
+                                                            onClick={() => {
+                                                                setTakeDeleteConfirmation(true);
+                                                                setDeletionRecord(row);
+                                                            }}
+                                                        >
+                                                            {" "}
+                                                            <DeleteOutlineOutlinedIcon size="medium" />
+                                                        </Button>
                                                     </Box>
                                                 </TableCell>
                                             </TableRow>
@@ -287,7 +336,7 @@ const EBooks = () => {
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 100]}
                     component="div"
-                    count={bookList.length}
+                    count={bookList?.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
@@ -321,10 +370,28 @@ const EBooks = () => {
             <CategoryModal
                 isOpenCategoryModal={isCatgoryModalOpen}
                 setIsOpenCategoryModal={setIsCategoryModalOpen}
+                setBooksState={setBooksState}
                 isEditableRecord={isCategoryEditRecord}
             />
-            <ShowsMessageModal isOpen={booksState.showSuccessModal} setIsOpen={setBooksState} message={booksState?.message} />
+            <ShowsMessageModal
+                isOpen={booksState.showSuccessModal}
+                setIsOpen={setBooksState}
+                message={booksState?.message}
+            />
 
+            <DeleteModal
+                message={"Are you sure  you want to delete the e-book?"}
+                onCancelDeleteHandler={() => {
+                    setTakeDeleteConfirmation(false);
+                    setDeletionRecord({});
+                }}
+                onDeleteHandler={() => {
+                    onRemoveHandler();
+                    setDeletionRecord({});
+                }}
+                open={takeDeleteConfirmationOpen}
+                setIsOpen={setTakeDeleteConfirmation}
+            />
         </Container>
     );
 };

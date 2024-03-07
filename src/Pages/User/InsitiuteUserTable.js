@@ -19,6 +19,7 @@ import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { accoundCreatedDate } from "../../Helper/utils/formatTime";
+import moment from "moment";
 
 const InsitiuteUserTable = ({
   userData,
@@ -34,12 +35,14 @@ const InsitiuteUserTable = ({
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
-            <TableCell style={{ minWidth: "80px" }}>Sr No</TableCell>
-            <TableCell align="center" style={{ minWidth: "150px" }}>
+            <TableCell align="center" style={{ minWidth: "70px" }}>
+              Sr No
+            </TableCell>
+            <TableCell align="center" style={{ minWidth: "230px" }}>
               {AppStrings?.user_Name}
             </TableCell>
             <TableCell align="center" style={{ minWidth: "100px" }}>
-              {AppStrings?.Contact}
+              {AppStrings?.contact_no}
             </TableCell>
 
             <TableCell align="center" style={{ minWidth: "120px" }}>
@@ -69,28 +72,61 @@ const InsitiuteUserTable = ({
               .map((row, idx) => {
                 return (
                   <TableRow key={row?.id}>
-                    <TableCell component="th" scope="row">
+                    <TableCell align="center" component="th" scope="row">
                       {idx + 1}
                     </TableCell>
-                    <TableCell align="center">{row?.fullName}</TableCell>
-                    <TableCell align="center">{row?.mobileNo}</TableCell>
+                    <TableCell align="left">
+                      {" "}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: 1,
+                          alignItems: "center",
+                        }}
+                      >
+                        <Box>
+                          <img
+                            src={
+                              row?.userImage
+                                ? row.userImage
+                                : "https://tse4.mm.bing.net/th?id=OIP.Bl6dInu-pv4nnfv-QAxgSwHaHa&pid=Api&P=0&h=180"
+                            }
+                            alt=""
+                            style={{
+                              width: "40px",
+                              minWidth: "40px",
+                              height: "40px",
+                            }}
+                          />
+                        </Box>
+                        {row?.fullName}
+                      </Box>
+                    </TableCell>
+                    <TableCell align="left">{row?.mobileNo}</TableCell>
                     {/* <TableCell align="center">
                       {row?.is_instituteUser}
                     </TableCell> */}
-                    <TableCell align="center">{row?.emailId}</TableCell>
+                    <TableCell align="left">{row?.emailId}</TableCell>
                     <TableCell align="center">
                       {accoundCreatedDate(row?.created_at)}
                     </TableCell>
-                    <TableCell align="center">{row?.created_at}</TableCell>
+                    <TableCell align="center">
+                      {accoundCreatedDate(row?.created_at)}
+                    </TableCell>
                     {/* <TableCell align="center">{row?.Last_Login}</TableCell> */}
                     <TableCell align="center">
                       <Button
                         sx={{
-                          background: theme.palette?.grey[300],
-                          color: theme.palette?.grey[600],
+                          width: "100px",
+                          background: !row?.is_active
+                            ? theme.palette?.secondary?.lighter
+                            : theme.palette?.grey[300],
+                          color: !row?.is_active
+                            ? theme.palette?.secondary.main
+                            : theme.palette?.grey[600],
                           textDecoration: "none",
-                          borderRadius: "20px",
-                          padding: "0 16px",
+                          borderRadius: "8px",
+                          padding: "3px 16px",
                           "&.active": {
                             color: "text.primary",
                             bgcolor: "action.selected",
@@ -98,17 +134,17 @@ const InsitiuteUserTable = ({
                           },
                         }}
                       >
-                        {row?.activeStatus ? "Active" : "Inactive"}
+                        {!row?.is_active ? "Active" : "Deactive"}
                       </Button>
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       <Switch
                         value={row?._id}
                         // checked={}
-                        defaultChecked={row?.activeStatus}
+                        defaultChecked={row?.is_active}
                         color="secondary"
                         onChange={(e) => {
-                          // handleCheckStatus(e.target.value, row?.activeStatus)
+                          handleCheckStatus(e.target.value, row?.is_active);
                         }}
                       />
                     </TableCell>

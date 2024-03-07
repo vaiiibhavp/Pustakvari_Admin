@@ -54,7 +54,6 @@ const CommonTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
 
   const handleChangePage = (event, newPage) => {
-    console.log("hello");
     setPage(newPage);
   };
 
@@ -64,10 +63,9 @@ const CommonTable = ({
   };
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, data?.length - page * rowsPerPage);
 
   const renderText = (item, whichCoulumn) => {
-    console.log(item, whichCoulumn);
     if (whichCoulumn?.icon) {
       if (whichCoulumn?.deleteIcon && whichCoulumn?.editIcon) {
         return (
@@ -260,7 +258,6 @@ const CommonTable = ({
                   key={colIndex}
                   sx={{ minWidth: `${column.width}px` }}
                 >
-                  {console.log(column?.width, "yes we getting")}
                   {renderText(row[column.field], column)}
                 </TableCell>
               ))}
@@ -268,7 +265,7 @@ const CommonTable = ({
           ))}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={columns.length} sx={{ width: "500px" }} />
+              <TableCell colSpan={columns?.length} sx={{ width: "500px" }} />
             </TableRow>
           )}
         </TableBody>
@@ -276,7 +273,7 @@ const CommonTable = ({
       <TablePagination
         rowsPerPageOptions={rowsPerPageOptions}
         component="div"
-        count={data.length}
+        count={data?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
