@@ -59,7 +59,7 @@ const SuperAdminTable = ({
                             {AppStrings?.status}
                         </TableCell>
                         <TableCell align="center" style={{ minWidth: "100px" }}>
-                            {AppStrings?.deactivate}
+                            {AppStrings?.active}
                         </TableCell>
                         <TableCell align="center" style={{ minWidth: "150px" }}>
                             {AppStrings?.takeAction}{" "}
@@ -136,7 +136,7 @@ const SuperAdminTable = ({
                                                     },
                                                 }}
                                             >
-                                                {!row?.is_active ? "Active" : "Deactive"}
+                                                {!row?.is_active ? "Deactive" : "Active"}
                                             </Button>
                                         </TableCell>
                                         <TableCell align="center">
