@@ -4,11 +4,8 @@ import * as Yup from "yup";
 import {
   TextField,
   Button,
-  InputAdornment,
   IconButton,
   FormControl,
-  InputLabel,
-  OutlinedInput,
   Modal,
   Box,
   Typography,
@@ -17,8 +14,6 @@ import {
   useTheme,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
 import { AppStrings } from "../../Helper/Constant";
 import { ModalCSSStyle } from "../../Helper/utils/ModalCss";
@@ -86,7 +81,13 @@ const EbookModal = ({
   const validationSchema = Yup.object({
     bookName: Yup.string().required("Book name is required"),
     authorName: Yup.string().required("Author name is required"),
+    publisher: Yup.string().required("publisher name is required"),
+    price: Yup.string().required("Price is required"),
+    about: Yup.string().required("About is required"),
+    co_authorName: Yup.string().required("Co-Author name is required"),
     category: Yup.string().required("Category is required"),
+    bookPublishDate: Yup.string().required("Publish date is required"),
+    bookLanguage: Yup.string().required("Language is required"),
     bookType: Yup.string().required("Type is required"),
     // videoLink: Yup.string()
     //   .url("Invalid URL")
@@ -123,7 +124,12 @@ const EbookModal = ({
   const formik = useFormik({
     initialValues: {
       bookName: isEditableRecord?.bookName ?? "",
-      authorName: isEditableRecord?.bookName ?? "",
+      price: isEditableRecord?.price ?? "",
+      authorName: isEditableRecord?.authorName ?? "",
+      about: isEditableRecord?.about ?? "",
+      co_authorName: isEditableRecord?.co_authorName ?? "",
+      bookPublishDate: isEditableRecord?.bookPublishDate ?? "",
+      publisher: isEditableRecord?.publisher ?? "",
       bookPdf: null,
       bookImage: null,
       category: isEditableRecord?.category?._id ?? "",
@@ -201,6 +207,13 @@ const EbookModal = ({
   }, []);
 
   useEffect(() => {
+    if(isEditableRecord?.bookPublishDate){
+      formik.setFieldValue('bookPublishDate', new Date(isEditableRecord?.bookPublishDate).toISOString().substring(0,10))
+    }
+  }, [isEditableRecord])
+  
+
+  useEffect(() => {
     if (isEditableRecord?.bookImage) {
       fetchImageAsFile(isEditableRecord?.bookImage).then((res) => {
         if (res) {
@@ -261,44 +274,6 @@ const EbookModal = ({
 
         <Box>
           <form onSubmit={formik.handleSubmit} style={{ padding: "10px 0" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "start",
-              }}
-            >
-              <Typography style={{ padding: "0 0 5px 0" }}>
-                Select Language:
-              </Typography>
-              <FormControl
-                sx={{ marginTop: "0px" }}
-                fullWidth
-                variant="outlined"
-                margin="normal"
-              >
-                {/* <InputLabel htmlFor="category">Category</InputLabel> */}
-                <Select
-                  id="bookLanguage"
-                  size="small"
-                  name="bookLanguage"
-                  //   label="Category"
-                  value={formik.values.bookLanguage}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.bookLanguage &&
-                    Boolean(formik.errors.bookLanguage)
-                  }
-                >
-                  {dataState?.languages.map((category) => (
-                    <MenuItem key={category?._id} value={category?._id}>
-                      {category.language}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
             <Box sx={{ display: "flex", gap: 3, width: "100%" }}>
               <Box
                 sx={{
@@ -448,6 +423,64 @@ const EbookModal = ({
               }}
             >
               <Typography style={{ padding: "0 0 5px 0" }}>
+                Price:
+              </Typography>
+
+              <TextField
+                fullWidth
+                id="price"
+                name="price"
+                sx={{ marginTop: "0px" }}
+                //   label="Category Name"
+                size="small"
+                variant="outlined"
+                margin="normal"
+                value={formik.values.price}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.price && Boolean(formik.errors.price)
+                }
+                helperText={formik.touched.price && formik.errors.price}
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+              }}
+            >
+              <Typography style={{ padding: "0 0 5px 0" }}>
+                About:
+              </Typography>
+
+              <TextField
+                fullWidth
+                id="about"
+                name="about"
+                sx={{ marginTop: "0px" }}
+                //   label="Category Name"
+                size="small"
+                variant="outlined"
+                margin="normal"
+                value={formik.values.about}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.about && Boolean(formik.errors.about)
+                }
+                helperText={formik.touched.about && formik.errors.about}
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+              }}
+            >
+              <Typography style={{ padding: "0 0 5px 0" }}>
                 Author Name:
               </Typography>
               <TextField
@@ -469,6 +502,134 @@ const EbookModal = ({
                   formik.touched.authorName && formik.errors.authorName
                 }
               />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+              }}
+            >
+              <Typography style={{ padding: "0 0 5px 0" }}>
+                Co-Author Name:
+              </Typography>
+              <TextField
+                fullWidth
+                id="co_authorName"
+                name="co_authorName"
+                sx={{ marginTop: "0px" }}
+                //   label="Author Name"
+                variant="outlined"
+                size="small"
+                margin="normal"
+                value={formik.values.co_authorName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.co_authorName && Boolean(formik.errors.co_authorName)
+                }
+                helperText={
+                  formik.touched.co_authorName && formik.errors.co_authorName
+                }
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+              }}
+            >
+              <Typography style={{ padding: "0 0 5px 0" }}>
+                Date published:
+              </Typography>
+              <TextField
+                type="date"
+                fullWidth
+                id="bookPublishDate"
+                name="bookPublishDate"
+                sx={{ marginTop: "0px" }}
+                //   label="Author Name"
+                variant="outlined"
+                size="small"
+                margin="normal"
+                value={formik.values.bookPublishDate}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.bookPublishDate && Boolean(formik.errors.bookPublishDate)
+                }
+                helperText={
+                  formik.touched.bookPublishDate && formik.errors.bookPublishDate
+                }
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+              }}
+            >
+              <Typography style={{ padding: "0 0 5px 0" }}>
+                Publisher:
+              </Typography>
+              <TextField
+                fullWidth
+                id="publisher"
+                name="publisher"
+                sx={{ marginTop: "0px" }}
+                //   label="Author Name"
+                variant="outlined"
+                size="small"
+                margin="normal"
+                value={formik.values.publisher}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.publisher && Boolean(formik.errors.publisher)
+                }
+                helperText={
+                  formik.touched.publisher && formik.errors.publisher
+                }
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+              }}
+            >
+              <Typography style={{ padding: "0 0 5px 0" }}>
+                Language:
+              </Typography>
+              <FormControl
+                sx={{ marginTop: "0px" }}
+                fullWidth
+                variant="outlined"
+                margin="normal"
+              >
+                {/* <InputLabel htmlFor="category">Category</InputLabel> */}
+                <Select
+                  id="bookLanguage"
+                  size="small"
+                  name="bookLanguage"
+                  //   label="bookLanguage"
+                  value={formik.values.bookLanguage}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.bookLanguage && Boolean(formik.errors.bookLanguage)
+                  }
+                >
+                  {dataState?.languages.map((category) => (
+                    <MenuItem key={category?._id} value={category?._id}>
+                      {category.language}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Box>
             <Box
               sx={{

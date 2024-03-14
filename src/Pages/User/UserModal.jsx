@@ -247,6 +247,7 @@ const UserModal = ({ isUserModalOpen, setUserModalOpen, isEditableRecord, setUse
               // label="Email"
               sx={{ marginTop: "0px" }}
               size="small"
+              disabled={!!isEditableRecord?.emailId}
               placeholder={AppStrings?.email_Id}
               variant="outlined"
               margin="normal"
