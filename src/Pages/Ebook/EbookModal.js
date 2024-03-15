@@ -374,7 +374,7 @@ const EbookModal = ({
                   type="file"
                   id="bookPdf"
                   name="bookPdf"
-                  accept="image/*"
+                  accept="application/pdf"
                   style={{ display: "none" }}
                   onChange={(e) => handleImageChange(e, "bookPdf")}
                 />

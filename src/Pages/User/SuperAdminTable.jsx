@@ -59,7 +59,7 @@ const SuperAdminTable = ({
                             {AppStrings?.status}
                         </TableCell>
                         <TableCell align="center" style={{ minWidth: "100px" }}>
-                            {AppStrings?.active}
+                            {AppStrings?.deactivate}
                         </TableCell>
                         <TableCell align="center" style={{ minWidth: "150px" }}>
                             {AppStrings?.takeAction}{" "}
@@ -143,7 +143,7 @@ const SuperAdminTable = ({
                                             <Switch
                                                 value={row?._id}
                                                 // checked={}
-                                                defaultChecked={row?.is_active}
+                                                defaultChecked={!row?.is_active}
                                                 color="secondary"
                                                 onChange={(e) => {
                                                     handleCheckStatus(e.target.value, row?.is_active);
