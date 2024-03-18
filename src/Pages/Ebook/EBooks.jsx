@@ -349,6 +349,7 @@ const EBooks = () => {
                 setIsOpenEbookModal={setIsOpenEbookModal}
                 setBooksState={setBooksState}
                 isEditableRecord={isEditable}
+                setIsEditableRecord={setIsEditable}
             />
 
             <CategoryPopover

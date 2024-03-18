@@ -57,6 +57,7 @@ const EbookModal = ({
   isOpenEbookModal,
   setIsOpenEbookModal,
   isEditableRecord,
+  setIsEditableRecord,
   setBooksState,
 }) => {
   const [dataState, setDataState] = useState({
@@ -135,7 +136,7 @@ const EbookModal = ({
       category: isEditableRecord?.category?._id ?? "",
       bookType: isEditableRecord?.bookType?._id ?? "",
       bookLanguage: isEditableRecord?.bookLanguage?._id ?? "",
-      videoLink: isEditableRecord?.bookName ?? "",
+      videoLink: isEditableRecord?.videoLink ?? "",
     },
     validationSchema,
     enableReinitialize: true,
@@ -146,6 +147,7 @@ const EbookModal = ({
         updateBookRecord({ id: isEditableRecord?._id, body: values })
           .then((res) => {
             setIsOpenEbookModal(false);
+            setIsEditableRecord(null)
             setBooksState((prev) => ({
               ...prev,
               showSuccessModal: true,
@@ -159,6 +161,7 @@ const EbookModal = ({
         createBookRecord(values)
           .then((res) => {
             setIsOpenEbookModal(false);
+            setIsEditableRecord(null)
             setBooksState((prev) => ({
               ...prev,
               showSuccessModal: true,
