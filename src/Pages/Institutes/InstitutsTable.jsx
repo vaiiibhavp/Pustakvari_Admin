@@ -121,14 +121,14 @@ const InstitutsTable = ({ userData, page, rowsPerPage, handleCheckStatus, setIsE
                                                     },
                                                 }}
                                             >
-                                                {!is_active ? "Active" : "Deactive"}
+                                                {!is_active ? "Deactive" : "Active"}
                                             </Button>
                                         </TableCell>
                                         <TableCell align="center">{studentCount}</TableCell>
                                         <TableCell align="center">
                                             <Switch
                                                 value={_id}
-                                                defaultChecked={is_active}
+                                                defaultChecked={!is_active}
                                                 onChange={(e) => {
                                                     handleCheckStatus(e.target.value, is_active);
                                                 }}

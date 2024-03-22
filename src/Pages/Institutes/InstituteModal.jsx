@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import AddIcon from "@mui/icons-material/Add";
@@ -14,6 +14,8 @@ import {
     Box,
     Typography,
     useTheme,
+    Select,
+    MenuItem,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -26,6 +28,7 @@ import useFileGenrator from '../../Hooks/ImageFileConverter';
 import { generatePassword } from '../../Helper/utils/Common';
 import { toast } from 'react-toastify';
 import UseUserApis from '../../Hooks/User';
+import useSubscription from '../../Hooks/Subscription';
 
 
 const style = {
@@ -58,7 +61,8 @@ const style = {
 };
 
 const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setParentState, isEditableRecord, setDetroyExistRecord }) => {
-
+    const { getSubscriptonList } = useSubscription();
+    const [subscriptionList, setSubscriptionList] = useState()
     const theme = useTheme();
     let isEditable = isEditableRecord?.id ? true : false
 
@@ -73,6 +77,15 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
 
     const { fetchImageAsFile } = useFileGenrator();
 
+    useEffect(() => {
+        getSubscriptonList().then((res) => {
+            setSubscriptionList(res.data)
+
+        }).catch((error) => {
+            console.log(error);
+        })
+    }, [isInstituteModalOpen])
+
 
     const handleClose = () => {
         setDetroyExistRecord({});
@@ -82,6 +95,7 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
         instituteName: isEditableRecord?.instituteName ?? '',
         emailId: isEditableRecord?.emailId ?? '',
         mobileNo: isEditableRecord?.mobileNo ?? '',
+        select_Subscription: isEditableRecord?.select_Subscription?._id ?? '',
         password: '',
         instituteImage: null
     };
@@ -297,6 +311,36 @@ const InstituteModal = ({ isInstituteModalOpen, setIsInstituteModalOpen, setPare
                             error={formik.touched.instituteName && Boolean(formik.errors.instituteName)}
                             helperText={formik.touched.instituteName && formik.errors.instituteName}
                         />
+                    </Box>
+
+                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>
+
+                        <Typography style={{ padding: "0 0 5px 0" }}>{AppStrings?.subscription}:</Typography>
+                        <FormControl
+                            sx={{ marginTop: "0px" }}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                        >
+                                    <Select
+                                        id="select_Subscription"
+                                        size="small"
+                                        name="select_Subscription"
+                                        //   label="select_Subscription"
+                                        value={formik.values.select_Subscription}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        error={
+                                            formik.touched.select_Subscription && Boolean(formik.errors.select_Subscription)
+                                        }
+                                        >
+                                        {subscriptionList?.map((sub) => (
+                                            <MenuItem key={sub?._id} value={sub?._id}>
+                                            {sub.subscriptionName}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                        </FormControl>
                     </Box>
 
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start" }}>

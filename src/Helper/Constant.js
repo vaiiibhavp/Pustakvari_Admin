@@ -108,6 +108,7 @@ export const AppStrings = {
   add_new_institute: "Add new institute",
   Account_created_on: "Account Created On",
   institute_users: "Institute users",
+  institute_books: "Institute Books",
   subscribed: "Subscribed",
   unsubscribed: "Unsubscribed",
   institute_name: "Institute Name",

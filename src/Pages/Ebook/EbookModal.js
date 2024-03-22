@@ -103,11 +103,11 @@ const EbookModal = ({
       ),
     bookPdf: Yup.mixed()
       .required("File is required")
-      .test(
-        "fileSize",
-        "File size is too large",
-        (value) => value && value.size <= 2000000 // 2MB limit
-      )
+      // .test(
+      //   "fileSize",
+      //   "File size is too large",
+      //   (value) => value && value.size <= 2000000 // 2MB limit
+      // )
       .test(
         "fileType",
         "Invalid file type",

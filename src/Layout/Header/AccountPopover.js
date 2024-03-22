@@ -46,7 +46,7 @@ export default function AccountPopover({ profile, setProfile }) {
   const {
     user: { userInfo },
   } = useSelector((state) => state.AuthUser);
-
+console.log(userInfo);
   const navigate = useNavigate();
 
   const handleOpen = (event) => {
@@ -91,7 +91,7 @@ export default function AccountPopover({ profile, setProfile }) {
         <img
           src={
             userInfo
-              ? userInfo?.userImage
+              ? userInfo?.userImage ? userInfo?.userImage : userInfo?.instituteImage
               : "https://cdn.vectorstock.com/i/preview-1x/08/19/gray-photo-placeholder-icon-design-ui-vector-35850819.jpg"
           }
           alt="profile"

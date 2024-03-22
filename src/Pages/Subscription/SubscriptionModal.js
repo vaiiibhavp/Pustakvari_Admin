@@ -13,6 +13,10 @@ import {
   Box,
   Typography,
   useTheme,
+  InputAdornment,
+  OutlinedInput,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -83,13 +87,18 @@ const SubscriptionModal = ({
   }, []);
   const initialValues = {
     subscriptionName: isEditRecord?.subscriptionName ?? "",
-    duration: isEditRecord?.duration?._id ?? "",
+    duration: isEditRecord?.duration ?? "",
+    no_of_Books: isEditRecord?.no_of_Books ?? "",
+    no_of_Users: isEditRecord?.no_of_Users ?? "",
+    lifeTimeAccess: isEditRecord?.lifeTimeAccess ?? "",
     rate: isEditRecord?.rate ?? "",
     features: isEditRecord?.features ?? "",
   };
   const validationSchema = Yup.object({
     subscriptionName: Yup.string().required("Subscription Name is required"),
     duration: Yup.string().required("Duration is required"),
+    no_of_Books: Yup.string().required("Number of book is required"),
+    no_of_Users: Yup.string().required("Number of user is required"),
     rate: Yup.number()
       .typeError("Rate must be a number")
       .required("Rate is required")
@@ -99,7 +108,7 @@ const SubscriptionModal = ({
 
   const onSubmit = (values, { resetForm }) => {
     if (isEditRecord?._id) {
-      delete values.duration;
+      // delete values.duration;
       updateSubscripton(values, isEditRecord?._id)
         .then((res) => {
           if (res.status) {
@@ -208,7 +217,18 @@ const SubscriptionModal = ({
             }}
           >
             <Typography>Duration</Typography>
-            <FormControl
+            <OutlinedInput
+              type="number"
+              id="duration"
+              value={formik.values.duration}
+              onChange={formik.handleChange}
+              endAdornment={<InputAdornment position="end">Year</InputAdornment>}
+              inputProps={{
+                'aria-label': 'year',
+              }}
+              sx={{height: '40px'}}
+            />
+            {/* <FormControl
               fullWidth
               variant="outlined"
               margin="normal"
@@ -242,7 +262,7 @@ const SubscriptionModal = ({
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
+            </FormControl> */}
             {formik.touched.duration && formik.errors.duration && (
               <div
                 style={{
@@ -255,6 +275,69 @@ const SubscriptionModal = ({
               </div>
             )}
           </Box>
+          <Box sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+            }}>
+            <FormControlLabel  control={<Checkbox id="lifeTimeAccess" checked={formik.values.lifeTimeAccess} onChange={(e) => formik.setFieldValue('lifeTimeAccess', e.target.checked)} />} label="LifeTime" />
+          </Box>
+          <Box sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+            }}>
+              <Typography>Number of books:</Typography>
+              <TextField
+                type="number"
+                id="no_of_Books"
+                placeholder="Number of books"
+                variant="outlined"
+                fullWidth
+                sx={{ marginTop: "0px" }}
+                size="small"
+                margin="normal"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.no_of_Books}
+                error={
+                  formik.touched.no_of_Books &&
+                  Boolean(formik.errors.no_of_Books)
+                }
+                helperText={
+                  formik.touched.no_of_Books &&
+                  formik.errors.no_of_Books
+                }
+              />
+            </Box>
+            <Box sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+            }}>
+              <Typography>Number of users:</Typography>
+              <TextField
+                type="number"
+                id="no_of_Users"
+                placeholder="Number of users"
+                variant="outlined"
+                fullWidth
+                sx={{ marginTop: "0px" }}
+                size="small"
+                margin="normal"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.no_of_Users}
+                error={
+                  formik.touched.no_of_Users &&
+                  Boolean(formik.errors.no_of_Users)
+                }
+                helperText={
+                  formik.touched.no_of_Users &&
+                  formik.errors.no_of_Users
+                }
+              />
+            </Box>
           <Box
             sx={{
               display: "flex",

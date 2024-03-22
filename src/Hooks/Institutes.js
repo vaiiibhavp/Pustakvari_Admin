@@ -23,6 +23,30 @@ const useInstitues = () => {
     return response.data;
   };
 
+  const getInstituteBookList = async (id) => {
+    const Response = await instance.get(`/instituteBookList/${id}`);
+    return Response.data;
+  };
+
+
+  const assignInstituteBook = async (id,bookId) => {
+    const response = await instance.post(`/assignBooktoInstitute/${id}?bookId=${bookId}`, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  };
+
+  const deleteInstituteBook = async (id,bookId) => {
+    const response = await instance.delete(`/deleteInstituteBook/${id}?bookId=${bookId}`, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  };
+
   const getInstituteRecordDetail = async (id) => {
     const response = await instance.get(`/getInstituteInfo/${id}`);
     return response.data;
@@ -47,6 +71,9 @@ const useInstitues = () => {
     getInstituteRecordDetail,
     deleteInstituteRecord,
     onStatusChangeInstitute,
+    assignInstituteBook,
+    deleteInstituteBook,
+    getInstituteBookList
   };
 };
 

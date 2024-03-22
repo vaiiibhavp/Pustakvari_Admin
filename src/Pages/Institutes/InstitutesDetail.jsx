@@ -7,6 +7,8 @@ import {
     Typography,
     useTheme,
     IconButton,
+    Tabs,
+    Tab,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CommonTable from "../../Component/Table/Table";
@@ -30,10 +32,13 @@ import DeleteModal from "../../Component/DeleteModal";
 import { toast } from "react-toastify";
 import UseUserApis from "../../Hooks/User";
 import moment from "moment";
+import useEbookApis from "../../Hooks/Ebook";
+import InstitutesBooks from "./InstitudeBooks";
 
 const InstitutesDetail = () => {
     const [isInstituteModalOpen, setIsInstituteModalOpen] = useState(false);
     const [isEditable, setIsEditable] = useState({});
+    const [tab, setTab] = useState("1");
     const [instiDetail, setInstiDetail] = useState({
         instituteDetail: {},
         userData: [],
@@ -55,12 +60,18 @@ const InstitutesDetail = () => {
     const theme = useTheme();
 
     const { getInstituteRecordDetail, deleteInstituteRecord } = useInstitues();
+    const { getBooksList } = useEbookApis();
 
     const { state } = useLocation();
 
     useEffect(() => {
         if (state?._id) {
             getUserList(state?._id);
+            getBooksList().then((res) => {
+                setInstiDetail((prev) => ({ ...prev, bookList: res.data || [] }))
+            }).catch((error) => {
+                    console.log(error);
+                });
             getInstituteRecordDetail(state?._id)
                 .then((res) => {
                     setInstiDetail((prev) => ({ ...prev, instituteDetail: res.body }));
@@ -93,7 +104,7 @@ const InstitutesDetail = () => {
         }
     };
 
-    let { instituteDetail, instituteInfo, userData } = instiDetail || {};
+    let { instituteDetail, instituteInfo, userData, bookList } = instiDetail || {};
 
 
     const onRemoveHandler = () => {
@@ -280,10 +291,20 @@ const InstitutesDetail = () => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={9} lg={9}>
-                    <Box p={1} mb={2} fontWeight={600} sx={{ background: "#fff" }}>
-                        {AppStrings?.institute_users}
-                    </Box>
+                <Tabs value={tab} onChange={(e, v) => setTab(v)}>
+                    <Tab label={AppStrings?.institute_users} value="1"  />
+                    <Tab label={AppStrings?.institute_books} value="2" />
+                </Tabs>
+                    {/* <Box p={1} mb={2} fontWeight={600} sx={{ background: "#fff" }}>
+                        <Button  sx={{ color: "#000" }}>{AppStrings?.institute_users}</Button>
+                        <Button sx={{ color: "#000", border: '1px solid black' }}>{AppStrings?.institute_books}</Button>
+                    </Box> */}
+                <CustomTabPanel value={tab} index={"1"}>
                     <InstitutesUsers InstituteUserData={userData} />
+                </CustomTabPanel>
+                <CustomTabPanel value={tab} index={"2"}>
+                <InstitutesBooks InstituteBookData={bookList} />
+                </CustomTabPanel>
                 </Grid>
             </Grid>
 
@@ -317,3 +338,18 @@ const InstitutesDetail = () => {
 };
 
 export default InstitutesDetail;
+
+function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && children}
+      </div>
+    );
+  }
