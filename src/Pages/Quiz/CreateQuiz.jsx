@@ -20,6 +20,8 @@ import {
     Divider,
     useTheme,
     Tooltip,
+    FormGroup,
+    Checkbox,
 } from "@mui/material";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -29,7 +31,6 @@ import { answerKeySvg } from "../../Assets/AnswerKey";
 import useQuiz from "../../Hooks/Quiz";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
 import { toast } from "react-toastify";
-
 const CreateQuiz = () => {
     const [quizName, setQuizName] = useState("");
     const [description, setDescription] = useState("");
@@ -54,6 +55,7 @@ const CreateQuiz = () => {
             id: questionText?.length + 1,
             question: "",
             type: "",
+            answer: [],
             option: [{ id: 1, value: "", editing: true }],
         };
         setQuestions([...questionText, newQuestion]);
@@ -115,7 +117,7 @@ const CreateQuiz = () => {
 
     const handleQuestionTypeChange = (index, event) => {
         const updatedQuestions = [...questionText];
-
+        updatedQuestions[index].answer = []
         updatedQuestions[index].type = event.target.value;
         setQuestions(updatedQuestions);
     };
@@ -129,9 +131,20 @@ const CreateQuiz = () => {
     };
 
     // save question answer
-    const handleSaveAnswer = (questionIndex, event) => {
+    const handleSaveAnswer = (questionIndex, event, value = "", radio = false) => {
         const updatedQuestions = [...questionText];
-        updatedQuestions[questionIndex].answer = event.target.value;
+        // updatedQuestions[questionIndex].answer = event.target.value;
+        if(radio){
+            updatedQuestions[questionIndex].answer = [value]
+        }else{
+            const index = updatedQuestions[questionIndex].answer.indexOf(value);
+            if (index > -1) { // only splice array when item is found
+                updatedQuestions[questionIndex].answer.splice(index, 1); // 2nd parameter means remove one item only
+            }
+            else{
+                updatedQuestions[questionIndex].answer.push(value);
+            }
+        }
         setQuestions(updatedQuestions);
     };
 
@@ -384,7 +397,7 @@ const CreateQuiz = () => {
                                             </FormControl>
                                         )}
                                     </Box>
-                                    {question.type === "65bc956e471d1efeff9367db" && (
+                                    {question.type === "65bc956e471d1efeff9367db" ? (
                                         <div style={{ padding: "0 20px 10px 15px" }}>
                                             <InputLabel sx={{ textAlign: "start" }}>
                                                 Options
@@ -404,7 +417,7 @@ const CreateQuiz = () => {
                                                             value={option.value}
                                                             control={<Radio />}
                                                             onChange={(event) =>
-                                                                handleSaveAnswer(index, event)
+                                                                handleSaveAnswer(index, event, option.value, true)
                                                             }
                                                             disabled={index === answerkey ? false : true}
                                                             label={
@@ -518,7 +531,125 @@ const CreateQuiz = () => {
                                                 )}
                                             </Box>
                                         </div>
-                                    )}
+                                    ): question.type === "65bc953a471d1efeff9367d7" ?
+                                    <div style={{ padding: "0 20px 10px 15px" }}>
+                                        <InputLabel sx={{ textAlign: "start" }}>Options</InputLabel>
+                                        <FormGroup>
+                                            {question.option.map((option, optionIndex) => (
+                                                <div
+                                                    key={option.id}
+                                                    style={{
+                                                        width: "100%",
+                                                        display: "flex",
+                                                        mb: 1,
+                                                        alignItems: "center",
+                                                    }}
+                                                >
+                                                    <FormControlLabel
+                                                        control={<Checkbox />}
+                                                        checked={question.answer.includes(option.value)} // Assuming each option has a 'selected' property
+                                                        onChange={(event) => handleSaveAnswer(index, event, option.value)}
+                                                        disabled={index === answerkey ? false : true}
+                                                        label={
+                                                            option.editing ? (
+                                                                <TextField
+                                                                    variant="outlined"
+                                                                    size="small"
+                                                                    placeholder="Enter Option Name Here..."
+                                                                    value={option.value}
+                                                                    onChange={(event) =>
+                                                                        handleOptionChange(index, optionIndex, event)
+                                                                    }
+                                                                />
+                                                            ) : (
+                                                                <Box
+                                                                    sx={{
+                                                                        width: "100%",
+                                                                        display: "flex",
+                                                                        justifyContent: "space-between",
+                                                                        alignItems: "center",
+                                                                    }}
+                                                                >
+                                                                    {option.value}
+
+                                                                    {index !== answerkey && (
+                                                                        <Box sx={{ position: "absolute", right: 0 }}>
+                                                                            <IconButton
+                                                                                type="button"
+                                                                                onClick={() =>
+                                                                                    handleEditOption(index, optionIndex)
+                                                                                }
+                                                                            >
+                                                                                <BorderColorOutlinedIcon fontSize="small" />
+                                                                            </IconButton>
+                                                                            <IconButton
+                                                                                type="button"
+                                                                                onClick={() =>
+                                                                                    handleDeleteOption(index, optionIndex)
+                                                                                }
+                                                                            >
+                                                                                <DeleteOutlineOutlinedIcon fontSize="small" />
+                                                                            </IconButton>
+                                                                        </Box>
+                                                                    )}
+                                                                </Box>
+                                                            )
+                                                        }
+                                                        style={{ marginRight: "20px" }}
+                                                    />
+                                                    {option.editing && (
+                                                        <Box sx={{ marginRight: "20px" }}>
+                                                            <IconButton
+                                                                onClick={() => {
+                                                                    if (option.value?.length > 0) {
+                                                                        handleSaveOption(index, optionIndex);
+                                                                    }
+                                                                }}
+                                                            >
+                                                                <Tooltip title={"Save"}>
+                                                                    <SaveOutlinedIcon
+                                                                        fontSize="small"
+                                                                        sx={{
+                                                                            color: theme.palette.secondary.main,
+                                                                        }}
+                                                                    />
+                                                                </Tooltip>
+                                                            </IconButton>
+                                                            <IconButton
+                                                                type="button"
+                                                                onClick={() => handleDeleteOption(index, optionIndex)}
+                                                            >
+                                                                <DeleteOutlineOutlinedIcon fontSize="small" />
+                                                            </IconButton>
+                                                        </Box>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </FormGroup>
+                                        <Box
+                                            sx={{
+                                                textAlign: "start",
+                                            }}
+                                        >
+                                            {index !== answerkey && (
+                                                <Button
+                                                    type="button"
+                                                    sx={{
+                                                        padding: "6px 10px",
+                                                        mg: 2,
+                                                        border: "none",
+                                                        "&:hover": { border: "none" },
+                                                    }}
+                                                    variant="outlined"
+                                                    onClick={() => handleAddOption(index)}
+                                                    style={{ marginTop: "10px", marginBottom: "10px" }}
+                                                >
+                                                    + Add Option
+                                                </Button>
+                                            )}
+                                        </Box>
+                                    </div>             
+                                    : null}
                                 </form>
                                 <Divider />
                                 {index === answerkey ? (
