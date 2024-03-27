@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -25,6 +25,7 @@ import useCategoryApis from "../../Hooks/Category";
 import useFileGenrator from "../../Hooks/ImageFileConverter";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import useEbookApis from "../../Hooks/Ebook";
 
 const style = {
     position: "absolute",
@@ -64,6 +65,10 @@ const CategoryModal = ({
     isEditableRecord,
 }) => {
     const theme = useTheme();
+    const [languageList, setLanguageList] = useState([]);
+    const {
+        getLangaugeBookList,
+      } = useEbookApis();
 
     let isEditable = isEditableRecord?.id ? true : false;
 
@@ -72,9 +77,18 @@ const CategoryModal = ({
 
     let { createCategory, updateCategoryRecord } = useCategoryApis();
 
+    useEffect(() => {
+        getLangaugeBookList().then((res) => {
+            if (res.status === 200) {
+                setLanguageList(res.data || []);
+            }
+        })
+    },[])
+
     const handleClose = () => setIsOpenCategoryModal(false);
     const validationSchema = Yup.object({
         categoryName: Yup.string().required("Category name is required"),
+        bookLanguage: Yup.string().required("Language is required"),
         file: Yup.mixed()
             .required("Category image is required")
             .test(
@@ -94,6 +108,7 @@ const CategoryModal = ({
         initialValues: {
             categoryName: isEditableRecord?.categoryName || "",
             file: null,
+            bookLanguage: ""
         },
         validationSchema,
         enableReinitialize: true,
@@ -271,6 +286,43 @@ const CategoryModal = ({
                                     formik.touched.categoryName && formik.errors.categoryName
                                 }
                             />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "start",
+                            }}
+                        >
+                            <Typography style={{ padding: "0 0 5px 0" }}>
+                                Language:
+                            </Typography>
+                            <FormControl
+                                sx={{ marginTop: "0px" }}
+                                fullWidth
+                                variant="outlined"
+                                margin="normal"
+                            >
+                                {/* <InputLabel htmlFor="category">Category</InputLabel> */}
+                                <Select
+                                id="bookLanguage"
+                                size="small"
+                                name="bookLanguage"
+                                //   label="bookLanguage"
+                                value={formik.values.bookLanguage}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={
+                                    formik.touched.bookLanguage && Boolean(formik.errors.bookLanguage)
+                                }
+                                >
+                                {languageList.map((category) => (
+                                    <MenuItem key={category?._id} value={category?._id}>
+                                    {category.language}
+                                    </MenuItem>
+                                ))}
+                                </Select>
+                            </FormControl>
                         </Box>
 
                         <Box px={3} mt={2}>

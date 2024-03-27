@@ -31,11 +31,18 @@ import { answerKeySvg } from "../../Assets/AnswerKey";
 import useQuiz from "../../Hooks/Quiz";
 import ShowsMessageModal from "../../Component/ShowMessageModal";
 import { toast } from "react-toastify";
+import useEbookApis from "../../Hooks/Ebook";
+
 const CreateQuiz = () => {
+    const {
+        getLangaugeBookList,
+      } = useEbookApis();
     const [quizName, setQuizName] = useState("");
     const [description, setDescription] = useState("");
     const [typeList, setTypeList] = useState([]);
-
+    const [languageList, setLanguageList] = useState([]);
+    const [language, setLanguage] = useState(null);
+      console.log('language',language);
     const [modalData, setModalData] = useState({
         showSuccessModal: false,
         message: "",
@@ -217,6 +224,7 @@ const CreateQuiz = () => {
         if (!error) {
             let data = {
                 quizName: quizName,
+                language: language || '',
                 description: description,
                 questionText: questionText.map((item) => {
                     return {
@@ -246,6 +254,14 @@ const CreateQuiz = () => {
                 });
         }
     };
+
+    useEffect(() => {
+        getLangaugeBookList().then((res) => {
+            if (res.status === 200) {
+                setLanguageList(res.data || []);
+            }
+        })
+    },[])
 
     useEffect(() => {
         getQuizTypeList()
@@ -301,7 +317,7 @@ const CreateQuiz = () => {
                 </Box>
             </Box>
             <Grid container spacing={3}>
-                <Grid item xs={12} md={6} lg={6}>
+                <Grid item xs={12} md={4} lg={4}>
                     <Box>
                         <Typography sx={{ textAlign: "start" }}>Quiz Name</Typography>
                         <TextField
@@ -321,7 +337,7 @@ const CreateQuiz = () => {
                         />
                     </Box>
                 </Grid>
-                <Grid item xs={12} md={6} lg={6}>
+                <Grid item xs={12} md={4} lg={4}>
                     <Box>
                         <Typography sx={{ textAlign: "start" }}>Description</Typography>
                         <TextField
@@ -339,6 +355,41 @@ const CreateQuiz = () => {
                                 setDescription(e.target.value);
                             }}
                         />
+                    </Box>
+                </Grid>
+                <Grid item xs={12} md={4} lg={4}>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "start",
+                        }}
+                    >
+                        <Typography style={{ padding: "0 0 5px 0" }}>
+                            Language:
+                        </Typography>
+                        <FormControl
+                            sx={{ marginTop: "0px" }}
+                            fullWidth
+                            variant="outlined"
+                            margin="normal"
+                        >
+                            <Select
+                            id="bookLanguage"
+                            size="small"
+                            name="bookLanguage"
+                            value={language}
+                            onChange={(e) => {
+                                setLanguage(e.target.value);
+                            }}
+                            >
+                            {languageList?.map((category) => (
+                                <MenuItem key={category?._id} value={category?._id}>
+                                {category.language}
+                                </MenuItem>
+                            ))}
+                            </Select>
+                        </FormControl>
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={12} lg={12}>

@@ -322,7 +322,7 @@ const ProfileModal = ({ profile, setProfile }) => {
                                 fullWidth
                                 sx={{ marginTop: "0px" }}
                                 size="small"
-                                disabled={!InstituteAdmin}
+                                disabled={InstituteAdmin}
                                 margin="normal"
                                 variant="outlined"
                                 {...formik.getFieldProps("emailId")}

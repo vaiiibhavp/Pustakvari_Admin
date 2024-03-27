@@ -262,10 +262,10 @@ const InstitutesDetail = () => {
                                 {AppStrings?.status} :{" "}
                                 <span
                                     style={{
-                                        background: !instituteDetail?.is_active
+                                        background: instituteDetail?.is_active
                                             ? theme.palette?.secondary?.lighter
                                             : theme.palette?.grey[400],
-                                        color: !instituteDetail?.is_active
+                                        color: instituteDetail?.is_active
                                             ? theme.palette?.secondary.main
                                             : theme.palette.grey[500],
                                         width: "30%",
@@ -276,7 +276,7 @@ const InstitutesDetail = () => {
                                         padding: "3px 5px",
                                     }}
                                 >
-                                    {!instituteDetail?.is_active ? "Active" : " Deactive "}
+                                    {instituteDetail?.is_active ? "Active" : " Deactive "}
                                 </span>
                             </Typography>
                             <Typography
